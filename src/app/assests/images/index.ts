@@ -82,7 +82,7 @@ import thuderArrrow from "./thuder-arrrow.svg";
 import theTeam from "./the-team.svg";
 import pin from "./red-pin.png";
 import cuteCatAndDog from "./cute-cat-and-dog.svg";
-import cuteCatandDogMobile from "./cute-cat-dog-mobile.svg";
+import cuteCatandDogMobile from "./mobile.png";
 import servicesBg from "./servicesBg.png";
 import puppyPlan from "./puppy-plan.png";
 import dogPlan from "./dog-plan.png";

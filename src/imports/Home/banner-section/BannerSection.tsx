@@ -215,7 +215,7 @@ export function HeroBannerSection() {
         </div>
       </div>
       <div className="lg:hidden block">
-        <AlertMarquee bgColor="#214A1E" />
+        <AlertMarquee bgColor="#214A1E" /> 
       </div>
     </section>
   );
