@@ -93,14 +93,14 @@ const PricePlanCard: React.FC<PricePlanCardProps> = ({
         </div>
 
         {/* Enrollment fee */}
-        {enrollmentFee !== undefined && (
+        {/* {enrollmentFee !== undefined && (
           <p
             className="manrope text-center text-[12px] font-medium leading-[16px] tracking-[0]"
             style={{ color: priceColor }}
           >
             + ${enrollmentFee} Enrollment Fee
           </p>
-        )}
+        )} */}
       </div>
 
       {/* ── Divider ───────────────────────────────────────────────────────── */}
