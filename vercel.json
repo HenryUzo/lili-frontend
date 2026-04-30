@@ -1,4 +1,5 @@
 {
+  "$schema": "https://openapi.vercel.sh/vercel.json",
   "cleanUrls": true,
   "redirects": [
     {
@@ -39,31 +40,7 @@
   ],
   "rewrites": [
     {
-      "source": "/",
-      "destination": "/index.html"
-    },
-    {
-      "source": "/about-us",
-      "destination": "/index.html"
-    },
-    {
-      "source": "/book-appointment",
-      "destination": "/index.html"
-    },
-    {
-      "source": "/contact-us",
-      "destination": "/index.html"
-    },
-    {
-      "source": "/new-patients",
-      "destination": "/index.html"
-    },
-    {
-      "source": "/urgent-care",
-      "destination": "/index.html"
-    },
-    {
-      "source": "/services/:path*",
+      "source": "/(.*)",
       "destination": "/index.html"
     }
   ]
