@@ -162,7 +162,7 @@ function HeroSubheadlineBlock() {
       <div className="font-founders text-[#012d1d] [font-size:clamp(18px,3.4vw,40px)] tracking-[-0.02em] font-medium leading-[1.077] text-center lg:text-left">
         <p>Lifelong Wellness</p>
         <div className="flex items-center justify-center lg:justify-start">
-          <div className="-mt-[0.2em] rotate-[7deg] mr-[-1rem] [width:clamp(40px,6.7vw,80px)] [height:clamp(40px,6.7vw,80px)]">
+          <div className="-mt-[0.2em] rotate-[7deg] lg:mr-[-1rem] [width:clamp(40px,6.7vw,80px)] [height:clamp(40px,6.7vw,80px)]">
             <WellnessArrowBadge />
           </div>
           <p>urgent care</p>
