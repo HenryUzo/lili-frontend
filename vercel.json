@@ -1,0 +1,70 @@
+{
+  "cleanUrls": true,
+  "redirects": [
+    {
+      "source": "/team",
+      "destination": "/about-us",
+      "permanent": true
+    },
+    {
+      "source": "/request-appointment",
+      "destination": "/book-appointment",
+      "permanent": true
+    },
+    {
+      "source": "/wellness-prevention",
+      "destination": "/services/wellness-plans",
+      "permanent": true
+    },
+    {
+      "source": "/dental-care",
+      "destination": "/services/dental-care",
+      "permanent": true
+    },
+    {
+      "source": "/diagnostics",
+      "destination": "/services/diagnostic-care",
+      "permanent": true
+    },
+    {
+      "source": "/surgery",
+      "destination": "/services/surgery",
+      "permanent": true
+    },
+    {
+      "source": "/vaccination",
+      "destination": "/services/vaccination",
+      "permanent": true
+    }
+  ],
+  "rewrites": [
+    {
+      "source": "/",
+      "destination": "/index.html"
+    },
+    {
+      "source": "/about-us",
+      "destination": "/index.html"
+    },
+    {
+      "source": "/book-appointment",
+      "destination": "/index.html"
+    },
+    {
+      "source": "/contact-us",
+      "destination": "/index.html"
+    },
+    {
+      "source": "/new-patients",
+      "destination": "/index.html"
+    },
+    {
+      "source": "/urgent-care",
+      "destination": "/index.html"
+    },
+    {
+      "source": "/services/:path*",
+      "destination": "/index.html"
+    }
+  ]
+}
