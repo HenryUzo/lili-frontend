@@ -3,7 +3,7 @@ import videos from '../assests/videos'
 
 const DogCatVideo = () => {
   return (
-<section className="relative z-10 h-screen w-full overflow-hidden bg-[#f1ffeb]">
+<section className="relative z-10 h-screen w-full lg:block hidden overflow-hidden bg-[#f1ffeb]">
   <video
     className="absolute inset-0 h-full w-full object-cover object-center"
     autoPlay
