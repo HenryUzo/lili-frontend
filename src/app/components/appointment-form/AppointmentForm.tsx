@@ -1454,7 +1454,7 @@ export function AppointmentRequestSection({}: AppointmentRequestSectionProps) {
                           {submissionError}
                         </div>
                       ) : null}
-                      <div className="mt-8 grid grid-cols-10 items-start gap-4 ">
+                      <div className="mt-8 grid md:grid-cols-10 grid-cols-1 items-start gap-4 ">
                         <div className=" col-span-6 rounded-[28px] border border-[#E7E2DA] bg-[#F6F5F0] p-5 md:p-6">
                           <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
                             <button
