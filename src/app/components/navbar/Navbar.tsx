@@ -9,6 +9,7 @@ import {
 import images from "../../assests/images";
 import PhoneCallDialog from "../../reuseable-components/call-modal";
 import { ROUTE } from "../../../router";
+import { trackCallClick } from "../../../lib/analytics";
 
 export type NavbarPhase = "navIntro" | "ready";
 
@@ -430,6 +431,7 @@ function CallNow({ full = false }: { full?: boolean }) {
   return (
     <a
       href="tel:(210) 257-8496"
+      onClick={() => trackCallClick("header")}
       className={`flex shrink-0 items-center justify-center overflow-hidden rounded-[36px] bg-[rgba(255,255,255,0.84)] p-[16px] transition-colors hover:bg-white ${
         full ? "w-full" : ""
       }`}
@@ -792,6 +794,7 @@ export default function Navbar({
 
             <BookAppointment />
             <PhoneCallDialog
+              location="header"
               trigger={
                 <button
                   type="button"

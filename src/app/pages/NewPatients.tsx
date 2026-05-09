@@ -37,14 +37,15 @@ function NewToLiliVetHero() {
               <div className="lg:mt-4 mt-1 ">
                
                  <PhoneCallDialog
-                              trigger={
-                               <a
-                  href="tel:+1210789646"
+                             trigger={
+                               <button
+                  type="button"
                   className="text-[18px] font-medium font-founders  text-[#008E49] underline underline-offset-4 transition hover:opacity-80"
                 >
                   Call now
-                </a>
+                </button>
                               }
+                              location="new_patients_page"
                             />
               </div>
             </div>

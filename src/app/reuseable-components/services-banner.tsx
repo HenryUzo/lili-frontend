@@ -17,6 +17,7 @@ type BannerProps = {
   otherContent?: React.ReactNode;
   visual?: React.ReactNode;
   visualClassName?: string;
+  phoneTrackingLocation?: string;
 };
 
 const ServicesBanner = ({
@@ -33,6 +34,7 @@ const ServicesBanner = ({
   otherContent,
   visual,
   visualClassName = "",
+  phoneTrackingLocation = "unknown",
 }: BannerProps) => {
   return (
     <section
@@ -63,7 +65,9 @@ const ServicesBanner = ({
             />
 
             {secondaryActionLabel && (
-              secondaryActionLabel=== "Emergency call"  || secondaryActionLabel=== "Call Now" ? <PhoneCallDialog  trigger={ <Link
+              secondaryActionLabel=== "Emergency call"  || secondaryActionLabel=== "Call Now" ? <PhoneCallDialog
+              location={phoneTrackingLocation}
+              trigger={ <Link
 
                 to={ "#"}
                 className="mt-0 cursor-pointer font-founders text-lg font-medium text-[#006838] underline lg:mt-5"

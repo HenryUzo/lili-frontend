@@ -1,6 +1,7 @@
 import { Clock3, PhoneCall } from "lucide-react";
 import React from "react";
 import PhoneCallDialog from "./call-modal";
+import { CLINIC_PHONE_DISPLAY } from "../../lib/analytics";
 
 const HOURS = [
   { day: "Monday – Friday", time: "7:30 AM - 7:00 PM" },
@@ -8,7 +9,11 @@ const HOURS = [
   { day: "Sunday", time: "Closed", alert: true },
 ];
 
-const PhonePanel = () => {
+type PhonePanelProps = {
+  location?: string;
+};
+
+const PhonePanel = ({ location = "unknown" }: PhonePanelProps) => {
   return (
     <div className="rounded-[32px] border border-[#952D2D33] max-h-[578.75px] bg-[#FCF4F4] px-8 py-6">
       <h3 className="font-founders text-[#1B1C19] text-[20px] font-normal leading-[28px] tracking-[0] md:text-[22px] md:leading-[30px] lg:text-[24px] lg:leading-[32px]">
@@ -31,13 +36,14 @@ const PhonePanel = () => {
               Clinic Hot Line
             </p>
             <p className="mt-1 manrope text-[20px] font-bold leading-7 text-[#1B1C19]">
-              (210) 257-8496
+              {CLINIC_PHONE_DISPLAY}
             </p>
           </div>
         </div>
       </div>
 
       <PhoneCallDialog
+        location={location}
         trigger={
           <button
             type="button"

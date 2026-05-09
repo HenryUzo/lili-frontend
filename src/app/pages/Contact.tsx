@@ -6,6 +6,7 @@ import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
 import images from "../assests/images";
+import { trackDirectionsClick } from "../../lib/analytics";
 import PawButton from "../reuseable-components/paw-button";
 import PhonePanel from "../reuseable-components/phone-panel";
 
@@ -424,7 +425,7 @@ export default function Contact() {
               </div>
 
               <div ref={rightRef} className="mt-2 min-h-[580px] self-end">
-                <PhonePanel />
+                <PhonePanel location="contact_page" />
               </div>
             </div>
           </div>
@@ -550,6 +551,8 @@ function CenterMapAction() {
       <a
         href="https://www.google.com/maps/place/Lili+Veterinary+Hospital+%2B+Urgent+Care/@29.642305,-98.4815096,739m/data=!3m2!1e3!4b1!4m6!3m5!1s0x865c89d98657135d:0x4d615151bf45d1d7!8m2!3d29.6423004!4d-98.4789347!16s%2Fg%2F11bx8rygyq?entry=ttu&g_ep=EgoyMDI2MDQxNS4wIKXMDSoASAFQAw%3D%3D"
         target="_blank"
+        rel="noreferrer"
+        onClick={() => trackDirectionsClick("contact_page")}
         className="inline-flex min-w-[220px] items-center justify-center rounded-full border border-white px-7 py-4 text-sm font-semibold text-white transition hover:bg-white hover:text-[#0A3B2E]"
       >
         View Location on Map
