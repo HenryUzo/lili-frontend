@@ -1,4 +1,3 @@
-import { DotLottieReact } from "@lottiefiles/dotlottie-react";
 import ScatteredPawPrints from "./components/loading-screen/LoadingScreen";
 import images from "./assests/images";
 
@@ -16,12 +15,11 @@ export default function AppLoader({ progress }: AppLoaderProps) {
         className="z-[10000]"
       >
         <section className="flex min-h-screen w-full flex-col items-center justify-center px-6">
-          <DotLottieReact
-            src="/logo.lottie"
-            loop
-            autoplay
-            speed={0.75}
-            className="w-[280px] sm:w-[360px] md:w-[440px] lg:w-[500px]"
+          <img
+            src={images.logo}
+            alt="LiliVet logo"
+            className="w-[220px] object-contain sm:w-[280px] md:w-[320px] lg:w-[360px]"
+            draggable={false}
           />
 
           <div className="flex w-full max-w-[420px] flex-col items-center gap-5">
