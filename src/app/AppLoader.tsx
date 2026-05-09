@@ -17,7 +17,7 @@ export default function AppLoader({ progress }: AppLoaderProps) {
       >
         <section className="flex min-h-screen w-full flex-col items-center justify-center px-6">
           <DotLottieReact
-            src="https://lottie.host/3ae7265d-fe3a-4205-b5fb-6a1a2d018022/WdYo5uq6UD.lottie"
+            src="/logo.lottie"
             loop
             autoplay
             speed={0.75}
