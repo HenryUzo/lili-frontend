@@ -30,58 +30,73 @@ function Banner() {
 
   return (
     <section
-      className="relative w-full min-h-screen lg:h-[120vh] bg-[#F2F7EE] bg-center bg-cover bg-no-repeat"
+      className="relative w-full lg:min-h-screen h-fit lg:h-[120vh] bg-[#F2F7EE] bg-center bg-cover bg-no-repeat max-lg:!bg-none"
       style={{ backgroundImage: `url(${images.urgentCareBg})` }}
     >
-      <div className="px-6 md:px-16 pt-10 pb-32 lg:pb-40 relative z-50">
+      <div className="px-6 md:px-16 lg:pt-10  lg:pb-40 relative z-50">
         {/* Top row — headline + handwritten note */}
         <div className="flex flex-col lg:flex-row lg:justify-between lg:items-start gap-8">
           {/* ── Left column ── */}
           <div className="flex flex-col">
             {/* Headline */}
-            <h1 className="font-bold text-[48px] sm:text-[60px] relative z-50 lg:text-[76px] tracking-[-2px] lg:tracking-[-3px] font-founders text-[#006838] leading-none">
+            <h1 className="font-bold text-[44px] sm:text-[60px] relative z-50 lg:text-[76px] tracking-[-2px] lg:tracking-[-3px] font-founders text-[#006838] leading-none lg:text-left text-center">
               <span className="text-[#ED1C24]">Urgent</span> Vet Care
             </h1>
-            <h3 className="font-medium  text-[36px] sm:text-[48px] lg:text-[60px] text-[#204E1C] font-founders leading-[108%]">
+            <h3 className="font-medium lg:text-left text-center text-[36px] sm:text-[48px] lg:text-[60px] text-[#204E1C] font-founders leading-[108%]">
               in San Antonio
             </h3>
 
             {/* Body */}
-            <p className="text-lg sm:text-xl lg:text-2xl font-normal font-founders tracking-[-0.03em] lg:text-[#333335] text-white max-w-[388px] my-6 lg:my-8">
+            <p className="text-lg sm:text-xl lg:text-2xl font-normal font-founders tracking-[-0.03em] lg:text-left text-center text-[#333335] max-w-[388px] my-6 lg:my-8">
               If your pet is sick or injured, our team may be able to provide
               same-day care. Call ahead and we'll guide you on the next best
               step.
             </p>
 
             {/* CTA row */}
-            <div className="flex flex-wrap items-start gap-4">
+            <div className="flex flex-wrap items-start lg:justify-start justify-center gap-4">
               <PawButton
                 variant="primary"
                 className="!w-fit"
+                buttonClassName="!bg-[#ED1C24] text-lg!"
                 label="Give us a call"
-                showIcon={false}
+                showIcon={true}
+                icon={images.whitePhone}
+                iconButtonStyle={"!bg-[#ED1C24]"}
               />
               <Link
                 to={ROUTE.bookAppointment}
-                className="mt-0 lg:mt-5 font-founders underline text-lg font-medium text-[#006838] cursor-pointer"
+                className="mt-1 lg:mt-5 font-founders underline text-lg font-medium text-[#006838] cursor-pointer"
               >
                 Book appointment
               </Link>
             </div>
 
             {/* Glass card */}
-            <div className="border-[#FFFFFF94] border-2 w-full max-w-[501px] mt-5 rounded-[16px] bg-[#EDF9EC66] backdrop-blur-[2px] py-[19px] px-[25px]">
-              <div className="w-full bg-[#FFFFFF2E] p-4 rounded-[6px]">
-                <ul className="font-founders flex flex-col gap-3">
-                  {glassText.map((item, i) => (
-                    <li
-                      key={i}
-                      className="flex items-center text-base sm:text-lg font-medium text-[#204E1C]"
-                    >
-                      {item}
-                    </li>
-                  ))}
-                </ul>
+            <div className="relative">
+              <img
+                src={images.loveSticker}
+                alt=""
+                className="absolute left-0 top-0 z-20 w-[70px]"
+              />
+               <img
+                src={images.catPaw}
+                alt=""
+                className="absolute left-0 -bottom-20 z-20 w-[70px]"
+              />
+              <div className="border-[#FFFFFF94] border-2 w-full max-w-[501px] mt-5 rounded-[16px] lg:rotate-0 rotate-2  bg-[#D5F7D366] backdrop-blur-[2px] py-[19px] px-[25px]">
+                <div className="w-full bg-[#FFFFFF2E] p-4 rounded-[6px] ">
+                  <ul className="font-founders flex flex-col gap-3">
+                    {glassText.map((item, i) => (
+                      <li
+                        key={i}
+                        className="flex items-center text-base sm:text-lg font-medium text-[#204E1C]"
+                      >
+                        {item}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
               </div>
             </div>
           </div>
@@ -97,10 +112,9 @@ function Banner() {
       </div>
 
       {/* Marquee pinned to bottom */}
-      <div className="absolute bottom-0 left-0 right-0 z-40">
+      <div className="lg:absolute relative bottom-0 left-0  lg:mt-0 mt-5 right-0 z-[1000]">
         <AlertMarquee />
       </div>
-      <div className="absolute inset-0 block lg:hidden bg-[#0000005C]" />
     </section>
   );
 }

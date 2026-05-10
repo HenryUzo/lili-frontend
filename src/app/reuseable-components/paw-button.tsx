@@ -19,6 +19,8 @@ interface PawButtonProps {
   className?: string;
   icon?: string;
   showIcon?: boolean;
+  buttonClassName?:string
+  iconButtonStyle?:string
 
   /**
    * Pass your paw cursor image here.
@@ -69,6 +71,8 @@ export default function PawButton({
   className = "",
   icon,
   showIcon = true,
+  buttonClassName,
+  iconButtonStyle
 
 }: PawButtonProps) {
   const styles = variantStyles[variant];
@@ -227,6 +231,7 @@ export default function PawButton({
           className={[
             styles.surface,
             styles.text,
+            buttonClassName,
             "flex items-center justify-center overflow-hidden font-medium rounded-[36px]",
             "px-5 py-3 sm:px-6 sm:py-4 lg:px-6 lg:py-6",
             "text-sm sm:text-base lg:text-[24px]",
@@ -248,16 +253,18 @@ export default function PawButton({
               styles.surface,
               styles.paw,
               styles.shadow,
+              iconButtonStyle,
               "flex items-center justify-center overflow-hidden font-founders rounded-[36px]",
               "p-3 sm:p-4 lg:p-4",
               "will-change-transform",
             ].join(" ")}
           >
             {icon ? (
-              <div ref={pawIconRef} className="will-change-transform">
+              <div ref={pawIconRef} className={[ "will-change-transform"].join(" ")}>
                 <div
                   className={[
                     styles.surface,
+                     iconButtonStyle,
                     "will-change-transform",
                     "flex items-center justify-center",
                   ].join(" ")}

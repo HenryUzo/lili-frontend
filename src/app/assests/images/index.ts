@@ -139,7 +139,13 @@ import drag from "./drag-and-drop.png"
 import pawWhite from "./pawwhite.svg"
 import pet404 from "./notfound.webp"
 import callHint from "./call-hint.svg"
+import whitePhone from "./white-phone.svg"
+import loveSticker from "./sticker.png"
+import catPaw from "./cat-paw.png"
 export default {
+  catPaw,
+  loveSticker,
+  whitePhone,
   callHint,
   pawWhite,
   drag,
