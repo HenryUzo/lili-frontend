@@ -144,7 +144,9 @@ import loveSticker from "./sticker.png"
 import catPaw from "./cat-paw.png" 
 import dogPaw from "./dog-paw.png" 
 import sirenLight from "./siren-light.png"
+import calender from "./calender.png"
 export default {
+  calender,
   dogPaw,
   sirenLight,
   catPaw,
