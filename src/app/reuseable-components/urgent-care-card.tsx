@@ -114,7 +114,7 @@ const UrgentCareCard: React.FC<UrgentCareCardProps> = ({
         )}
         {titlePosition === "overlay" && (
           <p
-            className="absolute bottom-3 left-4 lg:block hidden  text-center text-[28px] right-12 text-white  manrope  leading-tight drop-shadow-lg"
+            className="absolute bottom-3 left-4   text-center text-[28px] right-12 text-white  manrope  leading-tight drop-shadow-lg"
             style={{ letterSpacing: "-0.5px" }}
           >
             {title}
