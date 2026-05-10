@@ -204,7 +204,7 @@ function HeroSection() {
           className="w-full"
         />
 
-        <div className="absolute top-3/4 left-1/2 -translate-x-1/2 -translate-y-1/2 flex justify-center flex-col items-center">
+        <div className="absolute top-3/4 left-1/2 -translate-x-1/2 -translate-y-3/4 flex justify-center flex-col items-center">
           <div className="bg-[#FFFFFF] px-6 py-2 rounded-t-[16px] w-fit flex items-center gap-2 justify-center">
             <img src={images.callHint} alt="" /> <span className="
            font-manrope
