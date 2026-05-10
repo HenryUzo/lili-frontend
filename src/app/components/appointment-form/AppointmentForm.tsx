@@ -556,6 +556,9 @@ export function AppointmentRequestSection({}: AppointmentRequestSectionProps) {
     number | null
   >(null);
 
+  const [preferredDatesDialogOpen, setPreferredDatesDialogOpen] =
+    useState(false);
+
   const selectedDialogDay =
     timeSlotDialogDayIndex !== null
       ? values.preferredSelections[timeSlotDialogDayIndex]
@@ -568,6 +571,36 @@ export function AppointmentRequestSection({}: AppointmentRequestSectionProps) {
   const closeTimeSlotDialog = () => {
     setTimeSlotDialogDayIndex(null);
   };
+
+  const openMobilePreferredDateTimeSlot = (dayIndex: number) => {
+    setPreferredDatesDialogOpen(false);
+
+    window.setTimeout(() => {
+      openTimeSlotDialog(dayIndex);
+    }, 0);
+  };
+
+  const hasSelectedWeek = values.preferredSelections.some((item) => item.date);
+
+  const filledPreferredSelections = getFilledPreferredSelections(
+    values.preferredSelections,
+  );
+
+  const firstPreferredDate = values.preferredSelections.find(
+    (item) => item.date,
+  )?.date;
+
+  const lastPreferredDate = [...values.preferredSelections]
+    .reverse()
+    .find((item) => item.date)?.date;
+
+  const selectedWeekLabel =
+    firstPreferredDate && lastPreferredDate
+      ? `${formatWeekDayLabel(firstPreferredDate)} - ${formatWeekDayLabel(
+          lastPreferredDate,
+        )}`
+      : "";
+
   const formCardRef = useRef<HTMLFormElement | null>(null);
   const hasMountedRef = useRef(false);
 
@@ -870,9 +903,20 @@ export function AppointmentRequestSection({}: AppointmentRequestSectionProps) {
     });
 
     const monday = getMonday(date);
+
     setSelectedWeekStart(monday);
     setVisibleMonth(new Date(date.getFullYear(), date.getMonth(), 1));
     updateField("preferredSelections", nextSelections);
+
+    const isMobile =
+      typeof window !== "undefined" &&
+      window.matchMedia("(max-width: 767px)").matches;
+
+    if (isMobile) {
+      window.setTimeout(() => {
+        setPreferredDatesDialogOpen(true);
+      }, 0);
+    }
   };
 
   const toggleWeekDayTimeSlot = (dayIndex: number, slot: string) => {
@@ -1454,8 +1498,9 @@ export function AppointmentRequestSection({}: AppointmentRequestSectionProps) {
                           {submissionError}
                         </div>
                       ) : null}
-                      <div className="mt-8 grid md:grid-cols-10 grid-cols-1 items-start gap-4 ">
-                        <div className=" col-span-6 rounded-[28px] border border-[#E7E2DA] bg-[#F6F5F0] p-5 md:p-6">
+
+                      <div className="mt-8 grid grid-cols-1 items-start gap-4 md:grid-cols-10">
+                        <div className="col-span-6 rounded-[28px] border border-[#E7E2DA] bg-[#F6F5F0] p-5 md:p-6">
                           <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
                             <button
                               type="button"
@@ -1525,10 +1570,12 @@ export function AppointmentRequestSection({}: AppointmentRequestSectionProps) {
                               const isSunday = date.getDay() === 0;
                               const isPast = isPastDate(date);
                               const disabled = isSunday || isPast;
+
                               const isInHighlightedRange = isDateInWeek(
                                 date,
                                 highlightedWeekStart,
                               );
+
                               const isInSelectedRange = isDateInWeek(
                                 date,
                                 selectedWeekStart,
@@ -1568,12 +1615,75 @@ export function AppointmentRequestSection({}: AppointmentRequestSectionProps) {
                           </p>
                         </div>
 
-                        <div className=" rounded-[28px] h-full col-span-4 border border-[#E7E2DA] bg-white p-5 md:p-6">
+                        <div className="md:hidden">
+                          <button
+                            type="button"
+                            disabled={!hasSelectedWeek}
+                            onClick={() => setPreferredDatesDialogOpen(true)}
+                            className={[
+                              "w-full rounded-[22px] border px-5 py-4 text-left transition-all",
+                              hasSelectedWeek
+                                ? "border-[#077D39] bg-[#EAF7EF] shadow-[0_0_0_1px_#077D39]"
+                                : "cursor-not-allowed border-[#E7E2DA] bg-[#F6F5F0] opacity-70",
+                            ].join(" ")}
+                          >
+                            <div className="flex items-start justify-between gap-4">
+                              <div className="min-w-0 flex-1">
+                                <h4 className="font-founders text-[22px] font-medium text-[#1B1C19]">
+                                  Preferred dates
+                                </h4>
+
+                                {!hasSelectedWeek ? (
+                                  <p className="mt-1 font-manrope text-[13px] font-medium leading-5 text-[#727973]">
+                                    Select a week from the calendar first.
+                                  </p>
+                                ) : filledPreferredSelections.length ? (
+                                  <div className="mt-3 space-y-2">
+                                    {filledPreferredSelections.map(
+                                      (item, index) => (
+                                        <div
+                                          key={`${item.date}-${index}`}
+                                          className="rounded-[14px] bg-white/70 px-3 py-2"
+                                        >
+                                          <p className="font-manrope text-[13px] font-bold text-[#1B1C19]">
+                                            {formatWeekDayLabel(item.date)}
+                                          </p>
+
+                                          <p className="mt-1 font-manrope text-[12px] font-medium leading-5 text-[#416352]">
+                                            {item.timeSlots
+                                              .map(formatTimeLabel)
+                                              .join(", ")}
+                                          </p>
+                                        </div>
+                                      ),
+                                    )}
+                                  </div>
+                                ) : (
+                                  <p className="mt-1 font-manrope text-[13px] font-medium leading-5 text-[#727973]">
+                                    {selectedWeekLabel
+                                      ? `${selectedWeekLabel}. Tap to choose time slots.`
+                                      : "Tap to choose time slots for the selected week."}
+                                  </p>
+                                )}
+                              </div>
+
+                              <span className="shrink-0 rounded-full bg-white px-3 py-1 font-manrope text-[11px] font-bold text-[#416352]">
+                                {getTotalSelectedSlots(
+                                  values.preferredSelections,
+                                )}{" "}
+                                selected
+                              </span>
+                            </div>
+                          </button>
+                        </div>
+
+                        <div className="hidden h-full rounded-[28px] border border-[#E7E2DA] bg-white p-5 md:col-span-4 md:block md:p-6">
                           <div className="flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
                             <div>
                               <h4 className="font-founders text-[22px] font-medium text-[#1B1C19]">
                                 Preferred dates
                               </h4>
+
                               <p className="mt-1 font-manrope text-[14px] font-medium leading-6 text-[#727973]">
                                 Monday to Saturday of the selected week.
                               </p>
@@ -1588,12 +1698,14 @@ export function AppointmentRequestSection({}: AppointmentRequestSectionProps) {
                           </div>
 
                           <div className="mt-5 space-y-3">
-                            {values.preferredSelections.some(
-                              (item) => item.date,
-                            ) ? (
+                            {hasSelectedWeek ? (
                               values.preferredSelections.map((item, index) => {
-                                const isActive =
+                                const hasSelectedTimeSlot =
+                                  item.timeSlots?.length > 0;
+                                const isOpenDay =
                                   timeSlotDialogDayIndex === index;
+                                const isActive =
+                                  isOpenDay || hasSelectedTimeSlot;
 
                                 return (
                                   <button
@@ -1603,8 +1715,8 @@ export function AppointmentRequestSection({}: AppointmentRequestSectionProps) {
                                     className={[
                                       "w-full rounded-[18px] border px-4 py-4 text-left transition-all",
                                       isActive
-                                        ? "border-[#416352] bg-[#E5EFE5] shadow-[0_0_0_1px_#416352]"
-                                        : "border-[#E7E2DA] bg-[#F6F5F0] hover:border-[#416352]",
+                                        ? "border-[#077D39] bg-[#EAF7EF] shadow-[0_0_0_1px_#077D39]"
+                                        : "border-[#E7E2DA] bg-[#F6F5F0] hover:border-[#077D39] hover:bg-[#F2FAF5]",
                                     ].join(" ")}
                                   >
                                     <div className="flex items-start justify-between gap-4">
@@ -1615,15 +1727,26 @@ export function AppointmentRequestSection({}: AppointmentRequestSectionProps) {
                                             : `Day ${index + 1}`}
                                         </p>
 
-                                        <p className="mt-1 font-manrope text-[13px] text-[#727973]">
-                                          {item.timeSlots.length
-                                            ? `${item.timeSlots.length} slot(s) selected`
+                                        <p className="mt-1 font-manrope text-[13px] leading-5 text-[#727973]">
+                                          {hasSelectedTimeSlot
+                                            ? item.timeSlots
+                                                .map(formatTimeLabel)
+                                                .join(", ")
                                             : "Click to select time slots"}
                                         </p>
                                       </div>
 
-                                      <span className="rounded-full bg-white px-3 py-1 font-manrope text-[11px] font-bold text-[#416352]">
-                                        Select
+                                      <span
+                                        className={[
+                                          "rounded-full px-3 py-1 font-manrope text-[11px] font-bold",
+                                          hasSelectedTimeSlot
+                                            ? "bg-[#077D39] text-white"
+                                            : "bg-white text-[#416352]",
+                                        ].join(" ")}
+                                      >
+                                        {hasSelectedTimeSlot
+                                          ? "Selected"
+                                          : "Select"}
                                       </span>
                                     </div>
                                   </button>
@@ -1637,6 +1760,102 @@ export function AppointmentRequestSection({}: AppointmentRequestSectionProps) {
                           </div>
                         </div>
                       </div>
+
+                      <Dialog
+                        open={preferredDatesDialogOpen}
+                        onOpenChange={setPreferredDatesDialogOpen}
+                      >
+                        <DialogContent className="max-h-[85vh] overflow-y-auto rounded-[28px] border border-[#E7E2DA] bg-white p-5 sm:max-w-[520px]">
+                          <DialogHeader>
+                            <DialogTitle className="font-founders text-[26px] font-medium text-[#1B1C19]">
+                              Preferred dates
+                            </DialogTitle>
+
+                            <DialogDescription className="font-manrope text-[14px] font-medium leading-6 text-[#727973]">
+                              {selectedWeekLabel
+                                ? `${selectedWeekLabel}. Choose a day to select time slots.`
+                                : "Monday to Saturday of the selected week. Choose a day to select time slots."}
+                            </DialogDescription>
+                          </DialogHeader>
+
+                          <div className="mt-4 flex items-center justify-between rounded-[18px] bg-[#F6F5F0] px-4 py-3">
+                            <p className="font-manrope text-[13px] font-bold text-[#416352]">
+                              {getTotalSelectedSlots(
+                                values.preferredSelections,
+                              )}{" "}
+                              slot(s) selected
+                            </p>
+
+                            <p className="font-manrope text-[12px] font-medium text-[#727973]">
+                              Max {MAX_WEEK_TIME_SLOTS}
+                            </p>
+                          </div>
+
+                          <div className="mt-5 space-y-3">
+                            {hasSelectedWeek ? (
+                              values.preferredSelections.map((item, index) => {
+                                const hasSelectedTimeSlot =
+                                  item.timeSlots?.length > 0;
+                                const isOpenDay =
+                                  timeSlotDialogDayIndex === index;
+                                const isActive =
+                                  isOpenDay || hasSelectedTimeSlot;
+
+                                return (
+                                  <button
+                                    key={`${item.date || "empty"}-${index}`}
+                                    type="button"
+                                    onClick={() =>
+                                      openMobilePreferredDateTimeSlot(index)
+                                    }
+                                    className={[
+                                      "w-full rounded-[18px] border px-4 py-4 text-left transition-all",
+                                      isActive
+                                        ? "border-[#077D39] bg-[#EAF7EF] shadow-[0_0_0_1px_#077D39]"
+                                        : "border-[#E7E2DA] bg-[#F6F5F0] hover:border-[#077D39] hover:bg-[#F2FAF5]",
+                                    ].join(" ")}
+                                  >
+                                    <div className="flex items-start justify-between gap-4">
+                                      <div>
+                                        <p className="font-manrope text-[15px] font-bold text-[#1B1C19]">
+                                          {item.date
+                                            ? formatWeekDayLabel(item.date)
+                                            : `Day ${index + 1}`}
+                                        </p>
+
+                                        <p className="mt-1 font-manrope text-[13px] leading-5 text-[#727973]">
+                                          {hasSelectedTimeSlot
+                                            ? item.timeSlots
+                                                .map(formatTimeLabel)
+                                                .join(", ")
+                                            : "Click to select time slots"}
+                                        </p>
+                                      </div>
+
+                                      <span
+                                        className={[
+                                          "rounded-full px-3 py-1 font-manrope text-[11px] font-bold",
+                                          hasSelectedTimeSlot
+                                            ? "bg-[#077D39] text-white"
+                                            : "bg-white text-[#416352]",
+                                        ].join(" ")}
+                                      >
+                                        {hasSelectedTimeSlot
+                                          ? "Selected"
+                                          : "Select"}
+                                      </span>
+                                    </div>
+                                  </button>
+                                );
+                              })
+                            ) : (
+                              <p className="font-manrope text-[14px] font-medium leading-6 text-[#727973]">
+                                Select a week from the calendar first.
+                              </p>
+                            )}
+                          </div>
+                        </DialogContent>
+                      </Dialog>
 
                       <TimeSlotDialog
                         open={timeSlotDialogDayIndex !== null}
