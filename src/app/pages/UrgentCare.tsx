@@ -39,7 +39,7 @@ function Banner() {
           {/* ── Left column ── */}
           <div className="flex flex-col">
             {/* Headline */}
-            <h1 className="font-bold text-[44px] sm:text-[60px] relative z-50 lg:text-[76px] tracking-[-2px] lg:tracking-[-3px] font-founders text-[#006838] leading-none lg:text-left text-center">
+            <h1 className="font-bold text-[40px] sm:text-[60px] relative z-50 lg:text-[76px] tracking-[-2px] lg:tracking-[-3px] font-founders text-[#006838] leading-none lg:text-left text-center">
               <span className="text-[#ED1C24]">Urgent</span> Vet Care
             </h1>
             <h3 className="font-medium lg:text-left text-center text-[36px] sm:text-[48px] lg:text-[60px] text-[#204E1C] font-founders leading-[108%]">
