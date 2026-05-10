@@ -30,24 +30,40 @@ function CareHighlights() {
     },
   ];
   return (
-    <section className="w-full max-w-[760px] rounded-[22px] border-2 border-[#FFFFFF94] bg-[#EDF9EC66] p-4 backdrop-blur-xl supports-[backdrop-filter]:bg-[#EDF9EC66]">
-      <div className="grid grid-cols-1 gap-3 sm:grid-cols-3">
+    <div className="relative">
+        <section className="w-full lg:max-w-[760px]  rounded-[22px] border-2 border-[#FFFFFF94] bg-[#D5F7D366]  p-4 backdrop-blur-xl supports-[backdrop-filter]:bg-[#D5F7D366] lg:rotate-0 -rotate-2">
+      <div className="grid  gap-3 grid-cols-3">
         {CARE_HIGHLIGHTS.map(({ icon: Icon, label }) => (
           <div
             key={label}
-            className="flex  py-1 items-center gap-3 rounded-full border border-white/35 bg-[#FFFFFF73] px-5 text-[#173F35] shadow-[inset_0_1px_0_rgba(255,255,255,0.35)] backdrop-blur-md whitespace-nowrap"
+            className="flex  py-1 px-1 items-center lg:w-full w-fit  gap-3 rounded-full border border-white/35 bg-[#FFFFFF73] lg:px-5 text-[#173F35] shadow-[inset_0_1px_0_rgba(255,255,255,0.35)] backdrop-blur-md whitespace-nowrap"
           >
             <Icon
               className="h-[17px] w-[17px] shrink-0 text-[#173F35]"
               strokeWidth={2.1}
             />
-            <p className="text-base font-semibold manrope font-medium tracking-[-0.02em] md:text-[16px]">
+            <p className="text-xs manrope font-medium tracking-[-0.02em] md:text-[16px]">
               {label}
             </p>
           </div>
         ))}
       </div>
+        
     </section>
+     <div className="flex justify-between">
+            <div>
+            <img src={images.cartoonCat} alt="" className="w-[150px] -mb-10 " />
+      
+            </div>
+            <div className="-mr-10">
+            <img src={images.dogHead} alt="" className="w-[250px] " />
+      
+            </div>
+      
+      
+          </div>
+    </div>
+  
   );
 }
 
@@ -869,7 +885,7 @@ const ServicesDentalCare = () => {
         title={
           <>
             Dental Care That Supports <br className="hidden lg:block" />
-            <span className="text-[#204E1C]">Long-Term Vitality</span>
+            <span className="text-[#204E1C]  bold">Long-Term Vitality</span>
           </>
         }
         description="Beyond a bright smile, oral health is a vital window into your
@@ -879,7 +895,7 @@ San Antonio sanctuary."
         secondaryActionLabel="Call Now"
         phoneTrackingLocation="dental_care_page"
         visual={
-          <div className="relative mr-[0rem] mt-[3rem]">
+          <div className="relative mr-[0rem] mt-[3rem] sm:block hidden">
             <img
               src={images.dentalCareBg}
               alt="Dental Care banner"

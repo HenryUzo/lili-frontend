@@ -182,18 +182,7 @@ function CareHighlights() {
           ))}
         </div>
       </section>
-      {/* <div className="flex justify-between">
-      <div>
-      <img src={images.cartoonCat} alt="" className="w-[150px] -mb-10 " />
-
-      </div>
-      <div className="-mr-10">
-      <img src={images.dogHead} alt="" className="w-[250px] " />
-
-      </div>
-
-
-    </div> */}
+   
 
       <img src={images.sheild} alt="" className="w-[60px] absolute bottom-0 -left-6  " />
 
