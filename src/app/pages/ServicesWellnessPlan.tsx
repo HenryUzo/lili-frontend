@@ -141,11 +141,11 @@ export function Banner({ onViewPlans }: { onViewPlans?: () => void }) {
   return (
     <section className="relative w-full min-h-[100svh] lg:h-[94vh] bg-[#F2F7EE] overflow-hidden">
       <div className="relative z-50 px-6 md:px-16 pt-10 flex lg:flex-row flex-col">
-        <div className="lg:max-w-[562px] pb-[420px] sm:pb-[500px] lg:pb-40 flex flex-col gap-8">
-          <h1 className="font-founders font-medium md:text-[64px] text-[48px] leading-[108%] tracking-[-0.03em] text-[#006838]">
+        <div className="lg:max-w-[562px] pb-[420px] sm:pb-[500px] lg:pb-40 flex flex-col gap-8 lg:text-left  text-center">
+          <h1 className="font-founders font-medium md:text-[64px] text-[40px] leading-[108%] tracking-[-0.03em] text-[#006838]">
             Stay Ahead <br className="lg:block hidden" />{" "}
-            <span className="text-[#204E1C]">of Your Pet’s</span>{" "}
-            <span className="text-[#ED1C24]">Health</span>
+            <span className="text-[#204E1C] md:text-[64px] text-[48px] font-bold">of Your Pet’s</span>{" "}
+            <span className="text-[#ED1C24] md:text-[64px] text-[48px] font-bold">Health</span>
           </h1>
 
           <p className="font-founders text-[24px] lg:max-w-[388px] font-normal leading-[108%] tracking-[-0.03em]">
@@ -153,17 +153,18 @@ export function Banner({ onViewPlans }: { onViewPlans?: () => void }) {
             same-day care. Call ahead and we’ll guide you on the next best step.
           </p>
 
-          <div className="flex flex-wrap items-start gap-4">
+          <div className="flex flex-wrap items-start gap-4 lg:justify-start justify-center">
             <PawButton
               variant="primary"
               className="!w-fit"
               label="View Plans"
               onClick={onViewPlans}
+              buttonClassName="text-lg!"
             />
 
             <Link
               to={ROUTE.bookAppointment}
-              className="mt-0 lg:mt-5 font-founders underline text-lg font-medium text-[#006838] cursor-pointer"
+              className="mt-0 lg:mt-4 font-founders underline text-lg font-medium text-[#006838] cursor-pointer"
             >
               Book Wellness Visit
             </Link>
