@@ -35,7 +35,7 @@ export default function ReusableCarousel({
   return (
     <div className={`w-full ${className}`}>
       <div
-        className={`mx-auto mb-4 flex w-full ${maxWidthClassName} items-center justify-end gap-3`}
+        className={`mx-auto mb-4 flex w-full ${maxWidthClassName} items-center justify-center gap-10`}
       >
         <button
           type="button"
