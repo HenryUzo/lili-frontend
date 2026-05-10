@@ -78,7 +78,9 @@ function handleTrackedExternalLinkClick(
   if (!href.startsWith("http")) return;
 
   event.preventDefault();
-  window.open(href, "_blank", "noopener,noreferrer");
+  window.setTimeout(() => {
+    window.open(href, "_blank", "noopener,noreferrer");
+  }, 150);
 }
 
 const SectionTitle = ({ children }: { children: React.ReactNode }) => (
