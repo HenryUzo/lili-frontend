@@ -79,6 +79,11 @@ function Banner() {
                 alt=""
                 className="absolute lg:hidden -right-6 -top-20 z-20  w-[140px]"
               />
+                 <img
+                src={images.sirenLight}
+                alt=""
+                className="absolute lg:hidden -right-6 -top-20 z-20  w-[140px]"
+              />
               <img
                 src={images.loveSticker}
                 alt=""
