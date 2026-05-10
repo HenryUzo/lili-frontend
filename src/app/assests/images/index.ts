@@ -145,7 +145,9 @@ import catPaw from "./cat-paw.png"
 import dogPaw from "./dog-paw.png" 
 import sirenLight from "./siren-light.png"
 import calender from "./calender.png"
+import handFromDoctor from "./hand-doctor-holding-stethoscope.png"
 export default {
+  handFromDoctor,
   calender,
   dogPaw,
   sirenLight,
