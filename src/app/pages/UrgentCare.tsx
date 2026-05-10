@@ -251,7 +251,7 @@ function WhenToSeekUrgentCare() {
 
         {/* mobile carousel */}
         <div className="w-full lg:hidden">
-          <div className="mx-auto mb-4 flex w-full max-w-sm items-center justify-end gap-3">
+          <div className="mx-auto mb-4 flex w-full max-w-sm items-center justify-center gap-6">
             <button
               type="button"
               onClick={() => scrollMobileCards("prev")}
