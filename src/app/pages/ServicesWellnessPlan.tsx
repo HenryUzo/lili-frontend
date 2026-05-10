@@ -117,29 +117,46 @@ const adultSectionC = {
 };
 function CareHighlights() {
   return (
-    <section className="w-full max-w-[760px] rounded-[22px] border-2 border-[#FFFFFF94] bg-[#EDF9EC66]  p-4  backdrop-blur-xl supports-[backdrop-filter]:bg-[#EDF9EC66]">
-      <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
+    <div className="relative">
+      <img src={images.calender} alt="calender" className="relative sm:hidden block -mb-10 z-20" />
+
+      <img
+                      src={images.dogPaw}
+                      alt=""
+                      className="absolute lg:hidden -right-6 -top-20 z-20  w-[140px]"
+                    />
+                     
+                    
+                     <img
+                      src={images.catPaw}
+                      alt=""
+                      className="absolute lg:hidden  -left-10 -bottom-40 z-20 w-[140px]"
+                    />
+      <section className="w-full max-w-[760px] rounded-[22px] border-2 border-[#FFFFFF94] bg-[#D5F7D366]  p-4  backdrop-blur-xl supports-[backdrop-filter]:bg-[#D5F7D366] lg:rotate-0 -rotate-6">
+      <div className="grid  grid-cols-2 gap-3 sm:grid-cols-2">
         {features.map(({ icon: Icon, label }) => (
           <div
             key={label}
-            className="flex min-h-[56px] items-center gap-3 rounded-full border border-white/35 bg-white/25 px-5 text-[#173F35] shadow-[inset_0_1px_0_rgba(255,255,255,0.35)] backdrop-blur-md"
+            className="flex lg:min-h-[56px] items-center gap-3 rounded-full border border-white/35 bg-white/25 lg:px-5 py-2 text-[#173F35] shadow-[inset_0_1px_0_rgba(255,255,255,0.35)] backdrop-blur-md"
           >
             <Icon
               className="h-[17px] w-[17px] shrink-0 text-[#173F35]"
               strokeWidth={2.1}
             />
-            <p className="text-[15px] font-medium tracking-[-0.02em] md:text-[16px]">
+            <p className="text-xs font-medium tracking-[-0.02em] md:text-[16px]">
               {label}
             </p>
           </div>
         ))}
       </div>
     </section>
+    </div>
+    
   );
 }
 export function Banner({ onViewPlans }: { onViewPlans?: () => void }) {
   return (
-    <section className="relative w-full min-h-[100svh] lg:h-[94vh] bg-[#F2F7EE] overflow-hidden">
+    <section className="relative w-full lg:min-h-[100svh] lg:h-[94vh] bg-[#F2F7EE] overflow-hidden">
       <div className="relative z-50 px-6 md:px-16 pt-10 flex lg:flex-row flex-col">
         <div className="lg:max-w-[562px] pb-[420px] sm:pb-[500px] lg:pb-40 flex flex-col gap-8 lg:text-left  text-center">
           <h1 className="font-founders font-medium md:text-[64px] text-[40px] leading-[108%] tracking-[-0.03em] text-[#006838]">
@@ -174,7 +191,7 @@ export function Banner({ onViewPlans }: { onViewPlans?: () => void }) {
         </div>
       </div>
 
-      <div className="pointer-events-none absolute bottom-0 left-1/2 z-20 w-[115%] max-w-[760px] -translate-x-1/2 lg:left-auto lg:right-[-2rem] lg:w-[58%] lg:max-w-none lg:translate-x-0">
+      <div className="pointer-events-none absolute bottom-0 left-1/2 z-20 w-[115%] max-w-[760px] -translate-x-1/2 lg:left-auto lg:right-[-2rem] lg:w-[58%] lg:max-w-none lg:translate-x-0  sm:block hidden">
         <img
           src={images.servicesBg}
           alt=""
