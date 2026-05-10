@@ -82,7 +82,7 @@ function Banner() {
                  <img
                 src={images.sirenLight}
                 alt=""
-                className="absolute lg:hidden -right-6 -top-20 z-20  w-[140px]"
+                className="absolute lg:hidden -right-6 -bottom-20  z-20  w-[120px]"
               />
               <img
                 src={images.loveSticker}
