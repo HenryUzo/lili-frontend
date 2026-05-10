@@ -100,7 +100,7 @@ function Banner() {
                     {glassText.map((item, i) => (
                       <li
                         key={i}
-                        className="flex items-center text-sm sm:text-lg font-medium text-[#204E1C]"
+                        className="flex items-center text-xs sm:text-lg font-medium text-[#204E1C]"
                       >
                         {item}
                       </li>
