@@ -1,5 +1,4 @@
 import React, { useEffect, useLayoutEffect, useRef, useState } from "react";
-import { DotLottieReact } from "@lottiefiles/dotlottie-react";
 import { gsap } from "gsap";
 import {
   NavLink as RouterNavLink,
@@ -9,6 +8,7 @@ import {
 import images from "../../assests/images";
 import PhoneCallDialog from "../../reuseable-components/call-modal";
 import { ROUTE } from "../../../router";
+import { trackCallClick } from "../../../lib/analytics";
 
 export type NavbarPhase = "navIntro" | "ready";
 
@@ -18,11 +18,7 @@ type NavbarProps = {
 };
 
 type AnimatedLogoProps = {
-  src?: string;
   className?: string;
-  autoplay?: boolean;
-  loop?: boolean;
-  speed?: number;
 };
 
 type NavItem = {
@@ -77,20 +73,15 @@ function getNavbarBg(pathname: string) {
 }
 
 const AnimatedLogo = ({
-  src = "/logo.lottie",
   className = "w-[82.4px] h-[68.73px]",
-  autoplay = true,
-  loop = true,
-  speed = 1,
 }: AnimatedLogoProps) => {
   return (
     <div className={`relative shrink-0 ${className}`}>
-      <DotLottieReact
-        src={src}
-        autoplay={autoplay}
-        loop={loop}
-        speed={speed}
-        className="h-full w-full"
+      <img
+        src={images.logo}
+        alt="LiliVet logo"
+        className="block h-full w-full object-contain"
+        draggable={false}
       />
     </div>
   );
@@ -430,6 +421,7 @@ function CallNow({ full = false }: { full?: boolean }) {
   return (
     <a
       href="tel:(210) 257-8496"
+      onClick={() => trackCallClick("header")}
       className={`flex shrink-0 items-center justify-center overflow-hidden rounded-[36px] bg-[rgba(255,255,255,0.84)] p-[16px] transition-colors hover:bg-white ${
         full ? "w-full" : ""
       }`}
@@ -792,6 +784,7 @@ export default function Navbar({
 
             <BookAppointment />
             <PhoneCallDialog
+              location="header"
               trigger={
                 <button
                   type="button"
@@ -971,13 +964,7 @@ export default function Navbar({
               ref={navIntroLogoRef}
               className="pointer-events-none relative h-[184px] w-[220px] md:h-[234px] md:w-[280px] lg:h-[267px] lg:w-[320px]"
             >
-              <AnimatedLogo
-                src="/logo.lottie"
-                className="h-full w-full"
-                autoplay
-                loop
-                speed={0.55}
-              />
+              <AnimatedLogo className="h-full w-full" />
             </div>
 
             <div

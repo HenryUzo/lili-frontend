@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useRef, useState } from "react";
+import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import {
   AlertCircle,
   ArrowLeft,
@@ -14,7 +14,9 @@ import {
 
 import images from "../../assests/images";
 import InertiaHover from "../../reuseable-components/inertia-hover";
+import PhoneCallDialog from "../../reuseable-components/call-modal";
 import PhonePanel from "../../reuseable-components/phone-panel";
+import { trackAppointmentSubmitted } from "../../../lib/analytics";
 
 import {
   useAppointmentDraft,
@@ -539,7 +541,7 @@ function getTotalSelectedSlots(selections: PreferredSelection[]) {
 
 export function AppointmentRequestSection({}: AppointmentRequestSectionProps) {
   const draftSession = getAppointmentDraftSession();
-  const sessionToken = draftSession.sessionToken;
+  const [sessionToken, setSessionToken] = useState(draftSession.sessionToken);
 
   const [submitted, setSubmitted] = useState(false);
   const [submissionError, setSubmissionError] = useState("");
@@ -603,6 +605,7 @@ export function AppointmentRequestSection({}: AppointmentRequestSectionProps) {
 
   const formCardRef = useRef<HTMLFormElement | null>(null);
   const hasMountedRef = useRef(false);
+  const draftCreationPromiseRef = useRef<Promise<string> | null>(null);
 
   const { mutateAsync: createSessionAsync, isPending: isCreatingSession } =
     useCreateAppointmentDraft();
@@ -629,6 +632,51 @@ export function AppointmentRequestSection({}: AppointmentRequestSectionProps) {
   } = useAppointmentDraft(sessionToken);
 
   const highlightedWeekStart = hoveredWeekStart || selectedWeekStart;
+
+  const ensureDraftSession = useCallback(
+    async (surfaceErrors = true) => {
+      const storedSessionToken = getAppointmentDraftSession().sessionToken;
+
+      if (storedSessionToken) {
+        if (storedSessionToken !== sessionToken) {
+          setSessionToken(storedSessionToken);
+        }
+
+        return storedSessionToken;
+      }
+
+      if (!draftCreationPromiseRef.current) {
+        draftCreationPromiseRef.current = createSessionAsync()
+          .then((draft) => {
+            setSessionToken(draft.sessionToken);
+            return draft.sessionToken;
+          })
+          .finally(() => {
+            draftCreationPromiseRef.current = null;
+          });
+      }
+
+      try {
+        return await draftCreationPromiseRef.current;
+      } catch (error) {
+        if (surfaceErrors) {
+          throw error;
+        }
+
+        console.error("Failed to pre-create appointment draft.", error);
+        return "";
+      }
+    },
+    [createSessionAsync, sessionToken],
+  );
+
+  useEffect(() => {
+    if (sessionToken || submitted) return;
+
+    ensureDraftSession(false).catch(() => {
+      // The first visible step still retries on demand.
+    });
+  }, [ensureDraftSession, sessionToken, submitted]);
 
   useEffect(() => {
     if (!draftPreview) return;
@@ -1001,6 +1049,14 @@ export function AppointmentRequestSection({}: AppointmentRequestSectionProps) {
       setIsSubmitting(true);
 
       await submitDraftAsync(activeSessionToken);
+      trackAppointmentSubmitted({
+        visitType: VISIT_TYPE_TO_API[values.visitType] ?? null,
+        petSpecies:
+          SPECIES_TO_API[values.species as keyof typeof SPECIES_TO_API] ?? null,
+        preferredDatesCount: getFilledPreferredSelections(
+          values.preferredSelections,
+        ).length,
+      });
 
       setSubmitted(true);
     } catch (error: any) {
@@ -1019,11 +1075,11 @@ export function AppointmentRequestSection({}: AppointmentRequestSectionProps) {
 
   const handleFirstStepSubmit = async () => {
     try {
-      let activeSessionToken = sessionToken;
+      const activeSessionToken = await ensureDraftSession();
 
       if (!activeSessionToken) {
-        const draft = await createSessionAsync();
-        activeSessionToken = draft.sessionToken;
+        setSubmissionError("Unable to start your request. Please try again.");
+        return;
       }
 
       await postStep1Async({
@@ -2294,13 +2350,18 @@ export function AppointmentRequestSection({}: AppointmentRequestSectionProps) {
 
                       <FooterActions
                         left={
-                          <button
-                            type="button"
-                            className="inline-flex items-center rounded-full bg-[#FF1820] px-7 py-4 font-manrope text-[18px] font-semibold leading-6 text-white shadow-[0_10px_24px_rgba(255,24,32,0.24)]"
-                          >
-                            <Phone className="mr-2 h-4 w-4" />
-                            Call now
-                          </button>
+                          <PhoneCallDialog
+                            location="appointment_page"
+                            trigger={
+                              <button
+                                type="button"
+                                className="inline-flex items-center rounded-full bg-[#FF1820] px-7 py-4 font-manrope text-[18px] font-semibold leading-6 text-white shadow-[0_10px_24px_rgba(255,24,32,0.24)]"
+                              >
+                                <Phone className="mr-2 h-4 w-4" />
+                                Call now
+                              </button>
+                            }
+                          />
                         }
                         right={
                           <div className="flex flex-wrap items-center gap-4">
@@ -2389,7 +2450,7 @@ export function SidebarPanel({
 }) {
   return (
     <div className="space-y-8" id="appointment-request-section">
-      <PhonePanel />
+      <PhonePanel location="appointment_page" />
 
       {showTestimonial ? (
         <div className="relative overflow-hidden rounded-[28px]">

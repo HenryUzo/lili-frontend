@@ -1,4 +1,16 @@
+import { Link } from "react-router-dom";
 import images from "../../assests/images";
+import {
+  CLINIC_PHONE_NUMBER,
+  DIRECTIONS_URL,
+  ONLINE_PHARMACY_URL,
+  REVIEW_URL,
+  trackCallClick,
+  trackDirectionsClick,
+  trackOnlinePharmacyClick,
+  trackReviewClick,
+} from "../../../lib/analytics";
+import { ROUTE } from "../../../router";
 import svgPaths from "../svgpath";
 
 const socialIcons = [
@@ -20,11 +32,54 @@ const socialIcons = [
 ];
 
 const quickActions = [
-  "Book Appointment",
-  "Call Now",
-  "Locations",
-  "Contact",
-];
+  {
+    label: "Book Appointment",
+    kind: "internal",
+    to: ROUTE.bookAppointment,
+  },
+  {
+    label: "Call Now",
+    kind: "external",
+    href: `tel:${CLINIC_PHONE_NUMBER}`,
+    onClick: () => trackCallClick("footer"),
+  },
+  {
+    label: "Locations",
+    kind: "external",
+    href: DIRECTIONS_URL,
+    onClick: () => trackDirectionsClick("footer"),
+  },
+  {
+    label: "Contact",
+    kind: "internal",
+    to: ROUTE.contact,
+  },
+  {
+    label: "Online Pharmacy",
+    kind: "external",
+    href: ONLINE_PHARMACY_URL,
+    onClick: () => trackOnlinePharmacyClick("footer"),
+  },
+  {
+    label: "Leave a Review",
+    kind: "external",
+    href: REVIEW_URL,
+    onClick: () => trackReviewClick("footer"),
+  },
+] as const;
+
+function handleTrackedExternalLinkClick(
+  event: React.MouseEvent<HTMLAnchorElement>,
+  href: string,
+  onClick?: () => void,
+) {
+  onClick?.();
+
+  if (!href.startsWith("http")) return;
+
+  event.preventDefault();
+  window.open(href, "_blank", "noopener,noreferrer");
+}
 
 const SectionTitle = ({ children }: { children: React.ReactNode }) => (
   <div className="flex flex-col justify-center text-[#012d1d] text-[14px] tracking-[0.7px] uppercase w-full font-['Test_Founders_Grotesk:Medium',sans-serif] not-italic leading-[0]">
@@ -91,9 +146,28 @@ const FooterLinks = () => (
 
     <div className="flex flex-col gap-[12px] items-start w-full">
       {quickActions.map((item) => (
-        <div key={item} className="w-full">
-          <SectionText>{item}</SectionText>
-        </div>
+        item.kind === "internal" ? (
+          <Link
+            key={item.label}
+            to={item.to}
+            className="block w-full transition hover:opacity-80"
+          >
+            <SectionText>{item.label}</SectionText>
+          </Link>
+        ) : (
+          <a
+            key={item.label}
+            href={item.href}
+            target={item.href.startsWith("http") ? "_blank" : undefined}
+            rel={item.href.startsWith("http") ? "noopener noreferrer" : undefined}
+            onClick={(event) =>
+              handleTrackedExternalLinkClick(event, item.href, item.onClick)
+            }
+            className="block w-full transition hover:opacity-80"
+          >
+            <SectionText>{item.label}</SectionText>
+          </a>
+        )
       ))}
     </div>
   </div>
@@ -103,13 +177,19 @@ const FooterLocation = () => (
   <div className="flex flex-col gap-[24px] items-start">
     <SectionTitle>Our Location</SectionTitle>
 
-    <div className="h-[160px] w-full overflow-hidden rounded-[16px] shadow-[0px_20px_40px_-10px_rgba(21,30,21,0.08)]">
+    <a
+      href={DIRECTIONS_URL}
+      target="_blank"
+      rel="noreferrer"
+      onClick={() => trackDirectionsClick("footer")}
+      className="block h-[160px] w-full overflow-hidden rounded-[16px] shadow-[0px_20px_40px_-10px_rgba(21,30,21,0.08)] transition hover:opacity-95"
+    >
       <img
         src={images.mapMoney}
         alt="Map location"
         className="w-full h-full object-cover"
       />
-    </div>
+    </a>
 
     <div className="opacity-60 w-full">
       <div className="flex flex-col font-['Manrope:Regular',sans-serif] font-normal text-[#012d1d] text-[12px]">

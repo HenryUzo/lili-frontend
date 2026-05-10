@@ -10,6 +10,7 @@ import NoteCard from "../reuseable-components/note-card";
 import WellnessPlanSection from "../../imports/Home/wellness-plan-section/WellnessPlanSection";
 import FaqSection from "../../imports/Home/faq-section/FaqSection";
 import { CatAndButterflyAlone } from "../../imports/Home/care-feature-section/CareFeatureSections";
+import { trackDirectionsClick } from "../../lib/analytics";
 import { ROUTE } from "../../router";
 import { Link, useNavigate } from "react-router";
 import InertiaHover from "../reuseable-components/inertia-hover";
@@ -432,6 +433,7 @@ function RoadMap() {
                         target="_blank"
                         rel="noreferrer"
                         href="https://www.google.com/maps/place/Lili+Veterinary+Hospital+%2B+Urgent+Care/@29.6423004,-98.4789347,15z/data=!4m6!3m5!1s0x865c89d98657135d:0x4d615151bf45d1d7!8m2!3d29.6423004!4d-98.4789347!16s%2Fg%2F11bx8rygyq?entry=ttu&g_ep=EgoyMDI2MDQwOC4wIKXMDSoASAFQAw%3D%3D"
+                        onClick={() => trackDirectionsClick("urgent_care_page")}
                         className="block font-founders text-xs font-semibold md:text-base lg:text-[20px]"
                       >
                         20210 Stone Oak Pkwy #301, San Antonio, TX 78258

@@ -8,14 +8,20 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "../components/ui/dialog";
+import {
+  CLINIC_PHONE_DISPLAY,
+  trackCallClick,
+} from "../../lib/analytics";
 
 interface PhoneCallDialogProps {
   phoneNumber?: string;
+  location?: string;
   trigger: ReactNode;
 }
 
 export default function PhoneCallDialog({
-  phoneNumber = "(210) 257-8496",
+  phoneNumber = CLINIC_PHONE_DISPLAY,
+  location = "unknown",
   trigger,
 }: PhoneCallDialogProps) {
   const telNumber = phoneNumber.replace(/[^\d+]/g, "");
@@ -71,6 +77,7 @@ export default function PhoneCallDialog({
 
           <a
             href={`tel:${telNumber}`}
+            onClick={() => trackCallClick(location)}
             className="mt-6 flex w-full items-center justify-center gap-2 rounded-full bg-[#ED1C24] px-6 py-3.5 font-manrope text-[17px] font-semibold leading-7 text-white shadow-[0_10px_24px_rgba(255,24,32,0.24)] transition-all duration-200 hover:bg-[#D9151D] active:scale-[0.98]"
           >
             <PhoneCall className="h-5 w-5" />

@@ -7,6 +7,7 @@ import type {
 import images from "../../assests/images";
 import { Sex, Species } from "../../../feature/new-registration/api";
 import { useCreateNewPatient } from "../../../feature/new-registration/hooks";
+import { trackNewPatientSubmitted } from "../../../lib/analytics";
 import { toast } from "sonner";
 
 const inputBase =
@@ -448,6 +449,10 @@ export default function RegisterPetForm() {
 
   createNewPatientMutation.mutate(payload, {
     onSuccess: () => {
+      trackNewPatientSubmitted({
+        petSpecies: form.pet.species ?? null,
+        isUrgent: form.visit.isUrgent ?? null,
+      });
       setForm(getInitialFormState());
     },
   });

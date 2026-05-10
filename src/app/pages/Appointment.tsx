@@ -38,6 +38,7 @@ const Appointment = () => {
 beloved pet. Please complete the form below to begin.`}
         primaryButtonLabel="Start your request"
         secondaryActionLabel="Emergency call"
+        phoneTrackingLocation="appointment_page"
         onPrimaryClick={handleScrollToForm}
         visual={
           <div className="relative mr-[0rem] mt-[3rem]">

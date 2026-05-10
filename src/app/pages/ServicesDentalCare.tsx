@@ -877,6 +877,7 @@ pet's overall wellbeing. We provide gentle, expert care in our
 San Antonio sanctuary."
         primaryButtonLabel="Book Appointment"
         secondaryActionLabel="Call Now"
+        phoneTrackingLocation="dental_care_page"
         visual={
           <div className="relative mr-[0rem] mt-[3rem]">
             <img
