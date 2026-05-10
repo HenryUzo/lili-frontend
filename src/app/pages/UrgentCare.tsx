@@ -74,6 +74,11 @@ function Banner() {
 
             {/* Glass card */}
             <div className="relative">
+               <img
+                src={images.dogPaw}
+                alt=""
+                className="absolute lg:hidden -right-6 -top-20 z-20  w-[140px]"
+              />
               <img
                 src={images.loveSticker}
                 alt=""
@@ -82,7 +87,7 @@ function Banner() {
                <img
                 src={images.catPaw}
                 alt=""
-                className="absolute lg:hidden  left-0 -bottom-20 z-20 w-[70px]"
+                className="absolute lg:hidden  -left-10 -bottom-40 z-20 w-[140px]"
               />
               <div className="border-[#FFFFFF94] border-2 w-full max-w-[501px] mt-5 rounded-[16px] lg:rotate-0 rotate-2  bg-[#D5F7D366] backdrop-blur-[2px] py-[19px] px-[25px]">
                 <div className="w-full bg-[#FFFFFF2E] p-4 rounded-[6px] ">

@@ -141,8 +141,13 @@ import pet404 from "./notfound.webp"
 import callHint from "./call-hint.svg"
 import whitePhone from "./white-phone.svg"
 import loveSticker from "./sticker.png"
-import catPaw from "./cat-paw.png"
+import catPaw from "./cat-paw.png" 
+import dogPaw from "./dog-paw.png" 
+
+import sirenLight from "./siren-light.png"
 export default {
+  dogPaw,
+  sirenLight,
   catPaw,
   loveSticker,
   whitePhone,
