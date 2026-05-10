@@ -163,24 +163,48 @@ const BENEFIT_CARDS: BenefitCard[] = [
 
 function CareHighlights() {
   return (
-    <section className="w-full max-w-[760px] rounded-[22px] border-2 border-[#FFFFFF94] bg-[#EDF9EC66] p-4 backdrop-blur-xl supports-[backdrop-filter]:bg-[#EDF9EC66]">
-      <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
-        {CARE_HIGHLIGHTS.map(({ icon: Icon, label }) => (
-          <div
-            key={label}
-            className="flex  py-1 items-center gap-3 rounded-full border border-white/35 bg-[#FFFFFF73] px-5 text-[#173F35] shadow-[inset_0_1px_0_rgba(255,255,255,0.35)] backdrop-blur-md whitespace-nowrap"
-          >
-            <Icon
-              className="h-[17px] w-[17px] shrink-0 text-[#173F35]"
-              strokeWidth={2.1}
-            />
-            <p className="text-base  manrope font-medium tracking-[-0.02em] md:text-[16px]">
-              {label}
-            </p>
-          </div>
-        ))}
+    <div className="relative">
+      <section className="w-fit lg:max-w-[760px] rounded-[22px] border-2 mb-20 -rotate-2 lg:rotate-0 border-[#FFFFFF94] bg-[#D5F7D366] p-4 backdrop-blur-xl supports-[backdrop-filter]:bg-[#D5F7D366]">
+        <div className="grid  gap-3 grid-cols-2">
+          {CARE_HIGHLIGHTS.map(({ icon: Icon, label }) => (
+            <div
+              key={label}
+              className="flex  py-1 w-fit items-center gap-3 rounded-full border border-white/35 bg-[#FFFFFF73] lg:px-5 px-1 text-[#173F35] shadow-[inset_0_1px_0_rgba(255,255,255,0.35)] backdrop-blur-md whitespace-nowrap"
+            >
+              <Icon
+                className="h-[17px] w-[17px] shrink-0 text-[#173F35]"
+                strokeWidth={2.1}
+              />
+              <p className="text-xs  manrope font-medium tracking-[-0.02em] md:text-[16px]">
+                {label}
+              </p>
+            </div>
+          ))}
+        </div>
+      </section>
+      {/* <div className="flex justify-between">
+      <div>
+      <img src={images.cartoonCat} alt="" className="w-[150px] -mb-10 " />
+
       </div>
-    </section>
+      <div className="-mr-10">
+      <img src={images.dogHead} alt="" className="w-[250px] " />
+
+      </div>
+
+
+    </div> */}
+
+      <img src={images.sheild} alt="" className="w-[60px] absolute bottom-0 -left-6  " />
+
+
+      <img src={images.injectionBottle} alt="" className="w-[160px] absolute bottom-0 left-20  " />
+
+        <img src={images.adorablePetFriendsDogCat} alt="adorablePetFriendsDogCat" className="w-[280px] absolute bottom-0 -right-10 " />
+   
+
+    </div>
+
   );
 }
 
@@ -390,7 +414,7 @@ const ServiceVaccination = () => {
           title={
             <>
               Vitality Through <br className="hidden lg:block" />
-              <span className="text-[#204E1C]">Protection.</span>
+              <span className="text-[#204E1C]  lg:font-medium font-bold">Protection.</span>
             </>
           }
           description="Vaccinations are the foundational safety net for your pet’s lifelong wellness ecosystem, shielding them from environmental threats."
@@ -401,7 +425,7 @@ const ServiceVaccination = () => {
           contentClassName="lg:max-w-[562px]"
           descriptionClass="lg:max-w-[525px]"
           visual={
-            <div className="relative">
+            <div className="relative sm:block hidden">
               <img
                 src={images.twoCat}
                 alt="Pet wellness banner"

@@ -423,7 +423,7 @@ function PricePlan() {
       style={{ backgroundImage: `url(${images.wellnessPlanBg})` }}
     >
       <div className="flex items-center flex-col justify-center">
-        <h1 className="heading text-[96px] text-[#1B1C19] text-center">
+        <h1 className="heading sm:text-[96px] text-[56px] text-[#1B1C19] text-center">
           Wellness Plans
         </h1>
         <p className=" max-w-[924px] my-6 text-base  manrope text-center  text-[#4C534F] leading-[26px]">

@@ -20,7 +20,7 @@ export default function ProTipCard({
       className={`relative w-full  rounded-[24px] bg-[#1B4332] ${className}`}
     >
       <div className="relative flex lg:flex-row flex-col min-h-[220px] overflow-hidden w-full items-stretch justify-between py-7 md:min-h-[252px]  md:py-8">
-        <div className="relative z-10 flex max-w-[62%]   md:px-6 px-3 sm:px-8 flex-col md:max-w-[66%]">
+        <div className="relative z-10 flex max-w-[62%]   md:px-6 px-5 sm:px-8 flex-col md:max-w-[66%]">
           <p className="manrope text-[18px] text-[#C1ECD4] font-normal leading-[28px] tracking-[0]">
             “{quote}”
           </p>

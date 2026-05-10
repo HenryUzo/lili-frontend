@@ -38,30 +38,31 @@ const ServicesBanner = ({
 }: BannerProps) => {
   return (
     <section
-      className={`relative w-full min-h-[100svh] overflow-hidden bg-[#F2F7EE] lg:h-[94vh] ${sectionClassName}`}
+      className={`relative w-full lg:min-h-[100svh] overflow-hidden bg-[#F2F7EE] lg:h-[94vh] ${sectionClassName}`}
     >
       <div className="relative z-50 flex flex-col px-6 pt-10 md:px-16 lg:flex-row lg:items-start lg:justify-between">
         <div
-          className={`flex flex-col gap-8 pb-[420px] sm:pb-[500px] lg:max-w-[562px] lg:pb-40 ${contentClassName}`}
+          className={`flex flex-col gap-8  sm:pb-[500px] lg:max-w-[562px] lg:pb-40 ${contentClassName}`}
         >
           {otherContent}
 
-          <h1 className="font-founders whitespace-normal text-5xl font-medium leading-[108%] tracking-[-0.03em] text-[#006838] md:text-[64px] lg:whitespace-nowrap">
+          <h1 className="font-founders whitespace-normal  text-[40px] lg:text-left text-center font-medium leading-[108%] tracking-[-0.03em] text-[#006838] md:text-[64px] lg:whitespace-nowrap">
             {title}
           </h1>
 
           <p
-            className={`font-founders text-lg font-normal leading-[108%] tracking-[-0.03em] lg:text-[24px] ${descriptionClass}`}
+            className={`font-founders text-lg font-normal leading-[108%] lg:text-left text-center tracking-[-0.03em] lg:text-[24px] ${descriptionClass}`}
           >
             {description}
           </p>
 
-          <div className="flex flex-wrap items-start gap-4">
+          <div className="flex flex-wrap lg:justify-start justify-center gap-10 items-start ">
             <PawButton
               variant="primary"
               className="!w-fit"
               label={primaryButtonLabel}
               onClick={onPrimaryClick}
+              buttonClassName="text-lg!"
             />
 
             {secondaryActionLabel && (
@@ -70,7 +71,7 @@ const ServicesBanner = ({
               trigger={ <Link
 
                 to={ "#"}
-                className="mt-0 cursor-pointer font-founders text-lg font-medium text-[#006838] underline lg:mt-5"
+                className="mt-1 cursor-pointer font-founders text-lg font-medium text-[#006838] underline lg:mt-4"
               >
                 {secondaryActionLabel}
               </Link>}/>:

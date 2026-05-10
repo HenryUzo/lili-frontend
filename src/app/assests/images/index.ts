@@ -146,7 +146,17 @@ import dogPaw from "./dog-paw.png"
 import sirenLight from "./siren-light.png"
 import calender from "./calender.png"
 import handFromDoctor from "./hand-doctor-holding-stethoscope.png"
+import cartoonCat from "./cartoon-cat.png"
+import dogHead from "./dog-head.png"
+import sheild from "./sheild.png"
+import injectionBottle from './injection-bottle.png'
+import adorablePetFriendsDogCat from "./adorable-pet-friends-dog-cat.png"
 export default {
+  adorablePetFriendsDogCat,
+  injectionBottle,
+  sheild,
+  dogHead,
+  cartoonCat,
   handFromDoctor,
   calender,
   dogPaw,
