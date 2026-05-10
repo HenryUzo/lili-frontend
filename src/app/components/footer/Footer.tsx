@@ -68,6 +68,19 @@ const quickActions = [
   },
 ] as const;
 
+function handleTrackedExternalLinkClick(
+  event: React.MouseEvent<HTMLAnchorElement>,
+  href: string,
+  onClick?: () => void,
+) {
+  onClick?.();
+
+  if (!href.startsWith("http")) return;
+
+  event.preventDefault();
+  window.open(href, "_blank", "noopener,noreferrer");
+}
+
 const SectionTitle = ({ children }: { children: React.ReactNode }) => (
   <div className="flex flex-col justify-center text-[#012d1d] text-[14px] tracking-[0.7px] uppercase w-full font-['Test_Founders_Grotesk:Medium',sans-serif] not-italic leading-[0]">
     <p className="leading-[20px]">{children}</p>
@@ -146,8 +159,10 @@ const FooterLinks = () => (
             key={item.label}
             href={item.href}
             target={item.href.startsWith("http") ? "_blank" : undefined}
-            rel={item.href.startsWith("http") ? "noreferrer" : undefined}
-            onClick={item.onClick}
+            rel={item.href.startsWith("http") ? "noopener noreferrer" : undefined}
+            onClick={(event) =>
+              handleTrackedExternalLinkClick(event, item.href, item.onClick)
+            }
             className="block w-full transition hover:opacity-80"
           >
             <SectionText>{item.label}</SectionText>
