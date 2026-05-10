@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useRef, useState } from "react";
+import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import {
   AlertCircle,
   ArrowLeft,
@@ -541,7 +541,7 @@ function getTotalSelectedSlots(selections: PreferredSelection[]) {
 
 export function AppointmentRequestSection({}: AppointmentRequestSectionProps) {
   const draftSession = getAppointmentDraftSession();
-  const sessionToken = draftSession.sessionToken;
+  const [sessionToken, setSessionToken] = useState(draftSession.sessionToken);
 
   const [submitted, setSubmitted] = useState(false);
   const [submissionError, setSubmissionError] = useState("");
@@ -572,6 +572,7 @@ export function AppointmentRequestSection({}: AppointmentRequestSectionProps) {
   };
   const formCardRef = useRef<HTMLFormElement | null>(null);
   const hasMountedRef = useRef(false);
+  const draftCreationPromiseRef = useRef<Promise<string> | null>(null);
 
   const { mutateAsync: createSessionAsync, isPending: isCreatingSession } =
     useCreateAppointmentDraft();
@@ -598,6 +599,51 @@ export function AppointmentRequestSection({}: AppointmentRequestSectionProps) {
   } = useAppointmentDraft(sessionToken);
 
   const highlightedWeekStart = hoveredWeekStart || selectedWeekStart;
+
+  const ensureDraftSession = useCallback(
+    async (surfaceErrors = true) => {
+      const storedSessionToken = getAppointmentDraftSession().sessionToken;
+
+      if (storedSessionToken) {
+        if (storedSessionToken !== sessionToken) {
+          setSessionToken(storedSessionToken);
+        }
+
+        return storedSessionToken;
+      }
+
+      if (!draftCreationPromiseRef.current) {
+        draftCreationPromiseRef.current = createSessionAsync()
+          .then((draft) => {
+            setSessionToken(draft.sessionToken);
+            return draft.sessionToken;
+          })
+          .finally(() => {
+            draftCreationPromiseRef.current = null;
+          });
+      }
+
+      try {
+        return await draftCreationPromiseRef.current;
+      } catch (error) {
+        if (surfaceErrors) {
+          throw error;
+        }
+
+        console.error("Failed to pre-create appointment draft.", error);
+        return "";
+      }
+    },
+    [createSessionAsync, sessionToken],
+  );
+
+  useEffect(() => {
+    if (sessionToken || submitted) return;
+
+    ensureDraftSession(false).catch(() => {
+      // The first visible step still retries on demand.
+    });
+  }, [ensureDraftSession, sessionToken, submitted]);
 
   useEffect(() => {
     if (!draftPreview) return;
@@ -985,11 +1031,11 @@ export function AppointmentRequestSection({}: AppointmentRequestSectionProps) {
 
   const handleFirstStepSubmit = async () => {
     try {
-      let activeSessionToken = sessionToken;
+      const activeSessionToken = await ensureDraftSession();
 
       if (!activeSessionToken) {
-        const draft = await createSessionAsync();
-        activeSessionToken = draft.sessionToken;
+        setSubmissionError("Unable to start your request. Please try again.");
+        return;
       }
 
       await postStep1Async({
