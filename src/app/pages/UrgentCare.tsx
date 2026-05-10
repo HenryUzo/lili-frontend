@@ -66,7 +66,7 @@ function Banner() {
               />
               <Link
                 to={ROUTE.bookAppointment}
-                className="mt-1 lg:mt-5 font-founders underline text-lg font-medium text-[#006838] cursor-pointer"
+                className="mt-1 lg:mt-4 font-founders underline text-lg font-medium text-[#006838] cursor-pointer"
               >
                 Book appointment
               </Link>
@@ -553,7 +553,7 @@ function WhatToExpect() {
 
         {/* mobile carousel */}
         <div className="mt-8 w-full md:hidden">
-          <div className="mb-4 flex items-center justify-end gap-3">
+          <div className="mb-4 flex items-center justify-center gap-6">
             <button
               type="button"
               onClick={() => scrollByCard("prev")}
@@ -600,8 +600,8 @@ function WhatToExpect() {
           ))}
         </div>
         <div className="flex flex-wrap items-start  my-16 gap-4">
-          <PawButton variant="primary" className="!w-fit" />
-          <p className="mt-0 lg:mt-5 font-founders underline text-lg font-medium text-[#006838] cursor-pointer">
+          <PawButton variant="primary" className="!w-fit"   buttonClassName="text-lg!"/>
+          <p className="mt-1 lg:mt-4 font-founders underline text-lg font-medium text-[#006838] cursor-pointer">
             Give us a call
           </p>
         </div>
