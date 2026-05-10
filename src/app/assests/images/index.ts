@@ -138,7 +138,9 @@ import loveRed from "./love-red.svg";
 import drag from "./drag-and-drop.png"
 import pawWhite from "./pawwhite.svg"
 import pet404 from "./notfound.webp"
+import callHint from "./call-hint.svg"
 export default {
+  callHint,
   pawWhite,
   drag,
   loveRed,
