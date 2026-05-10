@@ -52,11 +52,11 @@ function CareHighlights() {
     </section>
      <div className="flex justify-between">
             <div>
-            <img src={images.cartoonCat} alt="" className="w-[150px] -mb-10 " />
+            <img src={images.cartoonCat} alt="" className="w-[150px] -mb-10 sm:hidden block " />
       
             </div>
             <div className="-mr-10">
-            <img src={images.dogHead} alt="" className="w-[250px] " />
+            <img src={images.dogHead} alt="" className="w-[250px]  sm:hidden block" />
       
             </div>
       

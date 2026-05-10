@@ -127,18 +127,18 @@ function CareHighlights() {
       <img
         src={images.dogPaw}
         alt=""
-        className="absolute lg:hidden -right-6 -top-20 z-20  w-[70px]"
+        className="absolute sm:hidden block -right-6 -top-20 z-20  w-[70px]"
       />
       <img
         src={images.handFromDoctor}
         alt=""
-        className="absolute lg:hidden  -right-2 -bottom-10 z-20 w-[130px]"
+        className="absolute sm:hidden block  -right-2 -bottom-10 z-20 w-[130px]"
       />
 
       <img
         src={images.catPaw}
         alt=""
-        className="absolute lg:hidden  -left-10 -bottom-10 z-20 w-[70px]"
+        className="absolute sm:hidden block  -left-10 -bottom-10 z-20 w-[70px]"
       />
       <section className="w-full max-w-[760px] rounded-[22px] border-2 border-[#FFFFFF94] bg-[#D5F7D366]  p-4  backdrop-blur-xl supports-[backdrop-filter]:bg-[#D5F7D366] lg:rotate-0 -rotate-6">
         <div className="grid  grid-cols-2 gap-3 sm:grid-cols-2">

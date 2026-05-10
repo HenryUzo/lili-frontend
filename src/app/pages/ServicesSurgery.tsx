@@ -25,12 +25,9 @@ function CareHighlights() {
   const CARE_HIGHLIGHTS: HighlightFeature[] = [
     {
       icon: CheckCircle2,
-      label: "Preventive Care",
+      label: "Preventive Sanctuary",
     },
-    {
-      icon: PawPrint,
-      label: "Dogs & Cats",
-    },
+ 
     {
       icon: MapPinIcon,
       label: "San Antonio",
@@ -38,24 +35,39 @@ function CareHighlights() {
   ];
 
   return (
-    <section className="w-full max-w-[760px] rounded-[22px] border-2 border-[#FFFFFF94] bg-[#EDF9EC66] p-4 backdrop-blur-xl supports-[backdrop-filter]:bg-[#EDF9EC66]">
-      <div className="grid grid-cols-1 gap-3 sm:grid-cols-3">
+    <div className="relative">
+       <section className="w-full max-w-[760px] rounded-[22px] border-2 border-[#FFFFFF94] bg-[#D5F7D366] lg:rotate-0 mb-5  -rotate-2 p-4 backdrop-blur-xl supports-[backdrop-filter]:bg-[#D5F7D366]">
+      <div className="grid  gap-3 grid-cols-2">
         {CARE_HIGHLIGHTS.map(({ icon: Icon, label }) => (
           <div
             key={label}
-            className="flex  py-1 items-center gap-3 rounded-full border border-white/35 bg-[#FFFFFF73] px-5 text-[#173F35] shadow-[inset_0_1px_0_rgba(255,255,255,0.35)] backdrop-blur-md whitespace-nowrap"
+            className="flex  py-1 items-center gap-3 rounded-full border border-white/35 bg-[#FFFFFF73] px-1 text-[#173F35] shadow-[inset_0_1px_0_rgba(255,255,255,0.35)] backdrop-blur-md whitespace-nowrap"
           >
             <Icon
               className="h-[17px] w-[17px] shrink-0 text-[#173F35]"
               strokeWidth={2.1}
             />
-            <p className="text-base font-semibold manrope font-medium tracking-[-0.02em] md:text-[16px]">
+            <p className="text-xs  manrope font-medium tracking-[-0.02em] md:text-[16px]">
               {label}
             </p>
           </div>
         ))}
       </div>
     </section>
+         <div className="flex justify-between">
+                <div>
+                <img src={images.cozyCatDog} alt="" className="w-[150px] -mb-2 sm:hidden block " />
+          
+                </div>
+                <div className="absolute -right-10 -top-20 ">
+                <img src={images.maleSurgeon} alt="" className="w-[250px]  sm:hidden block" />
+          
+                </div>
+          
+          
+              </div>
+    </div>
+   
   );
 }
 const JOURNEY_STEPS: JourneyStep[] = [
@@ -160,10 +172,10 @@ function SurgeryRecommendationSection() {
       <div className="mx-auto max-w-[1320px]">
         <div className="grid grid-cols-1 gap-8 lg:grid-cols-[1.15fr_0.85fr] lg:items-start">
           <div className="max-w-[760px]">
-            <p className="font-manrope text-[10px] mb-5 font-bold uppercase tracking-[2.4px] text-[#FAABB0] md:text-[11px] lg:text-[12px]">
+            <p className="font-manrope text-[10px] mb-5  lg:text-left text-center font-bold uppercase tracking-[2.4px] text-[#FAABB0] md:text-[11px] lg:text-[12px]">
               Medical Expertise
             </p>
-            <h2 className="font-founders max-w-[720px] text-[40px] font-normal leading-[46px] tracking-[0] md:text-[52px] md:leading-[58px] lg:text-[64px] lg:leading-[70.4px] text-white">
+            <h2 className="font-founders  max-w-[720px] text-[40px] lg:text-left text-center font-normal leading-[46px] tracking-[0] md:text-[52px] md:leading-[58px] lg:text-[64px] lg:leading-[70.4px] text-white">
               When Surgery May
               <br />
               Be Recommended
@@ -171,7 +183,7 @@ function SurgeryRecommendationSection() {
           </div>
 
           <div className="max-w-[430px] pt-2 lg:justify-self-end lg:pt-16">
-            <p className="manrope text-[16px] pt-2 font-medium leading-[24px] tracking-[0] md:text-[17px] text-[#C8D9CF] md:leading-[26px] lg:text-[18px] lg:leading-[28px]">
+            <p className="manrope text-[16px] pt-2 font-medium leading-[24px] lg:text-left text-center tracking-[0] md:text-[17px] text-[#C8D9CF] md:leading-[26px] lg:text-[18px] lg:leading-[28px]">
               From routine prevention to emergency interventions, our surgical
               suite is equipped for every need.
             </p>
@@ -297,8 +309,8 @@ function CarefulClearApproachSection() {
 function LeftContent() {
   return (
     <div className="max-w-[960px]">
-      <h2 className="font-founders text-[38px] font-normal text-[#416352] leading-[100%] tracking-[0] md:text-[48px] lg:text-[60px] max-w-[520px]">
-        <span className="font-founders text-[38px] font-bold leading-[42px] tracking-[0] md:text-[48px] md:leading-[50px] lg:text-[60px] lg:leading-[60px]">
+      <h2 className="font-founders text-[38px] font-normal lg:text-left text-center text-[#416352] leading-[100%] tracking-[0] md:text-[48px] lg:text-[60px] max-w-[520px]">
+        <span className="font-founders text-[38px]  font-bold leading-[42px] tracking-[0] md:text-[48px] md:leading-[50px] lg:text-[60px] lg:leading-[60px]">
           A Careful,
         </span>{" "}
         Clear
@@ -308,7 +320,7 @@ function LeftContent() {
 
       <p
         
-        className="mt-8 max-w-[520px] text-[#414844] manrope text-[16px] font-medium leading-[26px] tracking-[0] md:text-[18px] md:leading-[29px] lg:text-[20px] lg:leading-[32.5px]"
+        className="mt-8 max-w-[520px] text-[#414844] manrope lg:text-left text-center text-[16px] font-medium leading-[26px] tracking-[0] md:text-[18px] md:leading-[29px] lg:text-[20px] lg:leading-[32.5px]"
       >
         Beyond clinical expertise, we believe the best surgical outcomes start
         with a pet owner who feels informed and supported.
@@ -585,7 +597,7 @@ const ServicesSurgery = () => {
          onSecondaryClick={ROUTE.contact}
                 onPrimaryClick={()=>navigate(ROUTE.bookAppointment)}
         visual={
-          <div className="relative mr-[0rem] mt-[-1rem]">
+          <div className="relative mr-[0rem] -mt-24   sm:block hidden">
             <img
               src={images.serviceSurgery}
               alt="Dental Care banner"

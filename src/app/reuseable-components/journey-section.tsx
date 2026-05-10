@@ -68,7 +68,7 @@ export default function DiagnosticJourneySection({
             {steps.map((step) => (
               <div
                 key={`${step.number}-${step.title}`}
-                className={`flex flex-col gap-5 ${cardClassName}`}
+                className={`flex flex-col lg:items-start lg:justify-start items-center justify-center gap-5 ${cardClassName}`}
               >
                 <div
                   className={`relative z-10 flex h-20 w-20 items-center justify-center rounded-full bg-[#FBF9F4] shadow-lg ${circleClassName}`}
@@ -80,13 +80,13 @@ export default function DiagnosticJourneySection({
 
                 <div className="flex flex-col gap-2 pt-2">
                   <h3
-                    className={`font-founders text-[20px] font-medium leading-[28px] text-white md:text-[22px] md:leading-[30px] lg:leading-[32px] ${stepTitleClassName}`}
+                    className={`font-founders text-[20px] lg:text-start text-center font-medium leading-[28px] text-white md:text-[22px] md:leading-[30px] lg:leading-[32px] ${stepTitleClassName}`}
                   >
                     {step.title}
                   </h3>
 
                   <p
-                    className={`font-manrope text-[16px] font-medium leading-[24px] text-[#C6EBD5B2] md:text-[17px] md:leading-[26px] lg:text-[18px] lg:leading-[29px] ${stepDescriptionClassName}`}
+                    className={`font-manrope text-[16px] lg:text-start text-center font-medium leading-[24px] text-[#C6EBD5B2] md:text-[17px] md:leading-[26px] lg:text-[18px] lg:leading-[29px] ${stepDescriptionClassName}`}
                   >
                     {step.description}
                   </p>

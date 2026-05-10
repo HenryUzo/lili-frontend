@@ -151,7 +151,11 @@ import dogHead from "./dog-head.png"
 import sheild from "./sheild.png"
 import injectionBottle from './injection-bottle.png'
 import adorablePetFriendsDogCat from "./adorable-pet-friends-dog-cat.png"
+import cozyCatDog from "./cozy-cat-dog.png"
+import maleSurgeon from "./male-surgeon.png"
 export default {
+  maleSurgeon,
+  cozyCatDog,
   adorablePetFriendsDogCat,
   injectionBottle,
   sheild,

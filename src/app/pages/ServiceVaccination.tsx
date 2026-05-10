@@ -184,12 +184,12 @@ function CareHighlights() {
       </section>
    
 
-      <img src={images.sheild} alt="" className="w-[60px] absolute bottom-0 -left-6  " />
+      <img src={images.sheild} alt="" className="w-[60px] absolute bottom-0 -left-6 sm:hidden block  " />
 
 
-      <img src={images.injectionBottle} alt="" className="w-[160px] absolute bottom-0 left-20  " />
+      <img src={images.injectionBottle} alt="" className="w-[160px] absolute bottom-0 left-20 sm:hidden block   " />
 
-        <img src={images.adorablePetFriendsDogCat} alt="adorablePetFriendsDogCat" className="w-[280px] absolute bottom-0 -right-10 " />
+        <img src={images.adorablePetFriendsDogCat} alt="adorablePetFriendsDogCat" className="w-[280px] absolute bottom-0 -right-10 sm:hidden block " />
    
 
     </div>

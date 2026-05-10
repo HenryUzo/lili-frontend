@@ -40,7 +40,7 @@ const ServicesBanner = ({
     <section
       className={`relative w-full lg:min-h-[100svh] overflow-hidden bg-[#F2F7EE] lg:h-[94vh] ${sectionClassName}`}
     >
-      <div className="relative z-50 flex flex-col px-6  md:px-16 lg:flex-row lg:items-start lg:justify-between">
+      <div className="relative z-50 flex flex-col px-6 lg:pt-10 md:px-16 lg:flex-row lg:items-start lg:justify-between">
         <div
           className={`flex flex-col gap-8  sm:pb-[500px] lg:max-w-[562px] lg:pb-40 ${contentClassName}`}
         >
