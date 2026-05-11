@@ -7,6 +7,7 @@ import InertiaHover from "../reuseable-components/inertia-hover";
 import Seo from "../components/seo/Seo";
 import { ROUTE } from "../../router";
 import TeamCard from "../reuseable-components/team-card";
+import { PhoneIcon } from "../../imports/Home/banner-section/BannerSection";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -395,20 +396,63 @@ export function About() {
           <img src={images?.team} alt="" className="w-full scale-120 md:block hidden  h-auto" />
 
         </section>
-        <section className="bg-[#f2f7ee]  w-full">
-          <img src={images?.teamUp} alt="" className="w-full scale-150 md:hidden block  h-auto" />
+        <section className="bg-[#f2f7ee]  w-full relative md:hidden block">
+          <img src={images?.teamUp} alt="" className="w-full scale-150   h-auto" />
 
+        <div className="absolute top-3/4 left-1/2 -translate-x-1/2 -translate-y-3/4 flex justify-center flex-col items-center">
+          <div className="bg-[#FFFFFF] px-6 py-2 rounded-t-[16px] w-fit flex items-center gap-2 justify-center">
+            <img src={images.callHint} alt="" />{" "}
+            <span
+              className="
+           font-manrope
+    font-bold
+    text-[10px]
+    leading-[15px]
+    tracking-[2px]
+    uppercase text-[#62181899]"
+            >
+              For Emergency and enquires
+            </span>
+          </div>
+          <a
+            href="tel:(210) 257-8496"
+            className="
+        relative
+        overflow-hidden
+        inline-flex
+        items-center
+        justify-center
+        bg-[#ED1C24]/70
+        backdrop-blur-m
+        border border-[#D2161E]
+        text-white
+        font-semibold
+        px-8 py-4
+        rounded-full
+
+        shadow-lg
+
+        transition-all
+        duration-300
+
+        hover:bg-[#ED1C24]/80
+       
+gap-4
+        min-w-[320px]
+      "
+          >
+            <PhoneIcon /> <span>Call Now</span>
+          </a>
+        </div>
         </section>
 
         {/* Approach */}
         <section className="w-full bg-[#F5F3EE]">
           <div className="max-w-[999px] mx-auto flex justify-center items-center flex-col py-10 gap-6 md:gap-10 px-4 md:px-6">
             <h2 className="text-[10px] manrope">OUR APPROACH</h2>
-            <img
-              src={images.ccce}
-              alt=""
-              className="w-full max-w-[600px] h-auto"
-            />
+           
+            <h2 className="font-normal lg:text-[96px]  text-[46px] lg:leading-[95px] tracking-[-0.16px] text-center align-middle font-queen text-[#416352] py-8">Clarity, Compassion, and Clinical
+Excellence.</h2>
             <div className="flex flex-col md:flex-row justify-center gap-6 md:gap-10">
               <p className="font-light text-base md:text-lg manrope text-[#414844]">
                 We believe medical excellence is only half the cure. The other
