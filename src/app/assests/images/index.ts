@@ -153,7 +153,17 @@ import injectionBottle from './injection-bottle.png'
 import adorablePetFriendsDogCat from "./adorable-pet-friends-dog-cat.png"
 import cozyCatDog from "./cozy-cat-dog.png"
 import maleSurgeon from "./male-surgeon.png"
+import microscopeD from "./microscope-d.png" 
+import damien from "./damien.png"
+import drofakorMobile from "./drofakor-mobile.png"
+import jenMobile from "./jen-mobile.png"
+import   nickmobile from "./nickmobile.png"
 export default {
+  nickmobile,
+  jenMobile,
+  drofakorMobile,
+  damien,
+  microscopeD,
   maleSurgeon,
   cozyCatDog,
   adorablePetFriendsDogCat,

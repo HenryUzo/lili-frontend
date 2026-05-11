@@ -6,6 +6,7 @@ import { InfoTiltCard } from "../reuseable-components/info-tilt-card";
 import InertiaHover from "../reuseable-components/inertia-hover";
 import Seo from "../components/seo/Seo";
 import { ROUTE } from "../../router";
+import TeamCard from "../reuseable-components/team-card";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -377,136 +378,192 @@ export function About() {
   }, []);
 
   return (
-   <>
-  <Seo
-  title="About Lili Veterinary Hospital | Trusted Pet Care in Lagos"
-  description="Learn about Lili Veterinary Hospital, our veterinary team, our approach to compassionate pet care, and our commitment to supporting healthier lives for dogs and cats in Lagos."
-  path={ROUTE.aboutUs}
-/>
-    <main className="w-full">
-      {/* Hero */}
-      <section className="flex justify-center items-center flex-col bg-[#f2f7ee] px-4 py-8 md:py-0">
-        <h2 className="text-[36px] md:text-[64px] font-medium text-[#006838] font-founders text-center">
-          Meet the Hearts of
-        </h2>
-        <img
-          src={images?.LiliVetsText}
-          alt=""
-          className="w-[240px] md:w-[400px] mb-[-3rem] md:mb-[-5rem]"
-        />
-        <img src={images?.team} alt="" className="w-full  h-auto" />
-      </section>
-
-      {/* Approach */}
-      <section className="w-full bg-[#F5F3EE]">
-        <div className="max-w-[999px] mx-auto flex justify-center items-center flex-col py-10 gap-6 md:gap-10 px-4 md:px-6">
-          <h2 className="text-[10px] manrope">OUR APPROACH</h2>
+    <>
+      <Seo
+        title="About Lili Veterinary Hospital | Trusted Pet Care in Lagos"
+        description="Learn about Lili Veterinary Hospital, our veterinary team, our approach to compassionate pet care, and our commitment to supporting healthier lives for dogs and cats in Lagos."
+        path={ROUTE.aboutUs}
+      />
+      <main className="w-full">
+        {/* Hero */}
+        <section className="flex justify-center items-center flex-col bg-[#f2f7ee] px-4 py-8 md:py-0">
+          <h2 className="text-[36px] md:text-[64px] font-medium text-[#006838] font-founders text-center">
+            Meet the Hearts of
+          </h2>
           <img
-            src={images.ccce}
+            src={images?.LiliVetsText}
             alt=""
-            className="w-full max-w-[600px] h-auto"
+            className="w-[240px] md:w-[400px] mb-[-3rem] md:mb-[-5rem]"
           />
-          <div className="flex flex-col md:flex-row justify-center gap-6 md:gap-10">
-            <p className="font-light text-base md:text-lg manrope text-[#414844]">
-              We believe medical excellence is only half the cure. The other
-              half is communication. We bridge the gap between technical
-              diagnoses and your daily life with your pet, ensuring you feel
-              empowered in every decision.
-            </p>
-            <p className="font-light text-base md:text-lg manrope text-[#414844]">
-              Whether it&apos;s a routine wellness visit or a midnight urgent
-              care crisis, our team is unified by a singular focus: unhurried,
-              heartfelt support backed by high-precision veterinary science.
-            </p>
-          </div>
-        </div>
-      </section>
+          <img src={images?.team} alt="" className="w-full  h-auto" />
+        </section>
 
-      {/* Info Cards */}
-      <section className="bg-[#214A1E] w-full">
-        <div
-          ref={cardsRef}
-          className="max-w-[1300px] mx-auto min-h-[auto] md:min-h-[629px] grid grid-cols-1 md:flex gap-4 md:gap-10 justify-center py-8 md:py-10 items-center px-4 md:px-6"
-        >
-          <InertiaHover strength={2} rotation={0} resistance={100}>
-            <div className="info-card">
-              <InfoTiltCard
-                icon={images.protect}
-                title="Steady Hands"
-                description="Calm, decisive expertise when seconds matter most during urgent care."
-                rotation={-2.98}
-              />
-            </div>
-          </InertiaHover>
-
-          <InertiaHover strength={2} rotation={0} resistance={100}>
-            <div className="info-card">
-              <InfoTiltCard
-                icon={images.health}
-                title="Whole Health"
-                description="Focusing on nutrition, environment, and long-term vitality."
-                rotation={3.22}
-              />
-            </div>
-          </InertiaHover>
-
-          <InertiaHover strength={2} rotation={0} resistance={100}>
-            <div className="info-card">
-              <InfoTiltCard
-                icon={images.love}
-                title="Gentle Touch"
-                description="Every touch is intentional, designed to minimize stress and maximize comfort."
-                rotation={-1.86}
-              />
-            </div>
-          </InertiaHover>
-
-          <InertiaHover strength={2} rotation={0} resistance={100}>
-            <div className="info-card">
-              <InfoTiltCard
-                icon={images.group}
-                title="Shared Wisdom"
-                description="Collaborative decision making that respects your unique bond with your pet."
-                rotation={5.67}
-              />
-            </div>
-          </InertiaHover>
-        </div>
-      </section>
-
-      {/* Specialists */}
-      <section className="bg-[#FBF9F4]">
-        <div className="pt-10 md:pt-30">
-          <div className="flex flex-col md:flex-row items-start md:items-end justify-between max-w-[1300px] mx-auto gap-4 md:gap-0 px-4 md:px-6">
-            <div>
-              <h2 className="text-[10px] font-bold manrope uppercase text-[#95442D]">
-                THE SPECIALISTS
-              </h2>
-              <p className="text-[36px] md:text-[64px] font-medium text-[#416352] leading-[40px] md:leading-[58px] tracking-[-1.2px] font-founders">
-                Our Dedicated Experts
+        {/* Approach */}
+        <section className="w-full bg-[#F5F3EE]">
+          <div className="max-w-[999px] mx-auto flex justify-center items-center flex-col py-10 gap-6 md:gap-10 px-4 md:px-6">
+            <h2 className="text-[10px] manrope">OUR APPROACH</h2>
+            <img
+              src={images.ccce}
+              alt=""
+              className="w-full max-w-[600px] h-auto"
+            />
+            <div className="flex flex-col md:flex-row justify-center gap-6 md:gap-10">
+              <p className="font-light text-base md:text-lg manrope text-[#414844]">
+                We believe medical excellence is only half the cure. The other
+                half is communication. We bridge the gap between technical
+                diagnoses and your daily life with your pet, ensuring you feel
+                empowered in every decision.
               </p>
-            </div>
-
-            <div className="max-w-full md:max-w-[384px]">
-              <p className="text-base font-light manrope text-[#414844]">
-                The specialized team you can count on for every stage of your
-                pet&apos;s life journey.
+              <p className="font-light text-base md:text-lg manrope text-[#414844]">
+                Whether it&apos;s a routine wellness visit or a midnight urgent
+                care crisis, our team is unified by a singular focus: unhurried,
+                heartfelt support backed by high-precision veterinary science.
               </p>
             </div>
           </div>
+        </section>
 
-          <div ref={specialistsWrapRef} className="relative">
-            <div
-              ref={specialistsPinRef}
-              className="relative md:h-screen md:overflow-hidden"
-            >
-              {specialists.map((item) => (
-                <SpecialistPanel key={item.id} item={item} />
-              ))}
+        {/* Info Cards */}
+        <section className="bg-[#214A1E] w-full">
+          <div
+            ref={cardsRef}
+            className="max-w-[1300px] mx-auto min-h-[auto] md:min-h-[629px] grid grid-cols-1 md:flex gap-4 md:gap-10 justify-center py-8 md:py-10 items-center px-4 md:px-6"
+          >
+            <InertiaHover strength={2} rotation={0} resistance={100}>
+              <div className="info-card">
+                <InfoTiltCard
+                  icon={images.protect}
+                  title="Steady Hands"
+                  description="Calm, decisive expertise when seconds matter most during urgent care."
+                  rotation={-2.98}
+                />
+              </div>
+            </InertiaHover>
+
+            <InertiaHover strength={2} rotation={0} resistance={100}>
+              <div className="info-card">
+                <InfoTiltCard
+                  icon={images.health}
+                  title="Whole Health"
+                  description="Focusing on nutrition, environment, and long-term vitality."
+                  rotation={3.22}
+                />
+              </div>
+            </InertiaHover>
+
+            <InertiaHover strength={2} rotation={0} resistance={100}>
+              <div className="info-card">
+                <InfoTiltCard
+                  icon={images.love}
+                  title="Gentle Touch"
+                  description="Every touch is intentional, designed to minimize stress and maximize comfort."
+                  rotation={-1.86}
+                />
+              </div>
+            </InertiaHover>
+
+            <InertiaHover strength={2} rotation={0} resistance={100}>
+              <div className="info-card">
+                <InfoTiltCard
+                  icon={images.group}
+                  title="Shared Wisdom"
+                  description="Collaborative decision making that respects your unique bond with your pet."
+                  rotation={5.67}
+                />
+              </div>
+            </InertiaHover>
+          </div>
+        </section>
+
+        {/* Specialists */}
+        <section className="bg-[#FBF9F4] sm:block hidden">
+          <div className="pt-10 md:pt-30">
+            <div className="flex flex-col md:flex-row items-start md:items-end justify-between max-w-[1300px] mx-auto gap-4 md:gap-0 px-4 md:px-6">
+              <div>
+                <h2 className="text-[10px] font-bold manrope uppercase text-[#95442D]">
+                  THE SPECIALISTS
+                </h2>
+                <p className="text-[36px] md:text-[64px] font-medium text-[#416352] leading-[40px] md:leading-[58px] tracking-[-1.2px] font-founders">
+                  Our Dedicated Experts
+                </p>
+              </div>
+
+              <div className="max-w-full md:max-w-[384px]">
+                <p className="text-base font-light manrope text-[#414844]">
+                  The specialized team you can count on for every stage of your
+                  pet&apos;s life journey.
+                </p>
+              </div>
+            </div>
+
+            <div ref={specialistsWrapRef} className="relative">
+              <div
+                ref={specialistsPinRef}
+                className="relative md:h-screen md:overflow-hidden"
+              >
+                {specialists.map((item) => (
+                  <SpecialistPanel key={item.id} item={item} />
+                ))}
+              </div>
             </div>
           </div>
-        </div>
-      </section>
-    </main></>
+        </section>
+        <section className="px-5 space-y-4">
+           <TeamCard
+            name="Dr. Okafor"
+            role="Owner"
+            image={images.drofakorMobile}
+            // badge={badgeImage}
+            description={[
+              "Yes, pets have and feel emotions. Yes, pets no matter their age, will be our babies forever. Yes, pets are the most gentle and beautiful creatures we would ever encounter. My point of view as a veterinarian is to provide the highest quality of medical care for our furry babies from a place of compassion and love. Each pet is unique and I hope to offer optimal medical and surgical care tailored to each individual patient at each life stage. I enjoy all aspects of veterinary practice but my interests are in surgery, emergency medicine, urgent and critical care, and dermatology.",
+            ]}
+          /> 
+          <TeamCard
+            name="Damien Ivory"
+            role="Practice Manager"
+            image={images.damien}
+            // badge={badgeImage}
+            description={[
+              "Damien Ivory is a skilled Practice Manager with 26 years in veterinary medicine, combining clinical expertise with business savvy. As a Certified Veterinary Assistant (CVA) Level 3, he leads with hands-on skills, ensuring excellent patient care and operational success. He fosters a positive culture for the veterinary team and clients, earning recognition as a “Best Place to Work”. Nominated for “Practice Manager of the Year ”, Damien balances compassionate care with effective management, impacting patient outcomes and clinic success. Outside of work, he enjoys family time, personal growth, and a healthy lifestyle.",
+            ]}
+          />
+           <TeamCard
+            name="Jen Coulter"
+            role="Lead Veterinary Technician"
+            image={images.jenMobile}
+            // badge={badgeImage}
+            description={[
+              "Jen moved to Texas recently for New York with her fiancé. She currently has 4 furry family members at home: a 14-year-old grey, male kitty named Duo and 3 furry chinchillas named: Pikachu, Icarus, and Kubo. Jen is very patient and loves to teach others new things.",
+            ]}
+          />
+            <TeamCard
+            name="Nick Flores"
+            role="Lead Veterinary Technician"
+            image={images.nickFlores}
+            // badge={badgeImage}
+            description={[
+              "Nick was raised in San Antonio and have two brothers who are also veterinary technicians. He has 4 dogs named: Rocco, Rooney, Basil, and Berry. Nick has 2 cats named Nixon and Madison. As well as some reptile friends. Nick’s favorite hobbies are watching and playing soccer. His favorite team is: Chelsea F. C. Nick also enjoys thrift shopping when not helping furry friends at the hospital.",
+            ]}
+          />
+         <TeamCard
+            name="Rogina"
+            role="Lead Veterinary Technician"
+            image={images.rogina}
+            // badge={badgeImage}
+            description={[
+              "With over ten years in veterinary medicine, Rogina offers extensive knowledge and compassion in patient care. She has held various roles, including Customer Service Representative and Office Manager, with over four years in management. Rogina is committed to exceeding client expectations, ensuring every visit is filled with empathy and professionalism. Outside of work, she enjoys spending time with her pet, Charlie, and her son, Joseph, bonding over sports and TV shows. Her dedication to teamwork and care makes her a valuable asset to any veterinary team.",
+            ]}
+          />
+           <TeamCard
+            name="Kyla Totanes"
+            role="Receptionist"
+            image={images.kylaTotanes}
+            // badge={badgeImage}
+            description={[
+              "My name is Kyla Totanes! I lived in 5 different states and have now lived in San Antonio for 10 years now. I currently have 6 pets… 2 Dogs, 1 Cat, 1 Snake, 1 frog and a bird and always looking for more. (just don’t tell my husband). I’m a very upbeat and positive person and I look forward to seeing you and your furry friends.",
+            ]}
+          />
+        </section>
+      </main></>
   );
 }

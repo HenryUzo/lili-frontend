@@ -63,7 +63,7 @@ const CARE_HIGHLIGHTS: HighlightFeature[] = [
     label: "Specialized Small Animal Care",
   },
 ];
-const JOURNEY_STEPS:JourneyStep[] = [
+const JOURNEY_STEPS: JourneyStep[] = [
   {
     number: 1,
     title: "Initial Consultation",
@@ -222,24 +222,42 @@ function DesktopTilt({
 
 function CareHighlights() {
   return (
-    <section className="w-full max-w-[760px] rounded-[22px] border-2 border-[#FFFFFF94] bg-[#EDF9EC66] p-4 backdrop-blur-xl supports-[backdrop-filter]:bg-[#EDF9EC66]">
-      <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
-        {CARE_HIGHLIGHTS.map(({ icon: Icon, label }) => (
-          <div
-            key={label}
-            className="flex  py-1 items-center gap-3 rounded-full border border-white/35 bg-[#FFFFFF73] px-5 text-[#173F35] shadow-[inset_0_1px_0_rgba(255,255,255,0.35)] backdrop-blur-md whitespace-nowrap"
-          >
-            <Icon
-              className="h-[17px] w-[17px] shrink-0 text-[#173F35]"
-              strokeWidth={2.1}
-            />
-            <p className="text-base  manrope font-medium tracking-[-0.02em] md:text-[14px]">
-              {label}
-            </p>
-          </div>
-        ))}
+    <div className="relative ">
+      <section className="w-full lg:max-w-[760px] rounded-[22px] border-2 border-[#FFFFFF94] bg-[#EDF9EC66] lg:rotate-0 -rotate-2 p-4 backdrop-blur-xl supports-[backdrop-filter]:bg-[#EDF9EC66]  mb-4">
+        <div className="grid  gap-3 grid-cols-2">
+          {CARE_HIGHLIGHTS.map(({ icon: Icon, label }) => (
+            <div
+              key={label}
+              className="flex  py-1 px-2 items-center gap-3 rounded-full border border-white/35 bg-[#FFFFFF73]  text-[#173F35] shadow-[inset_0_1px_0_rgba(255,255,255,0.35)] backdrop-blur-md whitespace-nowrap"
+            >
+              <Icon
+                className="h-[17px] w-[17px] shrink-0 text-[#173F35]"
+                strokeWidth={2.1}
+              />
+              <p className="text-xs  manrope font-medium tracking-[-0.02em] md:text-[14px]">
+                {label}
+              </p>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      <div className="flex justify-between">
+        <div>
+          <img src={images.microscopeD} alt="" className="w-[100px] mb-0 sm:hidden block " />
+
+        </div>
+        <div className="absolute -right-30 -bottom-10 ">
+          
+                          <img src={images.diagnosticCareBg} alt="" className="w-[360px]  sm:hidden block" />
+          
+
+        </div>
+
+
       </div>
-    </section>
+    </div>
+
   );
 }
 
@@ -353,17 +371,17 @@ function AdvancedSuiteSection() {
       <div className="mx-auto flex max-w-[1280px] flex-col gap-10">
         <div className="flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
           <div className="flex flex-1 flex-col gap-2">
-            <p className="font-manrope text-[10px] font-bold uppercase tracking-[2.4px] text-[#FAABB0] md:text-[11px] lg:text-[12px]">
+            <p className="font-manrope text-[10px] font-bold lg:text-left text-center uppercase tracking-[2.4px] text-[#FAABB0] md:text-[11px] lg:text-[12px]">
               Medical Expertise
             </p>
-            <h2 className="font-founders text-[40px] leading-[46px] text-white md:text-[52px] md:leading-[58px] lg:text-[64px] lg:leading-[70px]">
+            <h2 className="font-founders text-[40px] lg:text-left text-center leading-[46px] text-white md:text-[52px] md:leading-[58px] lg:text-[64px] lg:leading-[70px]">
               Advanced In-House
               <br />
               Suite
             </h2>
           </div>
 
-          <p className="max-w-[360px] font-manrope text-[16px] font-medium leading-[24px] text-[#C8D9CF] md:text-[17px] md:leading-[26px] lg:text-[18px] lg:leading-[28px]">
+          <p className="max-w-[360px] font-manrope text-[16px] font-medium lg:text-left text-center  leading-[24px] text-[#C8D9CF] md:text-[17px] md:leading-[26px] lg:text-[18px] lg:leading-[28px]">
             Modern technology in the hands of experienced clinicians.
           </p>
         </div>
@@ -481,15 +499,15 @@ function FoundationSection() {
         <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-4 lg:gap-10">
           {FOUNDATION_CARDS.map((card) => (
             <InertiaHover key={card.title} rotation={0} resistance={1} strength={4}>
-               <DesktopTilt  rotation={card.rotation}>
-              <DiagnosticCard
-                icon={card.icon}
-                title={card.title}
-                description={card.description}
-              />
-            </DesktopTilt>
+              <DesktopTilt rotation={card.rotation}>
+                <DiagnosticCard
+                  icon={card.icon}
+                  title={card.title}
+                  description={card.description}
+                />
+              </DesktopTilt>
             </InertiaHover>
-           
+
           ))}
         </div>
       </div>
@@ -503,7 +521,7 @@ function CommunicationSection() {
       <div className="mx-auto flex w-full max-w-7xl flex-col items-center gap-14 lg:flex-row lg:gap-20">
         <div className="flex flex-1 flex-col gap-8 lg:max-w-[600px]">
           <div>
-            <h2 className="font-founders text-[38px] leading-[42px] text-[#214A1E] md:text-[48px] md:leading-[50px] lg:text-[60px] lg:leading-[60px]">
+            <h2 className="font-founders text-[38px] leading-[42px] text-[#214A1E] md:text-[48px] lg:text-left text-center md:leading-[50px] lg:text-[60px] lg:leading-[60px]">
               Partnership Through{" "}
               <span className="block font-bold lg:whitespace-nowrap">
                 Clear Communication
@@ -511,7 +529,7 @@ function CommunicationSection() {
             </h2>
           </div>
 
-          <p className="font-manrope text-[16px] font-medium leading-[26px] text-[#414844] md:text-[18px] md:leading-[29px] lg:text-[20px] lg:leading-[32.5px]">
+          <p className="font-manrope text-[16px] font-medium leading-[26px]  lg:text-left text-center text-[#414844] md:text-[18px] md:leading-[29px] lg:text-[20px] lg:leading-[32.5px]">
             We believe you are the most important part of your pet&apos;s
             healthcare team. We do not just run tests. We explain the medical
             logic behind every recommendation.
@@ -688,72 +706,72 @@ const ServiceDiagnosticCare = () => {
         path={ROUTE.diagnosticCare}
       />
       <main className="w-full">
-      <ServicesBanner
-        otherContent={
-          <div>
-            <span className="flex w-fit items-center gap-3 rounded-full bg-[#FFDBD1] px-3 py-1 font-manrope text-xs font-bold text-[#3B0900]">
-              <MdOutlineStars />
-              Surgical Excellence
-            </span>
-          </div>
-        }
-        title={
-          <>
-            Diagnostic Care That Brings <br className="hidden lg:block" />
-            <span className="text-[#204E1C]">Clarity to the Surface</span>
-          </>
-        }
-        description="Reducing the guesswork in your pet's health. We combine medical expertise with advanced in-house technology to find precise answers and direct paths to recovery."
-        primaryButtonLabel="Book Appointment"
-        onSecondaryClick={ROUTE.contact}
-        onPrimaryClick={()=>navigate(ROUTE.bookAppointment)}
-        secondaryActionLabel="Speak with a Vet"
-        visual={
-          <div className="relative mr-[-4rem] mt-[0rem]">
-            <img
-              src={images.diagnosticCareBg}
-              alt="Diagnostic Care banner"
-              className="lg:scale-[114%]"
-            />
-
-            <div className="absolute left-[10rem] top-[-3rem] hidden flex-col items-center lg:flex">
-              <h1 className="font-queen  max-w-[388px] text-[40px] text-center leading-[108%] tracking-[-0.03em] text-[#204E1C]">
-                "The right answer begins with the right question, and the right
-                tools."
-              </h1>
-              <img
-                src={images.urgentBentArrow}
-                alt=""
-                className="-scale-x-100 mr-[-6rem]"
-              />
+        <ServicesBanner
+          otherContent={
+            <div className="flex lg:justify-start justify-center">
+              <span className="flex w-fit items-center gap-3 rounded-full bg-[#FFDBD1] px-3 py-1 font-manrope text-xs font-bold text-[#3B0900]">
+                <MdOutlineStars />
+                Surgical Excellence
+              </span>
             </div>
-          </div>
-        }
-        highlights={<CareHighlights />}
-        contentClassName="lg:max-w-[562px]"
-        descriptionClass="lg:max-w-[525px]"
-      />
+          }
+          title={
+            <>
+              Diagnostic Care That Brings <br className="hidden lg:block" />
+              <span className="text-[#204E1C]">Clarity to the Surface</span>
+            </>
+          }
+          description="Reducing the guesswork in your pet's health. We combine medical expertise with advanced in-house technology to find precise answers and direct paths to recovery."
+          primaryButtonLabel="Book Appointment"
+          onSecondaryClick={ROUTE.contact}
+          onPrimaryClick={() => navigate(ROUTE.bookAppointment)}
+          secondaryActionLabel="Speak with a Vet"
+          visual={
+            <div className="relative  sm:block hidden mr-[-4rem] mt-[0rem]">
+              <img
+                src={images.diagnosticCareBg}
+                alt="Diagnostic Care banner"
+                className="lg:scale-[114%]"
+              />
 
-      <ProactiveCare
-        title="When Symptoms Need a Closer Look"
-        desc="Sometimes, what we see on the surface only tells part of the story. Our diagnostic suite is designed to look deeper — moving beyond guesswork to provide the medical certainty needed for effective, timely treatment plans."
-      >
-        <div />
-      </ProactiveCare>
+              <div className="absolute left-[10rem] top-[-3rem] hidden flex-col items-center lg:flex">
+                <h1 className="font-queen  max-w-[388px] text-[40px] text-center leading-[108%] tracking-[-0.03em] text-[#204E1C]">
+                  "The right answer begins with the right question, and the right
+                  tools."
+                </h1>
+                <img
+                  src={images.urgentBentArrow}
+                  alt=""
+                  className="-scale-x-100 mr-[-6rem]"
+                />
+              </div>
+            </div>
+          }
+          highlights={<CareHighlights />}
+          contentClassName="lg:max-w-[562px]"
+          descriptionClass="lg:max-w-[525px]"
+        />
 
-      <FoundationSection />
-      <AdvancedSuiteSection />
-      <DiagnosticJourneySection
-        eyebrow="Our Approach"
-        title="The Diagnostic Journey"
-        steps={JOURNEY_STEPS}
-      />
-      <CommunicationSection />
-      <FaqSection items={DIAGNOSTICS_FAQ_ITEMS} />
-      <CTABannerSection />
-    </main>
+        <ProactiveCare
+          title="When Symptoms Need a Closer Look"
+          desc="Sometimes, what we see on the surface only tells part of the story. Our diagnostic suite is designed to look deeper — moving beyond guesswork to provide the medical certainty needed for effective, timely treatment plans."
+        >
+          <div />
+        </ProactiveCare>
+
+        <FoundationSection />
+        <AdvancedSuiteSection />
+        <DiagnosticJourneySection
+          eyebrow="Our Approach"
+          title="The Diagnostic Journey"
+          steps={JOURNEY_STEPS}
+        />
+        <CommunicationSection />
+        <FaqSection items={DIAGNOSTICS_FAQ_ITEMS} />
+        <CTABannerSection />
+      </main>
     </>
-    
+
   );
 };
 
