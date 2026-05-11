@@ -508,7 +508,7 @@ export function About() {
             </div>
           </div>
         </section>
-        <section className="px-5 space-y-4">
+        <section className="px-5 space-y-4 sm:hidden block">
            <TeamCard
             name="Dr. Okafor"
             role="Owner"
