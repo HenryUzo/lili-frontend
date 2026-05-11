@@ -515,10 +515,9 @@ function getNavigationType(): PerformanceNavigationTiming["type"] | "navigate" {
 const BOOTLOADER_PATHS = new Set(Object.values(ROUTE));
 
 function shouldRunBootLoader(navType: string, pathname: string) {
-  return (
-    (navType === "navigate" || navType === "reload") &&
-    BOOTLOADER_PATHS.has(pathname)
-  );
+  void navType;
+  void pathname;
+  return false;
 }
 
 function getCriticalAssets(pathname: string) {
