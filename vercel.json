@@ -17,6 +17,11 @@
       "permanent": true
     },
     {
+      "source": "/new-client-form-1",
+      "destination": "/new-patients",
+      "permanent": true
+    },
+    {
       "source": "/request-appointment",
       "destination": "/book-appointment",
       "permanent": true
@@ -78,42 +83,42 @@
     },
     {
       "source": "/microchipping-san-antonio",
-      "destination": "/services/vaccination",
+      "destination": "/book-appointment",
       "permanent": true
     },
     {
       "source": "/nutrition-counseling",
-      "destination": "/services/diagnostic-care",
+      "destination": "/book-appointment",
       "permanent": true
     },
     {
       "source": "/internal-medicine",
-      "destination": "/services/diagnostic-care",
+      "destination": "/book-appointment",
       "permanent": true
     },
     {
       "source": "/oncology",
-      "destination": "/services/diagnostic-care",
+      "destination": "/book-appointment",
       "permanent": true
     },
     {
       "source": "/cardiology",
-      "destination": "/services/diagnostic-care",
+      "destination": "/book-appointment",
       "permanent": true
     },
     {
       "source": "/ophthalmology",
-      "destination": "/services/diagnostic-care",
+      "destination": "/book-appointment",
       "permanent": true
     },
     {
       "source": "/neurology",
-      "destination": "/services/diagnostic-care",
+      "destination": "/book-appointment",
       "permanent": true
     },
     {
       "source": "/travel-health-certificates",
-      "destination": "/services/vaccination",
+      "destination": "/book-appointment",
       "permanent": true
     },
     {
@@ -133,12 +138,12 @@
     },
     {
       "source": "/cold-laser-therapy",
-      "destination": "/services/diagnostic-care",
+      "destination": "/book-appointment",
       "permanent": true
     },
     {
       "source": "/laser-therapy",
-      "destination": "/services/diagnostic-care",
+      "destination": "/book-appointment",
       "permanent": true
     },
     {
@@ -158,7 +163,7 @@
     },
     {
       "source": "/pet-allergy-treatment-san-antonio",
-      "destination": "/services/diagnostic-care",
+      "destination": "/urgent-care",
       "permanent": true
     },
     {
