@@ -380,8 +380,8 @@ export function About() {
   return (
     <>
       <Seo
-        title="About Lili Veterinary Hospital | Trusted Pet Care in Lagos"
-        description="Learn about Lili Veterinary Hospital, our veterinary team, our approach to compassionate pet care, and our commitment to supporting healthier lives for dogs and cats in Lagos."
+        title="About Lili Veterinary Hospital | Veterinary Team in San Antonio"
+        description="Meet the team behind Lili Veterinary Hospital and learn about our compassionate approach to veterinary care for dogs and cats in San Antonio."
         path={ROUTE.aboutUs}
       />
       <main className="w-full">

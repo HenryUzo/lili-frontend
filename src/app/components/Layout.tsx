@@ -409,6 +409,8 @@ import images from "../assests/images";
 import videos from "../assests/videos";
 import ScrollToTop from "../../utils/ScrollToTop";
 import ScrollToTopButton from "./scroll-to-top-button/ScrollToTopButton";
+import SitewideStructuredData from "./seo/SitewideStructuredData";
+import { ROUTE } from "../../router";
 
 type AppPhase = "bootloading" | "navIntro" | "ready";
 
@@ -511,8 +513,13 @@ function getNavigationType(): PerformanceNavigationTiming["type"] | "navigate" {
   return navEntries[0]?.type ?? "navigate";
 }
 
-function shouldRunBootLoader(navType: string) {
-  return navType === "navigate" || navType === "reload";
+const BOOTLOADER_PATHS = new Set(Object.values(ROUTE));
+
+function shouldRunBootLoader(navType: string, pathname: string) {
+  return (
+    (navType === "navigate" || navType === "reload") &&
+    BOOTLOADER_PATHS.has(pathname)
+  );
 }
 
 function getCriticalAssets(pathname: string) {
@@ -546,7 +553,10 @@ export function Layout() {
   const initialPathnameRef = useRef(location.pathname);
   const hasBootRunRef = useRef(false);
 
-  const shouldShowBootLoader = shouldRunBootLoader(initialNavTypeRef.current);
+  const shouldShowBootLoader = shouldRunBootLoader(
+    initialNavTypeRef.current,
+    initialPathnameRef.current,
+  );
   const initialAssetsRef = useRef(
     getCriticalAssets(initialPathnameRef.current),
   );
@@ -594,6 +604,7 @@ export function Layout() {
 
   return (
     <div className="min-h-screen mx-auto w-full max-w-[1800px] bg-[#f1ffeb]">
+      <SitewideStructuredData />
       {phase === "bootloading" && <AppLoader progress={progress} />}
 
       <main className="size-full">

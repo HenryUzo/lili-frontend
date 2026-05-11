@@ -243,8 +243,8 @@ export function NewPatients() {
   return (
     <>
     <Seo
-      title="New Patients at Lili Veterinary Hospital | Personalized Pet Care in San Antonio"
-      description="Welcome to Lili Veterinary Hospital! Our new patient services in San Antonio include personalized wellness exams, preventive care, and urgent support. We treat your pets like family, ensuring a smooth transition to our compassionate care."
+      title="New Patient Form | Lili Veterinary Hospital"
+      description="New to Lili Veterinary Hospital? Complete the new patient form so our team can prepare for your pet’s first visit."
       path={ROUTE.newPatients}
     />
      <main className="w-full">

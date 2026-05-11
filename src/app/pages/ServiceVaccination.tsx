@@ -394,8 +394,8 @@ const ServiceVaccination = () => {
   return (
     <>
       <Seo
-        title="Pet Vaccination Services in Lagos | Lili Veterinary Hospital"
-        description="Protect your pet with trusted vaccination services at Lili Veterinary Hospital in Lagos. We provide routine vaccines, booster shots, preventive care guidance, and vaccination records for dogs and cats."
+        title="Pet Vaccinations in San Antonio | Lili Veterinary Hospital"
+        description="Protect your dog or cat with vaccination services from Lili Veterinary Hospital in San Antonio, including routine vaccines, boosters, and preventive care guidance."
         path={ROUTE.vaccination}
       />
       <main className="w-full">

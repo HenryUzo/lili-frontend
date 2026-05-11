@@ -701,8 +701,8 @@ const ServiceDiagnosticCare = () => {
   return (
     <>
       <Seo
-        title="Pet Diagnostic Care Services in Lagos | Lili Veterinary Hospital"
-        description="Get comprehensive diagnostic care for your pet at Lili Veterinary Hospital in Lagos. We offer advanced in-house technology and medical expertise to provide precise answers and effective treatment plans."
+        title="Pet Diagnostics in San Antonio | Lili Veterinary Hospital"
+        description="Get advanced diagnostic care for your pet at Lili Veterinary Hospital in San Antonio. We use modern technology and experienced clinical judgment to find clear answers quickly."
         path={ROUTE.diagnosticCare}
       />
       <main className="w-full">

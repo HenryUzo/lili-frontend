@@ -579,8 +579,8 @@ const ServicesSurgery = () => {
   return (
     <>
     <Seo
-      title="Expert Surgical Care for Pets in San Antonio | Lili Veterinary Hospital"
-      description="Trust Lili Veterinary Hospital in San Antonio for expert surgical care. Our experienced team provides compassionate, clear guidance and advanced pain management to ensure the best outcomes for your pet's health and recovery."
+      title="Pet Surgery in San Antonio | Lili Veterinary Hospital"
+      description="Explore surgical care for dogs and cats at Lili Veterinary Hospital in San Antonio, with clear guidance, careful monitoring, and compassionate recovery support."
       path={ROUTE.surgery}
     />
       <main className="w-full">
