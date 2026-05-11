@@ -406,7 +406,6 @@ import Navbar, { NavbarPhase } from "./navbar/Navbar";
 import Footer from "./footer/Footer";
 import AppLoader from "../AppLoader";
 import images from "../assests/images";
-import videos from "../assests/videos";
 import ScrollToTop from "../../utils/ScrollToTop";
 import ScrollToTopButton from "./scroll-to-top-button/ScrollToTopButton";
 import SitewideStructuredData from "./seo/SitewideStructuredData";
@@ -523,13 +522,8 @@ function shouldRunBootLoader(navType: string, pathname: string) {
 }
 
 function getCriticalAssets(pathname: string) {
-  const globalAssets = [
-    images.logo,
-    images.whitePawPrint,
-    videos.bigVideo,
-    images.cuteCatAndDog,
-  ];
-  const homeAssets = [images.catandDog, videos.bigVideo];
+  const globalAssets = [images.logo, images.whitePawPrint, images.cuteCatAndDog];
+  const homeAssets = [images.catandDog];
 
   const urgentCareAssets: string[] = [];
   const newPatientsAssets: string[] = [];
