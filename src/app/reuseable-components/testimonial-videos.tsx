@@ -421,7 +421,7 @@ export default function TestimonialImageStack() {
             <div
               ref={modalRef}
               onClick={(event) => event.stopPropagation()}
-              className="relative aspect-video w-full max-w-[1100px] overflow-hidden rounded-[30px] bg-black shadow-[0_30px_120px_rgba(0,0,0,0.55)]"
+              className="relative aspect-video w-full max-w-[1100px]  bg-black shadow-[0_30px_120px_rgba(0,0,0,0.55)]"
             >
               <video
                 ref={modalVideoRef}
