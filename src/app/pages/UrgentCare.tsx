@@ -615,8 +615,8 @@ export function UrgentCare() {
   return (
     <>
       <Seo
-        title="Urgent Pet Care in Lagos | Lili Veterinary Hospital"
-        description="Get prompt veterinary attention for breathing issues, vomiting, injuries, weakness, bleeding, and other urgent pet health concerns in Lagos."
+        title="Urgent Vet Care in San Antonio | Lili Veterinary Hospital"
+        description="Need urgent vet care for your dog or cat in San Antonio? Lili Veterinary Hospital provides compassionate care for non-life-threatening pet concerns."
         path={ROUTE.urgentCare}
       />
 

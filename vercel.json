@@ -2,8 +2,23 @@
   "$schema": "https://openapi.vercel.sh/vercel.json",
   "redirects": [
     {
+      "source": "/home",
+      "destination": "/",
+      "permanent": true
+    },
+    {
       "source": "/team",
       "destination": "/about-us",
+      "permanent": true
+    },
+    {
+      "source": "/new-client-form",
+      "destination": "/new-patients",
+      "permanent": true
+    },
+    {
+      "source": "/new-client-form-1",
+      "destination": "/new-patients",
       "permanent": true
     },
     {
@@ -28,6 +43,141 @@
     },
     {
       "source": "/surgery",
+      "destination": "/services/surgery",
+      "permanent": true
+    },
+    {
+      "source": "/dermatology",
+      "destination": "/services/diagnostic-care",
+      "permanent": true
+    },
+    {
+      "source": "/emergency",
+      "destination": "/urgent-care",
+      "permanent": true
+    },
+    {
+      "source": "/urgent-care-san-antonio",
+      "destination": "/urgent-care",
+      "permanent": true
+    },
+    {
+      "source": "/pet-emergency-san-antonio",
+      "destination": "/urgent-care",
+      "permanent": true
+    },
+    {
+      "source": "/dental-cleanings-san-antonio",
+      "destination": "/services/dental-care",
+      "permanent": true
+    },
+    {
+      "source": "/pet-vaccines-san-antonio",
+      "destination": "/services/vaccination",
+      "permanent": true
+    },
+    {
+      "source": "/pet-wellness-preventive-care-san-antonio",
+      "destination": "/services/wellness-plans",
+      "permanent": true
+    },
+    {
+      "source": "/microchipping-san-antonio",
+      "destination": "/book-appointment",
+      "permanent": true
+    },
+    {
+      "source": "/nutrition-counseling",
+      "destination": "/book-appointment",
+      "permanent": true
+    },
+    {
+      "source": "/internal-medicine",
+      "destination": "/book-appointment",
+      "permanent": true
+    },
+    {
+      "source": "/oncology",
+      "destination": "/book-appointment",
+      "permanent": true
+    },
+    {
+      "source": "/cardiology",
+      "destination": "/book-appointment",
+      "permanent": true
+    },
+    {
+      "source": "/ophthalmology",
+      "destination": "/book-appointment",
+      "permanent": true
+    },
+    {
+      "source": "/neurology",
+      "destination": "/book-appointment",
+      "permanent": true
+    },
+    {
+      "source": "/travel-health-certificates",
+      "destination": "/book-appointment",
+      "permanent": true
+    },
+    {
+      "source": "/helpful-links",
+      "destination": "/contact-us",
+      "permanent": true
+    },
+    {
+      "source": "/payment-options",
+      "destination": "/contact-us",
+      "permanent": true
+    },
+    {
+      "source": "/surgical-form",
+      "destination": "/book-appointment",
+      "permanent": true
+    },
+    {
+      "source": "/cold-laser-therapy",
+      "destination": "/book-appointment",
+      "permanent": true
+    },
+    {
+      "source": "/laser-therapy",
+      "destination": "/book-appointment",
+      "permanent": true
+    },
+    {
+      "source": "/wellness-pet-health-plans",
+      "destination": "/services/wellness-plans",
+      "permanent": true
+    },
+    {
+      "source": "/careers",
+      "destination": "/contact-us",
+      "permanent": true
+    },
+    {
+      "source": "/careers-form",
+      "destination": "/contact-us",
+      "permanent": true
+    },
+    {
+      "source": "/pet-allergy-treatment-san-antonio",
+      "destination": "/urgent-care",
+      "permanent": true
+    },
+    {
+      "source": "/pet-eye-surgery-san-antonio",
+      "destination": "/services/surgery",
+      "permanent": true
+    },
+    {
+      "source": "/pet-orthopedic-surgery-san-antonio",
+      "destination": "/services/surgery",
+      "permanent": true
+    },
+    {
+      "source": "/soft-tissue-surgery-san-antonio",
       "destination": "/services/surgery",
       "permanent": true
     },

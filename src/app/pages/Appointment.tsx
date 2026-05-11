@@ -21,10 +21,10 @@ const Appointment = () => {
     
     
     <Seo
-  title="Book a Vet Appointment in Lagos | Lili Veterinary Hospital"
-  description="Book a veterinary appointment at Lili Veterinary Hospital in Lagos for wellness exams, vaccinations, urgent care, dental care, diagnostics, surgery, and new patient visits."
-  path="/request-appointment"
-/>
+      title="Book a Vet Appointment | Lili Veterinary Hospital"
+      description="Request an appointment for your pet at Lili Veterinary Hospital. Choose preferred dates and times and our team will review your request."
+      path="/book-appointment"
+    />
 
   <main className="w-full">
       <ServicesBanner

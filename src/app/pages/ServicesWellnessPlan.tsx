@@ -533,8 +533,8 @@ const Services = () => {
   return (
     <>
       <Seo
-        title="Pet Wellness Plans in Lagos | Lili Veterinary Hospital"
-        description="Explore Lili Veterinary Hospital’s pet wellness plans in Lagos, designed to support preventive care, routine checkups, vaccinations, health monitoring, and long-term wellbeing for your pet."
+        title="Pet Wellness Plans in San Antonio | Lili Veterinary Hospital"
+        description="Explore Lili Veterinary Hospital’s wellness plans designed to support preventive care for dogs and cats."
         path={ROUTE.wellnessPlans}
       />
 

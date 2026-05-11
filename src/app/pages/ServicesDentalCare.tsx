@@ -876,8 +876,8 @@ const ServicesDentalCare = () => {
   return (
     <>
     <Seo
-      title="Dental Care Services in San Antonio | Comprehensive Pet Dentistry"
-      description="Discover expert dental care for your pet in San Antonio. Our comprehensive services include cleanings, exams, and advanced treatments to ensure your pet's oral health and overall wellbeing."
+      title="Pet Dental Care in San Antonio | Lili Veterinary Hospital"
+      description="Help protect your pet’s teeth, gums, and overall health with dental care from Lili Veterinary Hospital in San Antonio."
       path={ROUTE.dentalCare}
     />
      <main className="w-full">

@@ -1,48 +1,47 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-
   <url>
     <loc>https://liliveterinaryhospital.com/</loc>
-    <lastmod>2026-04-29</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>1.0</priority>
+    <lastmod>2026-05-11</lastmod>
   </url>
-
   <url>
-    <loc>https://liliveterinaryhospital.com//about-us</loc>
-    <lastmod>2026-04-29</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
+    <loc>https://liliveterinaryhospital.com/about-us</loc>
+    <lastmod>2026-05-11</lastmod>
   </url>
-
- 
-
-  <url>
-    <loc>https://liliveterinaryhospital.com/services/wellness-plans</loc>
-    <lastmod>2026-04-29</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.9</priority>
-  </url>
-
-  <url>
-    <loc>https://liliveterinaryhospital.com/urgent-care</loc>
-    <lastmod>2026-04-29</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.9</priority>
-  </url>
-
   <url>
     <loc>https://liliveterinaryhospital.com/book-appointment</loc>
-    <lastmod>2026-04-29</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.9</priority>
+    <lastmod>2026-05-11</lastmod>
   </url>
-
   <url>
     <loc>https://liliveterinaryhospital.com/contact-us</loc>
-    <lastmod>2026-04-29</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
+    <lastmod>2026-05-11</lastmod>
   </url>
-
+  <url>
+    <loc>https://liliveterinaryhospital.com/new-patients</loc>
+    <lastmod>2026-05-11</lastmod>
+  </url>
+  <url>
+    <loc>https://liliveterinaryhospital.com/urgent-care</loc>
+    <lastmod>2026-05-11</lastmod>
+  </url>
+  <url>
+    <loc>https://liliveterinaryhospital.com/services/wellness-plans</loc>
+    <lastmod>2026-05-11</lastmod>
+  </url>
+  <url>
+    <loc>https://liliveterinaryhospital.com/services/vaccination</loc>
+    <lastmod>2026-05-11</lastmod>
+  </url>
+  <url>
+    <loc>https://liliveterinaryhospital.com/services/diagnostic-care</loc>
+    <lastmod>2026-05-11</lastmod>
+  </url>
+  <url>
+    <loc>https://liliveterinaryhospital.com/services/dental-care</loc>
+    <lastmod>2026-05-11</lastmod>
+  </url>
+  <url>
+    <loc>https://liliveterinaryhospital.com/services/surgery</loc>
+    <lastmod>2026-05-11</lastmod>
+  </url>
 </urlset>

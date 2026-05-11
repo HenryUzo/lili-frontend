@@ -226,8 +226,8 @@ export default function Contact() {
   return (
     <>
       <Seo
-        title="Contact Lili Veterinary Hospital | Vet Clinic in Lagos"
-        description="Contact Lili Veterinary Hospital in Lagos to book appointments, ask questions, get directions, or speak with our team about your pet’s care."
+        title="Contact Lili Veterinary Hospital | San Antonio, TX"
+        description="Contact Lili Veterinary Hospital in San Antonio to request care, ask questions, or get directions to our clinic."
         path={ROUTE.contact}
       />
 

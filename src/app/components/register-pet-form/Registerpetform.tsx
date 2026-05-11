@@ -6,7 +6,10 @@ import type {
 } from "react";
 import images from "../../assests/images";
 import { Sex, Species } from "../../../feature/new-registration/api";
-import { useCreateNewPatient } from "../../../feature/new-registration/hooks";
+import {
+  useCreateNewPatient,
+  useUploadNewPatientFiles,
+} from "../../../feature/new-registration/hooks";
 import { trackNewPatientSubmitted } from "../../../lib/analytics";
 import { toast } from "sonner";
 
@@ -344,8 +347,10 @@ export default function RegisterPetForm() {
   const [form, setForm] = useState<FormState>(() => getInitialFormState());
 
   const createNewPatientMutation = useCreateNewPatient();
+  const uploadFilesMutation = useUploadNewPatientFiles();
 
-  const isSubmitting = createNewPatientMutation.isPending;
+  const isSubmitting =
+    createNewPatientMutation.isPending || uploadFilesMutation.isPending;
 
   const canSubmit = useMemo(() => {
     return (
@@ -401,62 +406,70 @@ export default function RegisterPetForm() {
     }));
   };
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-  e.preventDefault();
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
 
-  const weightLbs = Number(form.pet.weightLbs);
+    const weightLbs = Number(form.pet.weightLbs);
 
-  if (Number.isNaN(weightLbs) || weightLbs <= 0) {
-    toast.error("Please enter a valid pet weight.");
-    return;
-  }
+    if (Number.isNaN(weightLbs) || weightLbs <= 0) {
+      toast.error("Please enter a valid pet weight.");
+      return;
+    }
 
-  if (!form.visit.consentToElectronicComms) {
-    toast.error("Please accept the communication consent before submitting.");
-    return;
-  }
+    if (!form.visit.consentToElectronicComms) {
+      toast.error("Please accept the communication consent before submitting.");
+      return;
+    }
 
-  const payload = {
-    owner: {
-      fullName: form.owner.fullName.trim(),
-      email: form.owner.email.trim(),
-      phoneNumber: form.owner.phoneNumber.trim(),
-    },
+    try {
+      const uploadedFileIds = form.files.length
+        ? (
+            await uploadFilesMutation.mutateAsync(form.files)
+          ).map((file) => file.id)
+        : [];
 
-    visit: {
-      reasonForVisit: form.visit.reasonForVisit.trim(),
-      isUrgent: form.visit.isUrgent,
-      preferredDateTime: new Date(form.visit.preferredDateTime).toISOString(),
-      timezone: form.visit.timezone || "Africa/Lagos",
-      previousVetClinic: form.visit.previousVetClinic.trim(),
-      consentToElectronicComms: form.visit.consentToElectronicComms,
-    },
+      const payload = {
+        owner: {
+          fullName: form.owner.fullName.trim(),
+          email: form.owner.email.trim(),
+          phoneNumber: form.owner.phoneNumber.trim(),
+        },
 
-    pet: {
-      petName: form.pet.petName.trim(),
-      species: form.pet.species,
-      breed: form.pet.breed.trim(),
-      age: form.pet.age.trim(),
-      sex: form.pet.sex,
-      weightLbs,
-      spayedNeutered: form.pet.spayedNeutered,
-      currentMedications: form.pet.currentMedications.trim(),
-      existingConditions: form.pet.existingConditions.trim(),
-    },
+        visit: {
+          reasonForVisit: form.visit.reasonForVisit.trim(),
+          isUrgent: form.visit.isUrgent,
+          preferredDateTime: new Date(form.visit.preferredDateTime).toISOString(),
+          timezone: form.visit.timezone || "Africa/Lagos",
+          previousVetClinic: form.visit.previousVetClinic.trim(),
+          consentToElectronicComms: form.visit.consentToElectronicComms,
+        },
 
-    uploadedFileIds: [],
-  };
+        pet: {
+          petName: form.pet.petName.trim(),
+          species: form.pet.species,
+          breed: form.pet.breed.trim(),
+          age: form.pet.age.trim(),
+          sex: form.pet.sex,
+          weightLbs,
+          spayedNeutered: form.pet.spayedNeutered,
+          currentMedications: form.pet.currentMedications.trim(),
+          existingConditions: form.pet.existingConditions.trim(),
+        },
 
-  createNewPatientMutation.mutate(payload, {
-    onSuccess: () => {
+        uploadedFileIds,
+      };
+
+      await createNewPatientMutation.mutateAsync(payload);
+
       trackNewPatientSubmitted({
         petSpecies: form.pet.species ?? null,
         isUrgent: form.visit.isUrgent ?? null,
       });
       setForm(getInitialFormState());
-    },
-  });
-};
+    } catch {
+      // Toasts are handled by the upload and create mutations.
+    }
+  };
 
   const handleClear = () => {
     setForm(getInitialFormState());
