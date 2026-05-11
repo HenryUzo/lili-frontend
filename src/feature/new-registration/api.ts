@@ -31,7 +31,45 @@ export interface CreateNewPatientPayload {
   uploadedFileIds: string[];
 }
 
+export interface UploadedFileResponse {
+  id: string;
+  originalName: string;
+  storedName: string;
+  mimeType: string;
+  sizeBytes: number;
+  storageProvider: string;
+  storageKey: string;
+  publicUrl: string | null;
+  attachmentStatus: string;
+  expiresAt: string | null;
+  appointmentDraftId: string | null;
+  appointmentRequestId: string | null;
+  newPatientRequestId: string | null;
+  createdAt: string;
+  updatedAt: string;
+}
+
 export async function createNewPatient(payload: CreateNewPatientPayload) {
   const response = await api.post("/new-patient-requests", payload);
   return response.data;
+}
+
+export async function uploadNewPatientFiles(files: File[]) {
+  const formData = new FormData();
+
+  files.forEach((file) => {
+    formData.append("files", file);
+  });
+
+  const response = await api.post<{ files: UploadedFileResponse[] }>(
+    "/files",
+    formData,
+    {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    },
+  );
+
+  return response.data.files;
 }
