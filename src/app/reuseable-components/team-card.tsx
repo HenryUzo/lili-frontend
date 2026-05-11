@@ -18,9 +18,16 @@ export default function TeamCard({
           className="w-[320px] sm:w-[380px] md:w-[430px] object-contain"
         />
       </div>
-
+ {/* Sticker */}
+        <div className="absolute top-50 right-5 z-[10000]">
+          <img
+            src={images.happySticker}
+            alt="badge"
+            className="w-[95px] sm:w-[110px] object-contain"
+          />
+        </div>
       {/* Main Card */}
-      <div className="relative bg-[#f7f7f7] z-[10000] rounded-[18px]  shadow-[0_10px_40px_rgba(0,0,0,0.15)] border border-black/10 min-h-[660px]">
+      <div className="relative overflow-hidden bg-[#f7f7f7] z-[1000] rounded-[18px]  shadow-[0_10px_40px_rgba(0,0,0,0.15)] border border-black/10 min-h-[660px]">
         
         {/* Dotted Lines */}
         <div className="absolute inset-0">
@@ -33,17 +40,10 @@ export default function TeamCard({
           ))}
         </div>
 
-        {/* Sticker */}
-        <div className="absolute top-[-40px] right-5 z-30">
-          <img
-            src={images.happySticker}
-            alt="badge"
-            className="w-[95px] sm:w-[110px] object-contain"
-          />
-        </div>
+       
 
         {/* Content */}
-        <div className="relative z-10 px-6 sm:px-8 pt-14">
+        <div className="relative z-10 px-6 sm:px-8 pt-14  overflow-hidden">
           
           {/* Name */}
           <h2

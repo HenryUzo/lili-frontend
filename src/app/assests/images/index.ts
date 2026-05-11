@@ -158,7 +158,9 @@ import damien from "./damien.png"
 import drofakorMobile from "./drofakor-mobile.png"
 import jenMobile from "./jen-mobile.png"
 import   nickmobile from "./nickmobile.png"
+import teamUp from "./teamup.webp"
 export default {
+  teamUp,
   nickmobile,
   jenMobile,
   drofakorMobile,

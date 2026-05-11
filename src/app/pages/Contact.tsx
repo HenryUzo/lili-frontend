@@ -38,8 +38,43 @@ export default function Contact() {
       typeof window !== "undefined" &&
       window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
-    const mm = gsap.matchMedia();
+    const isMobile =
+      typeof window !== "undefined" &&
+      window.innerWidth < 1024;
 
+    const setFinal = () => {
+      gsap.set(lightOverlayRef.current, { autoAlpha: 0 });
+      gsap.set(darkOverlayRef.current, { autoAlpha: 1 });
+
+      gsap.set(introRef.current, { autoAlpha: 0 });
+
+      gsap.set(
+        [
+          finalTitleRef.current,
+          finalLineRef.current,
+          leftStackRef.current,
+          centerRef.current,
+          rightRef.current,
+        ],
+        {
+          autoAlpha: 1,
+          x: 0,
+          y: 0,
+          scale: 1,
+          scaleX: 1,
+          rotate: 0,
+          clearProps: "transform",
+        },
+      );
+    };
+
+    // MOBILE → no GSAP scroll interaction
+    if (isMobile || reduceMotion) {
+      setFinal();
+      return;
+    }
+
+    // DESKTOP ONLY
     const setInitial = () => {
       gsap.set(lightOverlayRef.current, { autoAlpha: 1 });
       gsap.set(darkOverlayRef.current, { autoAlpha: 0 });
@@ -83,251 +118,109 @@ export default function Contact() {
       });
     };
 
-    const setFinal = () => {
-      gsap.set(lightOverlayRef.current, { autoAlpha: 0 });
-      gsap.set(darkOverlayRef.current, { autoAlpha: 1 });
+    setInitial();
 
-      gsap.set(introRef.current, { autoAlpha: 0 });
+    const tl = gsap.timeline({
+      scrollTrigger: {
+        trigger: section,
+        start: "top top",
+        end: "+=180%",
+        pin: true,
+        scrub: 1,
+        anticipatePin: 1,
+      },
+    });
 
-      gsap.set(
-        [
-          finalTitleRef.current,
-          finalLineRef.current,
-          leftStackRef.current,
-          centerRef.current,
-          rightRef.current,
-        ],
+    tl.to(
+      lightOverlayRef.current,
+      {
+        autoAlpha: 0,
+        ease: "power2.out",
+        duration: 0.5,
+      },
+      0.05,
+    )
+      .to(
+        darkOverlayRef.current,
+        {
+          autoAlpha: 1,
+          ease: "power2.out",
+          duration: 0.7,
+        },
+        0.05,
+      )
+      .to(
+        introRef.current,
+        {
+          autoAlpha: 0,
+          y: -30,
+          scale: 0.96,
+          ease: "power3.out",
+          duration: 0.45,
+        },
+        0.15,
+      )
+      .to(
+        finalTitleRef.current,
+        {
+          autoAlpha: 1,
+          y: 0,
+          scale: 1,
+          ease: "power3.out",
+          duration: 0.5,
+        },
+        0.35,
+      )
+      .to(
+        finalLineRef.current,
+        {
+          autoAlpha: 1,
+          scaleX: 1,
+          ease: "power2.out",
+          duration: 0.35,
+        },
+        0.4,
+      )
+      .to(
+        leftStackRef.current,
         {
           autoAlpha: 1,
           x: 0,
           y: 0,
-          scale: 1,
-          scaleX: 1,
           rotate: 0,
-        },
-      );
-    };
-
-    mm.add("(min-width: 1024px)", () => {
-      if (reduceMotion) {
-        setFinal();
-        return;
-      }
-
-      setInitial();
-
-      const tl = gsap.timeline({
-        scrollTrigger: {
-          trigger: section,
-          start: "top top",
-          end: "+=180%",
-          pin: true,
-          scrub: 1,
-          anticipatePin: 1,
-        },
-      });
-
-      tl.to(
-        lightOverlayRef.current,
-        {
-          autoAlpha: 0,
-          ease: "power2.out",
+          ease: "back.out(1.15)",
           duration: 0.5,
         },
-        0.05,
+        0.52,
       )
-        .to(
-          darkOverlayRef.current,
-          {
-            autoAlpha: 1,
-            ease: "power2.out",
-            duration: 0.7,
-          },
-          0.05,
-        )
-        .to(
-          introRef.current,
-          {
-            autoAlpha: 0,
-            y: -30,
-            scale: 0.96,
-            ease: "power3.out",
-            duration: 0.45,
-          },
-          0.15,
-        )
-        .to(
-          finalTitleRef.current,
-          {
-            autoAlpha: 1,
-            y: 0,
-            scale: 1,
-            ease: "power3.out",
-            duration: 0.5,
-          },
-          0.35,
-        )
-        .to(
-          finalLineRef.current,
-          {
-            autoAlpha: 1,
-            scaleX: 1,
-            ease: "power2.out",
-            duration: 0.35,
-          },
-          0.4,
-        )
-        .to(
-          leftStackRef.current,
-          {
-            autoAlpha: 1,
-            x: 0,
-            y: 0,
-            rotate: 0,
-            ease: "back.out(1.15)",
-            duration: 0.5,
-          },
-          0.52,
-        )
-        .to(
-          rightRef.current,
-          {
-            autoAlpha: 1,
-            x: 0,
-            y: 0,
-            rotate: 0,
-            ease: "back.out(1.15)",
-            duration: 0.5,
-          },
-          0.58,
-        )
-        .to(
-          centerRef.current,
-          {
-            autoAlpha: 1,
-            y: 0,
-            scale: 1,
-            ease: "back.out(1.2)",
-            duration: 0.4,
-          },
-          0.62,
-        );
-
-      return () => {
-        tl.scrollTrigger?.kill();
-        tl.kill();
-      };
-    });
-
-    mm.add("(max-width: 1023px)", () => {
-      if (reduceMotion) {
-        setFinal();
-        return;
-      }
-
-      setInitial();
-
-      const tl = gsap.timeline({
-        scrollTrigger: {
-          trigger: section,
-          start: "top 72%",
-          once: true,
-        },
-      });
-
-      tl.to(
-        lightOverlayRef.current,
+      .to(
+        rightRef.current,
         {
-          autoAlpha: 0,
-          ease: "power2.out",
-          duration: 0.45,
+          autoAlpha: 1,
+          x: 0,
+          y: 0,
+          rotate: 0,
+          ease: "back.out(1.15)",
+          duration: 0.5,
         },
-        0,
+        0.58,
       )
-        .to(
-          darkOverlayRef.current,
-          {
-            autoAlpha: 1,
-            ease: "power2.out",
-            duration: 0.65,
-          },
-          0,
-        )
-        .to(
-          introRef.current,
-          {
-            autoAlpha: 0,
-            y: -24,
-            scale: 0.96,
-            ease: "power3.out",
-            duration: 0.4,
-          },
-          0.08,
-        )
-        .to(
-          finalTitleRef.current,
-          {
-            autoAlpha: 1,
-            y: 0,
-            scale: 1,
-            ease: "power3.out",
-            duration: 0.5,
-          },
-          0.18,
-        )
-        .to(
-          finalLineRef.current,
-          {
-            autoAlpha: 1,
-            scaleX: 1,
-            ease: "power2.out",
-            duration: 0.35,
-          },
-          0.22,
-        )
-        .to(
-          leftStackRef.current,
-          {
-            autoAlpha: 1,
-            x: 0,
-            y: 0,
-            rotate: 0,
-            ease: "back.out(1.1)",
-            duration: 0.5,
-          },
-          0.3,
-        )
-        .to(
-          centerRef.current,
-          {
-            autoAlpha: 1,
-            y: 0,
-            scale: 1,
-            ease: "back.out(1.12)",
-            duration: 0.4,
-          },
-          0.34,
-        )
-        .to(
-          rightRef.current,
-          {
-            autoAlpha: 1,
-            x: 0,
-            y: 0,
-            rotate: 0,
-            ease: "back.out(1.1)",
-            duration: 0.5,
-          },
-          0.32,
-        );
+      .to(
+        centerRef.current,
+        {
+          autoAlpha: 1,
+          y: 0,
+          scale: 1,
+          ease: "back.out(1.2)",
+          duration: 0.4,
+        },
+        0.62,
+      );
 
-      return () => {
-        tl.scrollTrigger?.kill();
-        tl.kill();
-      };
-    });
-
-    return () => mm.revert();
+    return () => {
+      tl.scrollTrigger?.kill();
+      tl.kill();
+    };
   }, []);
 
   return (
@@ -337,20 +230,20 @@ export default function Contact() {
         description="Contact Lili Veterinary Hospital in Lagos to book appointments, ask questions, get directions, or speak with our team about your pet’s care."
         path={ROUTE.contact}
       />
-   
+
       <section
         ref={sectionRef}
-        className="relative h-screen overflow-hidden bg-[#edf2e8] text-[#0A3B2E]"
+        className="relative min-h-screen overflow-hidden bg-[#F2F7EE] text-[#0A3B2E] lg:h-screen"
       >
         <img
           src={images.map}
           alt="Map background"
-          className="absolute inset-0 h-full w-full object-cover"
+          className="absolute inset-0 h-full w-full object-cover md:block hidden"
         />
 
         <div
           ref={lightOverlayRef}
-          className="pointer-events-none absolute inset-0 z-10"
+          className="pointer-events-none absolute inset-0 z-10 md:block hidden"
           style={{
             background:
               "linear-gradient(180deg, #F2F7EE 41.61%, rgba(242,247,238,0.24) 100%)",
@@ -359,7 +252,7 @@ export default function Contact() {
 
         <div
           ref={darkOverlayRef}
-          className="pointer-events-none absolute inset-0 z-10"
+          className="pointer-events-none absolute inset-0 md:block hidden z-10"
           style={{
             background: darkOverlayGradient,
           }}
@@ -395,9 +288,15 @@ export default function Contact() {
 
           <div className="relative z-10 flex h-full min-h-[110vh] flex-col">
             <div className="mx-auto mt-2 max-w-3xl text-center md:mt-4">
+              <div className="md:hidden block space-y-2">
+                  <h2 className="font-medium text-3xl  text-center font-founders">Reach out to us and find</h2>
+              <p className="font-normal text-6xl  text-center font-queen">Peace of Mind</p>
+              <p className="font-normal text-xl text-center font-founders">Whether it's a routine wellness visit or a sudden health concern, our compassionate team provides the guidance you and your pet deserve.</p>
+              </div>
+            
               <h3
                 ref={finalTitleRef}
-                className="font-queen text-center text-[56px] font-normal leading-[52px] tracking-[0] text-white md:text-[72px] md:leading-[68px] lg:text-[76px] lg:leading-[88px]"
+                className="font-queen text-center text-[56px] md:block hidden font-normal leading-[52px] tracking-[0] text-white md:text-[72px] md:leading-[68px] lg:text-[76px] lg:leading-[88px]"
               >
                 We’re easy to locate
               </h3>
@@ -547,7 +446,7 @@ function SocialPlatforms() {
 
 function CenterMapAction() {
   return (
-    <div className="flex flex-col items-center justify-center gap-4 py-6">
+    <div className="md:flex flex-col items-center justify-center gap-4 py-6 hidden">
       <a
         href="https://www.google.com/maps/place/Lili+Veterinary+Hospital+%2B+Urgent+Care/@29.642305,-98.4815096,739m/data=!3m2!1e3!4b1!4m6!3m5!1s0x865c89d98657135d:0x4d615151bf45d1d7!8m2!3d29.6423004!4d-98.4789347!16s%2Fg%2F11bx8rygyq?entry=ttu&g_ep=EgoyMDI2MDQxNS4wIKXMDSoASAFQAw%3D%3D"
         target="_blank"

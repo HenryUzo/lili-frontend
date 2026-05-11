@@ -56,7 +56,7 @@ const NAVBAR_BG_BY_ROUTE: Record<string, string> = {
   "/services/surgery": "#F2F7EE",
   "/new-patients": "#F2F7EE",
   "/about-us": "#F2F7EE",
-  "/contact": "#F2F7EE",
+  "/contact-us": "#F2F7EE",
 };
 
 function isServiceRoute(pathname: string) {

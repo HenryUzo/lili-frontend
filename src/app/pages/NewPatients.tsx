@@ -18,35 +18,34 @@ function NewToLiliVetHero() {
       <div className="w-full  text-white lg:h-[73vh] h-full">
         <div className="mx-auto flex lg:flex-nowrap flex-wrap gap-8 min-h-screen  justify-between ">
           <div>
-            <h1 className="  font-medium font-founders leading-[0.95] tracking-[-0.04em] text-[#007A3D] text-[28px] md:text-[30px] lg:text-[64px]">
-              <p className="block text-[#204E1C]">
-                <span className=" text-[#006838]">New to LiliVet?</span>
-                <br className="md:block hidden" /> We’re Here to Help You Get
-                Started
-              </p>
+            <h1 className="lg:text-left text-center  font-medium font-founders leading-[0.95] tracking-[-0.04em] text-[#007A3D] text-[36px] md:text-[30px] lg:text-[64px]">
+
+              <span className=" text-[#006838] lg:font-medium font-bold  ">New to LiliVet?</span>
+              <br /> We’re Here to Help You Get
+
             </h1>
 
-            <p className="mt-10 max-w-[470px] font-founders text-[20px] leading-[1.2] tracking-[-0.03em] text-[#1E1E1E] sm:text-[22px] md:text-[24px]">
+            <p className="mt-10 max-w-[470px] lg:text-left text-center font-founders text-[20px] leading-[1.2] tracking-[-0.03em] text-[#1E1E1E] sm:text-[22px] md:text-[24px]">
               Personalized routine and urgent care in San Antonio/Stone Oak. We
               treat your pets like our own scrapbook memories—with love and
               meticulous detail.
             </p>
 
             <div className="mt-14 flex lg:flex-wrap items-start lg:justify-start justify-between lg:gap-8 gap-2">
-              <PawButton variant="primary" className="!w-fit" />
+              <PawButton variant="primary" buttonClassName="text-lg!" className="!w-fit" />
               <div className="lg:mt-4 mt-1 ">
-               
-                 <PhoneCallDialog
-                             trigger={
-                               <button
-                  type="button"
-                  className="text-[18px] font-medium font-founders  text-[#008E49] underline underline-offset-4 transition hover:opacity-80"
-                >
-                  Call now
-                </button>
-                              }
-                              location="new_patients_page"
-                            />
+
+                <PhoneCallDialog
+                  trigger={
+                    <button
+                      type="button"
+                      className="text-[18px] font-medium font-founders  text-[#008E49] underline underline-offset-4 transition hover:opacity-80"
+                    >
+                      Call now
+                    </button>
+                  }
+                  location="new_patients_page"
+                />
               </div>
             </div>
           </div>
@@ -65,7 +64,7 @@ function HowItWorks() {
       style={{ backgroundImage: `url(${images.howItWork})` }}
     >
       <div className="relative z-50 flex flex-col gap-8 ">
-        <h1 className="font-queen lg:text-[72px] text-[38px] text-white">
+        <h1 className="font-queen lg:text-left text-center lg:text-[72px] text-[38px] text-white">
           How it works
         </h1>
         <div className="grid lg:grid-cols-4 md:grid-cols-2 grid-cols-1 gap-4">
@@ -112,37 +111,37 @@ function WhatToBring() {
   return (
     <section className="relative w-full px-[24px] py-10 md:px-[64px] bg-[#f2fced] min-h-[582px] flex items-center justify-center">
       <div className="flex lg:flex-nowrap flex-wrap justify-start items-center gap-20">
-       
-          <div className="relative flex items-center flex-col justify-center w-full">
-             <InertiaHover
-          strength={2}
-          rotation={0}
-          resistance={100}
-          infiniteRotate={true}
-          className="z-30 lg:absolute lg:right-[-2rem] lg:w-fit w-[100px] lg:top-0 lg:mt-[-4rem] mb-[-2rem]"
-        >
-           <img
+
+        <div className="relative flex items-center flex-col justify-center w-full">
+          <InertiaHover
+            strength={2}
+            rotation={0}
+            resistance={100}
+            infiniteRotate={true}
+            className="z-30 lg:absolute lg:right-[-2rem] lg:w-fit w-[100px] lg:top-0 lg:mt-[-4rem] mb-[-2rem]"
+          >
+            <img
               src={images.dontForget}
               alt=""
               className="w-full h-full object-contain"
             />
-        </InertiaHover>
-            <InertiaHover
-          strength={2}
-          rotation={0}
-          resistance={100}
+          </InertiaHover>
+          <InertiaHover
+            strength={2}
+            rotation={0}
+            resistance={100}
 
-        >
+          >
             <img src={images.checkList} alt="" />
 
-        </InertiaHover>
-          </div>
+          </InertiaHover>
+        </div>
 
         <div className="lg:max-w-[576px]    ">
-          <h2 className="lg:text-[48px] text-[31px]  font-medium font-founders leading-[60px]">
+          <h2 className="lg:text-[48px] text-[31px] lg:text-left text-center  font-medium font-founders  lg:leading-[60px]">
             Prepared for the best visit possible.
           </h2>
-          <p className="text-lg manrope  mt-2">
+          <p className="text-lg manrope  mt-2 lg:text-left text-center">
             Having these details ready allows our doctors to focus entirely on
             your pet's physical exam and long-term health plan, ensuring we
             don't miss any critical context from their history.
@@ -242,20 +241,20 @@ function UrgentCare() {
 export function NewPatients() {
   return (
     <>
-    <Seo
-      title="New Patients at Lili Veterinary Hospital | Personalized Pet Care in San Antonio"
-      description="Welcome to Lili Veterinary Hospital! Our new patient services in San Antonio include personalized wellness exams, preventive care, and urgent support. We treat your pets like family, ensuring a smooth transition to our compassionate care."
-      path={ROUTE.newPatients}
-    />
-     <main className="w-full">
-      <NewToLiliVetHero />
-      <HowItWorks />
-      <WhatToBring />
-      <ComprehensiveCare />
-      <UrgentCare />
-      <FaqSection />
-    </main>
+      <Seo
+        title="New Patients at Lili Veterinary Hospital | Personalized Pet Care in San Antonio"
+        description="Welcome to Lili Veterinary Hospital! Our new patient services in San Antonio include personalized wellness exams, preventive care, and urgent support. We treat your pets like family, ensuring a smooth transition to our compassionate care."
+        path={ROUTE.newPatients}
+      />
+      <main className="w-full">
+        <NewToLiliVetHero />
+        <HowItWorks />
+        <WhatToBring />
+        <ComprehensiveCare />
+        <UrgentCare />
+        <FaqSection />
+      </main>
     </>
-   
+
   );
 }

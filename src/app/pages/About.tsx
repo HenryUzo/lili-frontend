@@ -384,18 +384,20 @@ export function About() {
         description="Learn about Lili Veterinary Hospital, our veterinary team, our approach to compassionate pet care, and our commitment to supporting healthier lives for dogs and cats in Lagos."
         path={ROUTE.aboutUs}
       />
-      <main className="w-full">
+      <main className="w-full overflow-x-hidden">
         {/* Hero */}
-        <section className="flex justify-center items-center flex-col bg-[#f2f7ee] px-4 py-8 md:py-0">
+        <section className="flex justify-center items-center flex-col bg-[#f2f7ee]  py-8 md:py-0">
           <h2 className="text-[36px] md:text-[64px] font-medium text-[#006838] font-founders text-center">
             Meet the Hearts of
           </h2>
-          <img
-            src={images?.LiliVetsText}
-            alt=""
-            className="w-[240px] md:w-[400px] mb-[-3rem] md:mb-[-5rem]"
-          />
-          <img src={images?.team} alt="" className="w-full  h-auto" />
+         <h2 className="font-normal lg:text-[154px] text-8xl leading-[146px] tracking-[0] text-center font-queen">Lili Vets</h2>
+          
+          <img src={images?.team} alt="" className="w-full scale-120 md:block hidden  h-auto" />
+
+        </section>
+        <section className="bg-[#f2f7ee]  w-full">
+          <img src={images?.teamUp} alt="" className="w-full scale-150 md:hidden block  h-auto" />
+
         </section>
 
         {/* Approach */}
