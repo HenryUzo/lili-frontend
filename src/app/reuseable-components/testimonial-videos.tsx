@@ -24,7 +24,7 @@ type RectLike = {
 };
 
 const VIDEO_ITEMS: VideoItem[] = [
-  { id: 1, src: videos.catVideo, label: "Cat testimonial" },
+  { id: 1, src: videos.promoVideo, label: "Cat testimonial" },
   { id: 2, src: videos.vet, label: "Vet testimonial" },
   { id: 3, src: videos.bigVideo, label: "Pet story" },
 ];

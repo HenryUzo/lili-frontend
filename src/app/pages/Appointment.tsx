@@ -36,7 +36,7 @@ const Appointment = () => {
         }
         description={`Our team is here to provide exceptional care for your
 beloved pet. Please complete the form below to begin.`}
-        primaryButtonLabel="Start your request"
+        primaryButtonLabel="Start Booking"
         secondaryActionLabel="Emergency call"
         phoneTrackingLocation="appointment_page"
         onPrimaryClick={handleScrollToForm}
@@ -58,7 +58,7 @@ beloved pet. Please complete the form below to begin.`}
         }
         contentClassName="lg:max-w-[562px]"
         descriptionClass="lg:max-w-[525px]"
-        sectionClassName="lg:!h-[80vh]"
+        sectionClassName="lg:!h-[70vh]"
       />
 
       <AppointmentRequestSection />
