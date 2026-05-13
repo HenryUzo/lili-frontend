@@ -56,8 +56,8 @@ export default function TeamCard({
           </h2>
 
           {/* Role */}
-          <div className="inline-block mt-2 rotate-[-6deg]">
-            <span className="bg-[#00A63E] text-white text-[10px] sm:text-[11px] tracking-[2px] uppercase px-4 py-2 rounded-full font-bold">
+          <div className="mt-2 inline-block max-w-[250px] rotate-[-6deg] sm:max-w-[280px]">
+            <span className="inline-flex w-full items-center justify-center rounded-[24px] bg-[#00A63E] px-4 py-2 text-center text-[9px] font-bold uppercase leading-[1.25] tracking-[1.5px] text-white sm:text-[10px]">
               {role}
             </span>
           </div>
