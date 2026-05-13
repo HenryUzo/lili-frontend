@@ -41,7 +41,7 @@ import love from "./love.svg";
 import group from "./group.svg";
 import drOkafor from "./dr-okafor.webp";
 import damienIvory from "./damien-ivory.webp";
-import damienIvoryDesc from "./damienIvory-desc.webp";
+import damienIvoryDesc from "./damian-about-card.png";
 import drOkaforDesc from "./drOkafor-desc.webp";
 import nickFlores from "./nick-flores.webp";
 import nickFloresDesc from "./nick-flores-desc.webp";
