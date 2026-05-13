@@ -57,7 +57,7 @@ const SirenIcon: React.FC<{ color: string }> = ({ color }) => (
 
 const AlertMarquee: React.FC<AlertMarqueeProps> = ({
   message = " ALERT!!! If your pet is in distress, call us immediately.",
-  phone = "210-257-8800",
+  phone = "210-257-8496",
   bgColor = "#ED1C24",
   textColor = "#FFFFFF",
   duration = 18,

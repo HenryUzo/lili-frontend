@@ -13,7 +13,7 @@ function ScrollableMarquee() {
   const curveId = useId().replace(/:/g, "");
 
   const marqueeText = useMemo(
-    () => Array(12).fill("🚨 Emergencies hotline: 121-789-646").join("   •   "),
+    () => Array(12).fill("🚨 Emergencies hotline: 210-257-8496").join("   •   "),
     [],
   );
 
