@@ -4,7 +4,7 @@ import PhoneCallDialog from "./call-modal";
 import { CLINIC_PHONE_DISPLAY } from "../../lib/analytics";
 
 const HOURS = [
-  { day: "Monday – Friday", time: "7:30 AM - 7:00 PM" },
+  { day: "Monday – Friday", time: "8:00 AM - 7:00 PM" },
   { day: "Saturday", time: "8:00 AM - 4:00 PM" },
   { day: "Sunday", time: "Closed", alert: true },
 ];
