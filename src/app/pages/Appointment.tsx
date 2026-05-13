@@ -56,7 +56,8 @@ beloved pet. Please complete the form below to begin.`}
             </div>
           </div>
         }
-        contentClassName="lg:max-w-[562px]"
+        visualClassName="hidden md:block"
+        contentClassName="sm:!pb-0 md:!pb-[500px] lg:max-w-[562px] lg:!pb-40"
         descriptionClass="lg:max-w-[525px]"
         sectionClassName="lg:!h-[70vh]"
       />
