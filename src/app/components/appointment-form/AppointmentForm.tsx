@@ -1,4 +1,5 @@
 import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { useQueryClient } from "@tanstack/react-query";
 import {
   AlertCircle,
   ArrowLeft,
@@ -537,9 +538,20 @@ function getTotalSelectedSlots(selections: PreferredSelection[]) {
   return selections.reduce((total, item) => total + item.timeSlots.length, 0);
 }
 
+function isMissingAppointmentDraftError(error: unknown) {
+  if (!error || typeof error !== "object") {
+    return false;
+  }
+
+  const status = (error as { response?: { status?: number } }).response?.status;
+
+  return status === 404 || status === 410;
+}
+
 /* ------------------------------- component -------------------------------- */
 
 export function AppointmentRequestSection({}: AppointmentRequestSectionProps) {
+  const queryClient = useQueryClient();
   const draftSession = getAppointmentDraftSession();
   const [sessionToken, setSessionToken] = useState(draftSession.sessionToken);
 
@@ -606,6 +618,7 @@ export function AppointmentRequestSection({}: AppointmentRequestSectionProps) {
   const formCardRef = useRef<HTMLFormElement | null>(null);
   const hasMountedRef = useRef(false);
   const draftCreationPromiseRef = useRef<Promise<string> | null>(null);
+  const staleDraftResetRef = useRef<string | null>(null);
 
   const { mutateAsync: createSessionAsync, isPending: isCreatingSession } =
     useCreateAppointmentDraft();
@@ -677,6 +690,40 @@ export function AppointmentRequestSection({}: AppointmentRequestSectionProps) {
       // The first visible step still retries on demand.
     });
   }, [ensureDraftSession, sessionToken, submitted]);
+
+  useEffect(() => {
+    if (!sessionToken) {
+      staleDraftResetRef.current = null;
+      return;
+    }
+
+    if (!draftPreviewError || !isMissingAppointmentDraftError(draftPreviewError)) {
+      return;
+    }
+
+    if (staleDraftResetRef.current === sessionToken) {
+      return;
+    }
+
+    staleDraftResetRef.current = sessionToken;
+    clearAppointmentDraftSession();
+    queryClient.removeQueries({
+      queryKey: ["appointmentDraft", sessionToken],
+    });
+    setValues(defaultValues);
+    setErrors({});
+    setSubmitted(false);
+    setStep(1);
+    setSelectedWeekStart(null);
+    setHoveredWeekStart(null);
+    setVisibleMonth(new Date());
+    setTimeSlotDialogDayIndex(null);
+    setPreferredDatesDialogOpen(false);
+    setSubmissionError(
+      "Your previous appointment draft expired. We started a new request for you.",
+    );
+    setSessionToken("");
+  }, [draftPreviewError, queryClient, sessionToken]);
 
   useEffect(() => {
     if (!draftPreview) return;
@@ -1012,11 +1059,12 @@ export function AppointmentRequestSection({}: AppointmentRequestSectionProps) {
   ) => {
     setSubmissionError("");
 
-    const { sessionToken: activeSessionToken } = getAppointmentDraftSession();
+    const storedSessionToken = getAppointmentDraftSession().sessionToken;
+    const activeSessionToken = storedSessionToken || (await ensureDraftSession());
 
     if (!activeSessionToken) {
       setSubmissionError(
-        "Missing appointment draft session. Please restart the request.",
+        "Unable to start your appointment request. Please try again.",
       );
       return;
     }
@@ -1036,11 +1084,12 @@ export function AppointmentRequestSection({}: AppointmentRequestSectionProps) {
     const valid = validateFields(stepFields[6]);
     if (!valid) return;
 
-    const { sessionToken: activeSessionToken } = getAppointmentDraftSession();
+    const storedSessionToken = getAppointmentDraftSession().sessionToken;
+    const activeSessionToken = storedSessionToken || (await ensureDraftSession());
 
     if (!activeSessionToken) {
       setSubmissionError(
-        "Missing appointment draft session. Please restart the request.",
+        "Unable to start your appointment request. Please try again.",
       );
       return;
     }
