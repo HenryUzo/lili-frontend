@@ -593,7 +593,7 @@ Excellence.</h2>
           />
          <TeamCard
             name="Rogina"
-            role="Lead Veterinary Technician"
+            role="Lead Customer Service Representative"
             image={images.rogina}
             // badge={badgeImage}
             description={[
@@ -602,7 +602,7 @@ Excellence.</h2>
           />
            <TeamCard
             name="Kyla Totanes"
-            role="Receptionist"
+            role="Customer Service Representative"
             image={images.kylaTotanes}
             // badge={badgeImage}
             description={[
