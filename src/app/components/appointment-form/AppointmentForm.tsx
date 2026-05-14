@@ -1869,11 +1869,11 @@ export function AppointmentRequestSection({}: AppointmentRequestSectionProps) {
                         </div>
                       ) : null}
 
-                      <div className="mt-8 grid grid-cols-1 items-start gap-4 md:grid-cols-10">
+                      <div className="mt-8 grid grid-cols-1 items-start gap-4 lg:grid-cols-[minmax(0,1.55fr)_minmax(340px,0.95fr)] lg:gap-6">
                         <div
                           ref={setFieldRef("preferredSelections")}
                           tabIndex={-1}
-                          className="col-span-6 rounded-[28px] border border-[#E7E2DA] bg-[#F6F5F0] p-5 md:p-6"
+                          className="rounded-[28px] border border-[#E7E2DA] bg-[#F6F5F0] p-5 md:p-6"
                         >
                           <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
                             <button
@@ -1989,7 +1989,7 @@ export function AppointmentRequestSection({}: AppointmentRequestSectionProps) {
                           </p>
                         </div>
 
-                        <div className="md:hidden">
+                        <div className="lg:hidden">
                           <button
                             type="button"
                             disabled={!hasSelectedWeek}
@@ -2054,7 +2054,7 @@ export function AppointmentRequestSection({}: AppointmentRequestSectionProps) {
                           </button>
                         </div>
 
-                        <div className="hidden h-full rounded-[28px] border border-[#E7E2DA] bg-white p-5 md:col-span-4 md:block md:p-6">
+                        <div className="hidden h-full rounded-[28px] border border-[#E7E2DA] bg-white p-5 lg:block lg:p-6">
                           <div className="flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
                             <div>
                               <h4 className="font-founders text-[22px] font-medium text-[#1B1C19]">
