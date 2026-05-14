@@ -6,7 +6,15 @@ import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
 import images from "../assests/images";
-import { trackDirectionsClick } from "../../lib/analytics";
+import {
+  DIRECTIONS_URL,
+  REVIEW_URL,
+  trackDirectionsClick,
+} from "../../lib/analytics";
+import {
+  FACEBOOK_URL,
+  INSTAGRAM_URL,
+} from "../../lib/external-links";
 import PawButton from "../reuseable-components/paw-button";
 import PhonePanel from "../reuseable-components/phone-panel";
 
@@ -374,72 +382,116 @@ const hoverLift = {
   },
 };
 
+const contactPlatformLinks = [
+  {
+    label: "Visit Lili Veterinary Hospital on Instagram",
+    href: INSTAGRAM_URL,
+    icon: (
+      <img
+        src={images.igIcon}
+        alt="Instagram"
+        className="h-7 w-7 object-contain"
+      />
+    ),
+  },
+  {
+    label: "TikTok profile coming soon",
+    icon: <FaTiktok className="text-[26px] text-black" />,
+  },
+  {
+    label: "Visit Lili Veterinary Hospital on Facebook",
+    href: FACEBOOK_URL,
+    icon: (
+      <FaFacebookF className="rounded-full bg-[#1877F2] p-1 text-[28px] text-white" />
+    ),
+  },
+  {
+    label: "Find Lili Veterinary Hospital directions",
+    href: DIRECTIONS_URL,
+    icon: (
+      <img
+        src={images.bingIcon}
+        alt="Bing"
+        className="h-7 w-7 object-contain"
+      />
+    ),
+  },
+  {
+    label: "Leave a Google review for Lili Veterinary Hospital",
+    href: REVIEW_URL,
+    icon: (
+      <img
+        src={images.logosGoogleMmaps}
+        alt="Google"
+        className="h-7 w-7 object-contain"
+      />
+    ),
+  },
+  {
+    label: "Open Lili Veterinary Hospital location",
+    href: DIRECTIONS_URL,
+    icon: (
+      <img
+        src={images.blog}
+        alt="Apple Maps"
+        className="h-7 w-7 object-contain"
+      />
+    ),
+  },
+] as const;
+
+function ContactPlatformIcon({
+  href,
+  label,
+  icon,
+}: {
+  href?: string;
+  label: string;
+  icon: React.ReactNode;
+}) {
+  const sharedClassName =
+    "flex items-center justify-center rounded-full transition";
+
+  if (!href) {
+    return (
+      <motion.div
+        whileHover={{ scale: 1.02 }}
+        className={`${sharedClassName} cursor-default opacity-60`}
+        aria-label={label}
+        title={label}
+      >
+        {icon}
+      </motion.div>
+    );
+  }
+
+  return (
+    <motion.a
+      href={href}
+      target="_blank"
+      rel="noopener noreferrer"
+      whileHover={hoverLift}
+      whileTap={{ scale: 0.96 }}
+      className={`${sharedClassName} cursor-pointer`}
+      aria-label={label}
+      title={label}
+    >
+      {icon}
+    </motion.a>
+  );
+}
+
 function SocialPlatforms() {
   return (
     <div className="mt-1 flex max-w-[360px] flex-wrap items-center justify-between gap-4 rounded-[16px] bg-white px-4 py-3 shadow-sm ring-1 ring-black/5">
-      <motion.div
-        whileHover={hoverLift}
-        whileTap={{ scale: 0.96 }}
-        className="flex items-center justify-center cursor-pointer"
-      >
-        <img
-          src={images.igIcon}
-          alt="Instagram"
-          className="h-7 w-7 object-contain"
+      {contactPlatformLinks.map((platform) => (
+        <ContactPlatformIcon
+          key={platform.label}
+          href={platform.href}
+          label={platform.label}
+          icon={platform.icon}
         />
-      </motion.div>
-
-      <motion.div
-        whileHover={hoverLift}
-        whileTap={{ scale: 0.96 }}
-        className="flex items-center justify-center cursor-pointer"
-      >
-        <FaTiktok className="text-[26px] text-black" />
-      </motion.div>
-
-      <motion.div
-        whileHover={hoverLift}
-        whileTap={{ scale: 0.96 }}
-        className="flex items-center justify-center cursor-pointer"
-      >
-        <FaFacebookF className="rounded-full bg-[#1877F2] p-1 text-[28px] text-white" />
-      </motion.div>
-
-      <motion.div
-        whileHover={hoverLift}
-        whileTap={{ scale: 0.96 }}
-        className="flex items-center justify-center cursor-pointer"
-      >
-        <img
-          src={images.bingIcon}
-          alt="Bing"
-          className="h-7 w-7 object-contain"
-        />
-      </motion.div>
-
-      <motion.div
-        whileHover={hoverLift}
-        whileTap={{ scale: 0.96 }}
-        className="flex items-center justify-center cursor-pointer"
-      >
-        <img
-          src={images.logosGoogleMmaps}
-          alt="Google"
-          className="h-7 w-7 object-contain"
-        />
-      </motion.div>
-
-      <motion.div
-        whileHover={hoverLift}
-        whileTap={{ scale: 0.96 }}
-        className="flex items-center justify-center cursor-pointer"
-      >
-        <img
-          src={images.blog}
-          alt="Apple Maps"
-          className="h-7 w-7 object-contain"
-        />
-      </motion.div>
+      ))}
     </div>
   );
 }
@@ -457,12 +509,15 @@ function CenterMapAction() {
         View Location on Map
       </a>
 
-      <button
-        type="button"
+      <a
+        href={DIRECTIONS_URL}
+        target="_blank"
+        rel="noreferrer"
+        onClick={() => trackDirectionsClick("contact_page")}
         className="flex h-12 w-12 items-center justify-center rounded-full border border-white/70 text-white transition hover:bg-white/10"
       >
         <TbMapPinFilled className="text-xl" />
-      </button>
+      </a>
     </div>
   );
 }

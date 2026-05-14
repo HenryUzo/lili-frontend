@@ -10,13 +10,13 @@ import {
   trackOnlinePharmacyClick,
   trackReviewClick,
 } from "../../../lib/analytics";
+import {
+  FACEBOOK_URL,
+  INSTAGRAM_URL,
+  SITE_URL,
+} from "../../../lib/external-links";
 import { ROUTE } from "../../../router";
 import svgPaths from "../svgpath";
-
-const SITE_URL = "https://www.liliveterinaryhospital.com";
-const INSTAGRAM_URL =
-  "https://www.instagram.com/lilivethospital/?fbclid=IwY2xjawRsHL5leHRuA2FlbQIxMQBicmlkETF6TkZXdGhvbW1DUUVtTEREc3J0YwZhcHBfaWQBMAABHgBUMQxC98PYEonStlff9icw88lLMq6VNvL0N03zDTTrZObje0og_TAY6UJ0_aem_TGV3D0bpGd_-X9zSlXVT9w#";
-const FACEBOOK_URL = "https://www.facebook.com/LiliVeterinaryHospital";
 
 function handleFooterShare() {
   if (typeof window === "undefined") return;
