@@ -69,19 +69,19 @@ type PreferredSelection = {
 };
 
 type FormValues = {
-  visitType: VisitType;
+  visitType: VisitType | "";
   petName: string;
   species: string;
   breed: string;
   age: string;
-  sex: Sex;
+  sex: Sex | "";
   weight: string;
 
   firstName: string;
   lastName: string;
   email: string;
   phone: string;
-  preferredContactMethod: ContactMethod;
+  preferredContactMethod: ContactMethod | "";
 
   preferredSelections: PreferredSelection[];
   timezone: string;
@@ -120,12 +120,12 @@ type DraftPreservedFields = Pick<
 const WEEK_DAYS = 6;
 
 const STEP_META = [
-  { key: 1, label: "Visit Type Selection", percent: 16 },
-  { key: 2, label: "Patient Information", percent: 25 },
-  { key: 3, label: "Parent Information", percent: 50 },
-  { key: 4, label: "Book Date", percent: 75 },
-  { key: 5, label: "Medical Information", percent: 89 },
-  { key: 6, label: "Preview Your Request", percent: 99 },
+  { key: 1, label: "Visit Type Selection", percent: 15 },
+  { key: 2, label: "Pet Information", percent: 30 },
+  { key: 3, label: "Owner Information", percent: 50 },
+  { key: 4, label: "Preferred Times", percent: 70 },
+  { key: 5, label: "Medical Information", percent: 85 },
+  { key: 6, label: "Preview Your Request", percent: 95 },
 ] as const;
 
 const stepFields: Record<number, (keyof FormValues)[]> = {
@@ -156,7 +156,7 @@ const VISIT_OPTIONS: {
   {
     id: "wellness-exam",
     title: "Wellness Exam",
-    description: "Annual checkups and preventative consultations.",
+    description: "Routine exams, preventive care, and annual checkups.",
     icon: images.stethoscope,
     rotate: "md:-rotate-[-2.24deg]",
   },
@@ -170,35 +170,35 @@ const VISIT_OPTIONS: {
   {
     id: "dental-care",
     title: "Dental Care",
-    description: "Medical baths, trims, and skin care treatments.",
+    description: "Oral exams, dental cleanings, and treatment planning.",
     icon: images.oneTooth,
     rotate: "md:-rotate-[-0.65deg]",
   },
   {
     id: "surgery",
     title: "Surgery",
-    description: "Booster shots and essential immunizations.",
+    description: "Spay, neuter, and other scheduled procedures.",
     icon: images.hospital,
     rotate: "md:-rotate-[-2.44deg]",
   },
   {
     id: "diagnostics",
     title: "Diagnostics",
-    description: "Booster shots and essential immunizations.",
+    description: "Lab work, imaging, and diagnostic testing.",
     icon: images.microscope,
     rotate: "md:-rotate-[3.72deg]",
   },
   {
     id: "new-patient",
-    title: "New Patients Visit",
-    description: "Booster shots and essential immunizations.",
+    title: "New Patient Visit",
+    description: "First-visit consultations for pets new to LiliVet.",
     icon: images.pet,
     rotate: "md:-rotate-[3.72deg]",
   },
   {
     id: "others",
     title: "Others",
-    description: "Booster shots and essential immunizations.",
+    description: "Choose this if your visit reason is not listed above.",
     icon: images.others,
     rotate: "md:-rotate-[-2.48deg]",
   },
@@ -304,25 +304,28 @@ const createEmptyWeekSelections = (): PreferredSelection[] =>
     timeSlots: [],
   }));
 
+const CLINIC_TIMEZONE = "America/Chicago";
+const CLINIC_TIMEZONE_LABEL = "Central Time (CT)";
 const MAX_WEEK_TIME_SLOTS = 3;
+const EMPTY_VALUE = "Not provided";
 const defaultValues: FormValues = {
-  visitType: "wellness-exam",
+  visitType: "",
 
   petName: "",
-  species: "Dog",
+  species: "",
   breed: "",
   age: "",
-  sex: "female",
+  sex: "",
   weight: "",
 
   firstName: "",
   lastName: "",
   email: "",
   phone: "",
-  preferredContactMethod: "call",
+  preferredContactMethod: "",
 
   preferredSelections: createEmptyWeekSelections(),
-  timezone: Intl.DateTimeFormat().resolvedOptions().timeZone || "Africa/Lagos",
+  timezone: CLINIC_TIMEZONE,
 
   symptoms: "",
   currentMedications: "",
@@ -335,7 +338,8 @@ const defaultValues: FormValues = {
   confirmCommunication: false,
 };
 
-const DAY_TIME_SLOTS = generateQuarterHourSlots("15:00", "23:45");
+const WEEKDAY_TIME_SLOTS = generateQuarterHourSlots("08:00", "19:00");
+const SATURDAY_TIME_SLOTS = generateQuarterHourSlots("08:00", "16:00");
 
 /* -------------------------------- helpers -------------------------------- */
 
@@ -466,6 +470,46 @@ function isPastDate(date: Date) {
   target.setHours(0, 0, 0, 0);
 
   return target < today;
+}
+
+function sanitizeCopy(value: string) {
+  return value
+    .replaceAll("â€™", "'")
+    .replaceAll("â€œ", '"')
+    .replaceAll("â€\u009d", '"')
+    .replaceAll("â€”", "-")
+    .replaceAll("â€“", "-");
+}
+
+function displayValue(value?: string | null) {
+  const normalized = sanitizeCopy((value ?? "").trim());
+
+  if (!normalized || normalized === "-" || normalized === "—") {
+    return EMPTY_VALUE;
+  }
+
+  return normalized;
+}
+
+function getTimeSlotsForSelection(
+  selection: PreferredSelection | null | undefined,
+) {
+  if (!selection?.date) {
+    return WEEKDAY_TIME_SLOTS;
+  }
+
+  return new Date(selection.date).getUTCDay() === 6
+    ? SATURDAY_TIME_SLOTS
+    : WEEKDAY_TIME_SLOTS;
+}
+
+function getClinicHoursLabel(selection: PreferredSelection | null | undefined) {
+  const slots = getTimeSlotsForSelection(selection);
+  if (slots === SATURDAY_TIME_SLOTS) {
+    return "Saturday hours: 8:00 AM - 4:00 PM";
+  }
+
+  return "Weekday hours: 8:00 AM - 7:00 PM";
 }
 
 function mapDraftToFormValues(
@@ -616,6 +660,10 @@ export function AppointmentRequestSection({}: AppointmentRequestSectionProps) {
       : "";
 
   const formCardRef = useRef<HTMLFormElement | null>(null);
+  const medicalFileInputRef = useRef<HTMLInputElement | null>(null);
+  const fieldRefs = useRef<
+    Partial<Record<keyof FormValues, HTMLElement | HTMLInputElement | null>>
+  >({});
   const hasMountedRef = useRef(false);
   const draftCreationPromiseRef = useRef<Promise<string> | null>(null);
   const staleDraftResetRef = useRef<string | null>(null);
@@ -780,6 +828,10 @@ export function AppointmentRequestSection({}: AppointmentRequestSectionProps) {
       ? `${draftPreview?.firstName ?? ""} ${draftPreview?.lastName ?? ""}`.trim()
       : `${values.firstName} ${values.lastName}`.trim() || "—";
 
+  const previewVisitTypeLabel = displayValue(previewVisitType);
+  const previewContactMethodLabel = displayValue(previewContactMethod);
+  const previewOwnerLabel = displayValue(previewOwner);
+
   const isEmail = (value: string) =>
     /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value.trim());
 
@@ -794,6 +846,30 @@ export function AppointmentRequestSection({}: AppointmentRequestSectionProps) {
         delete next[field];
       });
       return next;
+    });
+  };
+
+  const setFieldRef =
+    (field: keyof FormValues) =>
+    (element: HTMLElement | HTMLInputElement | null) => {
+      fieldRefs.current[field] = element;
+    };
+
+  const focusField = (field: keyof FormValues) => {
+    window.requestAnimationFrame(() => {
+      const element = fieldRefs.current[field];
+      if (!element) {
+        return;
+      }
+
+      element.scrollIntoView({
+        behavior: "smooth",
+        block: "center",
+      });
+
+      if ("focus" in element && typeof element.focus === "function") {
+        element.focus({ preventScroll: true });
+      }
     });
   };
 
@@ -928,7 +1004,7 @@ export function AppointmentRequestSection({}: AppointmentRequestSectionProps) {
         return "";
 
       case "currentMedications":
-        return String(value).trim() ? "" : "This field cannot be empty.";
+        return "";
 
       case "duration":
         return String(value).trim() ? "" : "This field cannot be empty.";
@@ -965,6 +1041,11 @@ export function AppointmentRequestSection({}: AppointmentRequestSectionProps) {
         ...nextErrors,
       };
     });
+
+    const firstInvalidField = fields.find((field) => nextErrors[field]);
+    if (firstInvalidField) {
+      focusField(firstInvalidField);
+    }
 
     return Object.keys(nextErrors).length === 0;
   };
@@ -1053,6 +1134,20 @@ export function AppointmentRequestSection({}: AppointmentRequestSectionProps) {
 
     updateField("preferredSelections", nextSelections);
   };
+
+  const clearWeekDayTimeSlots = (dayIndex: number) => {
+    const selection = getPreferredSelectionAtIndex(dayIndex);
+    if (!selection?.date) return;
+
+    const nextSelections = [...values.preferredSelections];
+    nextSelections[dayIndex] = {
+      ...selection,
+      timeSlots: [],
+    };
+
+    updateField("preferredSelections", nextSelections);
+  };
+
   const withDraftSession = async (
     action: (token: string) => Promise<void>,
     fallbackMessage: string,
@@ -1075,6 +1170,37 @@ export function AppointmentRequestSection({}: AppointmentRequestSectionProps) {
       console.error(error);
       setSubmissionError(error?.message || fallbackMessage);
     }
+  };
+
+  const handleCancelRequest = () => {
+    const confirmed = window.confirm(
+      "Cancel this appointment request and clear the information you've entered?",
+    );
+
+    if (!confirmed) return;
+
+    clearAppointmentDraftSession();
+    if (sessionToken) {
+      queryClient.removeQueries({
+        queryKey: ["appointmentDraft", sessionToken],
+      });
+    }
+
+    if (medicalFileInputRef.current) {
+      medicalFileInputRef.current.value = "";
+    }
+
+    setSessionToken("");
+    setValues(defaultValues);
+    setErrors({});
+    setSubmissionError("");
+    setSubmitted(false);
+    setStep(1);
+    setSelectedWeekStart(null);
+    setHoveredWeekStart(null);
+    setVisibleMonth(new Date());
+    setTimeSlotDialogDayIndex(null);
+    setPreferredDatesDialogOpen(false);
   };
 
   const handleSubmitForm = async (event: React.FormEvent<HTMLFormElement>) => {
@@ -1123,7 +1249,18 @@ export function AppointmentRequestSection({}: AppointmentRequestSectionProps) {
   };
 
   const handleFirstStepSubmit = async () => {
+    const valid = validateFields(stepFields[1]);
+    if (!valid) return;
+
     try {
+      const visitType =
+        VISIT_TYPE_TO_API[values.visitType as keyof typeof VISIT_TYPE_TO_API];
+
+      if (!visitType) {
+        setSubmissionError("Please select a visit type.");
+        return;
+      }
+
       const activeSessionToken = await ensureDraftSession();
 
       if (!activeSessionToken) {
@@ -1134,7 +1271,7 @@ export function AppointmentRequestSection({}: AppointmentRequestSectionProps) {
       await postStep1Async({
         sessionToken: activeSessionToken,
         payload: {
-          visitType: VISIT_TYPE_TO_API[values.visitType],
+          visitType,
         },
       });
 
@@ -1184,6 +1321,16 @@ export function AppointmentRequestSection({}: AppointmentRequestSectionProps) {
     const valid = validateFields(stepFields[3]);
     if (!valid) return;
 
+    const preferredContactMethod =
+      CONTACT_METHOD_TO_API[
+        values.preferredContactMethod as keyof typeof CONTACT_METHOD_TO_API
+      ];
+
+    if (!preferredContactMethod) {
+      setSubmissionError("Please select a contact method.");
+      return;
+    }
+
     await withDraftSession(async (activeSessionToken) => {
       await postStep3Async({
         sessionToken: activeSessionToken,
@@ -1192,8 +1339,7 @@ export function AppointmentRequestSection({}: AppointmentRequestSectionProps) {
           lastName: values.lastName.trim(),
           email: values.email.trim(),
           phoneNumber: values.phone.trim(),
-          preferredContactMethod:
-            CONTACT_METHOD_TO_API[values.preferredContactMethod],
+          preferredContactMethod,
         },
       });
 
@@ -1224,12 +1370,15 @@ export function AppointmentRequestSection({}: AppointmentRequestSectionProps) {
     const valid = validateFields(stepFields[5]);
     if (!valid) return;
 
+    const normalizedCurrentMedications =
+      values.currentMedications.trim() || "None reported";
+
     await withDraftSession(async (activeSessionToken) => {
       await postStep5Async({
         sessionToken: activeSessionToken,
         payload: {
           symptomsOrConcerns: values.symptoms.trim(),
-          currentMedications: values.currentMedications.trim(),
+          currentMedications: normalizedCurrentMedications,
           previousVeterinarian: values.previousVeterinarian.trim(),
           symptomDuration: values.duration.trim(),
         },
@@ -1249,6 +1398,11 @@ export function AppointmentRequestSection({}: AppointmentRequestSectionProps) {
         });
       }
 
+      setValues((prev) => ({
+        ...prev,
+        currentMedications: normalizedCurrentMedications,
+      }));
+      await refetchDraftPreview();
       setStep(6);
     }, "Failed to save medical information.");
   };
@@ -1277,7 +1431,7 @@ export function AppointmentRequestSection({}: AppointmentRequestSectionProps) {
       <div className="mx-auto grid max-w-[1440px] grid-cols-1 gap-16 xl:grid-cols-[minmax(0,1fr)_421px]">
         <main className="min-w-0">
           <form ref={formCardRef} onSubmit={handleSubmitForm} noValidate>
-            {currentMeta && (
+            {!submitted && currentMeta && (
               <StepHeader
                 step={step}
                 total={6}
@@ -1309,6 +1463,11 @@ export function AppointmentRequestSection({}: AppointmentRequestSectionProps) {
                             >
                               <button
                                 type="button"
+                                ref={
+                                  item.id === "urgent-care"
+                                    ? setFieldRef("visitType")
+                                    : undefined
+                                }
                                 onClick={() =>
                                   updateField("visitType", item.id)
                                 }
@@ -1350,7 +1509,7 @@ export function AppointmentRequestSection({}: AppointmentRequestSectionProps) {
                           <button
                             type="button"
                             className="text-center manrope text-[14px] font-bold leading-[18px] text-[#414844] md:text-[15px] md:leading-[19px] lg:text-[16px] lg:leading-[20px]"
-                            onClick={() => clearAppointmentDraftSession()}
+                            onClick={handleCancelRequest}
                           >
                             Cancel Request
                           </button>
@@ -1360,7 +1519,7 @@ export function AppointmentRequestSection({}: AppointmentRequestSectionProps) {
                             loading={isPostingStep1 || isCreatingSession}
                             onClick={handleFirstStepSubmit}
                           >
-                            Next: Patient Details{" "}
+                            Next: Pet Details{" "}
                             <ArrowRight className="ml-2 h-4 w-4" />
                           </PrimaryButton>
                         }
@@ -1371,14 +1530,15 @@ export function AppointmentRequestSection({}: AppointmentRequestSectionProps) {
                   {step === 2 && (
                     <div>
                       <SectionTitle
-                        title="Tell us about yourself?"
-                        subtitle=""
+                        title="Tell us about your pet"
+                        subtitle="Share a few details so our team can prepare for the visit."
                       />
-                      <FormSectionLabel label="Basic Information" />
+                      <FormSectionLabel label="Pet Information" />
 
                       <div className="grid grid-cols-1 gap-5 md:grid-cols-2">
                         <Field label="Pet Name">
                           <TextInput
+                            ref={setFieldRef("petName")}
                             placeholder="e.g. Luna"
                             value={values.petName}
                             onChange={(e) =>
@@ -1390,8 +1550,10 @@ export function AppointmentRequestSection({}: AppointmentRequestSectionProps) {
 
                         <Field label="Species">
                           <SelectInput
+                            inputRef={setFieldRef("species")}
                             value={values.species}
                             options={["Dog", "Cat"]}
+                            placeholder="Choose species"
                             onChange={(value) => updateField("species", value)}
                           />
                           <ErrorText message={errors.species} />
@@ -1399,6 +1561,7 @@ export function AppointmentRequestSection({}: AppointmentRequestSectionProps) {
 
                         <Field label="Breed">
                           <TextInput
+                            ref={setFieldRef("breed")}
                             placeholder="e.g. Golden Retriever"
                             value={values.breed}
                             onChange={(e) =>
@@ -1411,6 +1574,7 @@ export function AppointmentRequestSection({}: AppointmentRequestSectionProps) {
                         <Field label="Approximate Age">
                           <div className="relative">
                             <TextInput
+                              ref={setFieldRef("age")}
                               placeholder="0"
                               value={values.age}
                               onChange={(e) =>
@@ -1436,6 +1600,7 @@ export function AppointmentRequestSection({}: AppointmentRequestSectionProps) {
                             left="Male"
                             right="Female"
                             value={values.sex}
+                            buttonRef={setFieldRef("sex")}
                             onChange={(value) =>
                               updateField("sex", value as Sex)
                             }
@@ -1445,6 +1610,7 @@ export function AppointmentRequestSection({}: AppointmentRequestSectionProps) {
 
                         <Field label="Weight (lbs)">
                           <TextInput
+                            ref={setFieldRef("weight")}
                             placeholder="e.g. 45"
                             value={values.weight}
                             onChange={(e) =>
@@ -1469,7 +1635,7 @@ export function AppointmentRequestSection({}: AppointmentRequestSectionProps) {
                             onClick={handleSecondStepSubmit}
                             loading={isPostingStep2}
                           >
-                            Next: Parent Details
+                            Next: Owner Details
                             <ArrowRight className="ml-2 h-4 w-4" />
                           </PrimaryButton>
                         }
@@ -1480,14 +1646,15 @@ export function AppointmentRequestSection({}: AppointmentRequestSectionProps) {
                   {step === 3 && (
                     <div>
                       <SectionTitle
-                        title="Tell us about yourself?"
-                        subtitle=""
+                        title="How should we reach you?"
+                        subtitle="Add the pet parent's contact details so we can confirm the appointment."
                       />
-                      <FormSectionLabel label="Basic Information" />
+                      <FormSectionLabel label="Owner Information" />
 
                       <div className="grid grid-cols-1 gap-5 md:grid-cols-2">
                         <Field label="First Name">
                           <TextInput
+                            ref={setFieldRef("firstName")}
                             placeholder="e.g. Elena"
                             value={values.firstName}
                             onChange={(e) =>
@@ -1499,6 +1666,7 @@ export function AppointmentRequestSection({}: AppointmentRequestSectionProps) {
 
                         <Field label="Last Name">
                           <TextInput
+                            ref={setFieldRef("lastName")}
                             placeholder="e.g. Garcia"
                             value={values.lastName}
                             onChange={(e) =>
@@ -1517,6 +1685,7 @@ export function AppointmentRequestSection({}: AppointmentRequestSectionProps) {
                       <div className="grid grid-cols-1 gap-5 md:grid-cols-2">
                         <Field label="Email Address">
                           <TextInput
+                            ref={setFieldRef("email")}
                             placeholder="e.g. elena.garcia@example.com"
                             value={values.email}
                             onChange={(e) =>
@@ -1528,6 +1697,7 @@ export function AppointmentRequestSection({}: AppointmentRequestSectionProps) {
 
                         <Field label="Phone Number">
                           <TextInput
+                            ref={setFieldRef("phone")}
                             placeholder="e.g. (210) 555-0123"
                             value={values.phone}
                             onChange={(e) =>
@@ -1542,6 +1712,7 @@ export function AppointmentRequestSection({}: AppointmentRequestSectionProps) {
                         <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
                           <OptionPill
                             selected={values.preferredContactMethod === "call"}
+                            buttonRef={setFieldRef("preferredContactMethod")}
                             onClick={() =>
                               updateField("preferredContactMethod", "call")
                             }
@@ -1574,7 +1745,7 @@ export function AppointmentRequestSection({}: AppointmentRequestSectionProps) {
                         left={
                           <GhostNavButton onClick={handlePrev}>
                             <ArrowLeft className="mr-2 h-4 w-4" />
-                            Previous: Patient Information
+                            Previous: Pet Information
                           </GhostNavButton>
                         }
                         right={
@@ -1583,7 +1754,7 @@ export function AppointmentRequestSection({}: AppointmentRequestSectionProps) {
                             loading={isPostingStep3}
                             disabled={isPostingStep3}
                           >
-                            Next: Book Date{" "}
+                            Next: Preferred Times{" "}
                             <ArrowRight className="ml-2 h-4 w-4" />
                           </PrimaryButton>
                         }
@@ -1594,8 +1765,8 @@ export function AppointmentRequestSection({}: AppointmentRequestSectionProps) {
                   {step === 4 && (
                     <div>
                       <SectionTitle
-                        title="Pick your convenient week & time"
-                        subtitle="Hover or click a day to highlight the week from Monday to Saturday. Then choose time slots for any day that works for you."
+                        title="Choose your preferred week and times"
+                        subtitle="Select a Monday-Saturday week, then choose up to 3 time slots. Monday-Friday hours are 8:00 AM - 7:00 PM, and Saturday hours are 8:00 AM - 4:00 PM."
                       />
 
                       {submissionError ? (
@@ -1605,7 +1776,11 @@ export function AppointmentRequestSection({}: AppointmentRequestSectionProps) {
                       ) : null}
 
                       <div className="mt-8 grid grid-cols-1 items-start gap-4 md:grid-cols-10">
-                        <div className="col-span-6 rounded-[28px] border border-[#E7E2DA] bg-[#F6F5F0] p-5 md:p-6">
+                        <div
+                          ref={setFieldRef("preferredSelections")}
+                          tabIndex={-1}
+                          className="col-span-6 rounded-[28px] border border-[#E7E2DA] bg-[#F6F5F0] p-5 md:p-6"
+                        >
                           <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
                             <button
                               type="button"
@@ -1714,11 +1889,24 @@ export function AppointmentRequestSection({}: AppointmentRequestSectionProps) {
                           </div>
 
                           <p className="mt-5 font-manrope text-[13px] font-medium leading-5 text-[#727973]">
-                            Sundays and past dates are disabled. Selecting any
-                            weekday automatically picks that full Monday to
-                            Saturday week.
+                            Sundays and past dates are disabled. Selecting a
+                            day automatically picks the full Monday to Saturday
+                            week for that request.
                           </p>
                         </div>
+
+                        <SelectedSlotSummaryList
+                          selections={filledPreferredSelections}
+                          onRemove={(date) => {
+                            const dayIndex =
+                              values.preferredSelections.findIndex(
+                                (item) => item.date === date,
+                              );
+                            if (dayIndex >= 0) {
+                              clearWeekDayTimeSlots(dayIndex);
+                            }
+                          }}
+                        />
 
                         <div className="md:hidden">
                           <button
@@ -1766,7 +1954,7 @@ export function AppointmentRequestSection({}: AppointmentRequestSectionProps) {
                                 ) : (
                                   <p className="mt-1 font-manrope text-[13px] font-medium leading-5 text-[#727973]">
                                     {selectedWeekLabel
-                                      ? `${selectedWeekLabel}. Tap to choose time slots.`
+                                      ? `${selectedWeekLabel}. Tap to choose or change time slots.`
                                       : "Tap to choose time slots for the selected week."}
                                   </p>
                                 )}
@@ -1790,7 +1978,7 @@ export function AppointmentRequestSection({}: AppointmentRequestSectionProps) {
                               </h4>
 
                               <p className="mt-1 font-manrope text-[14px] font-medium leading-6 text-[#727973]">
-                                Monday to Saturday of the selected week.
+                                Change or add times for any day in the selected week.
                               </p>
                             </div>
 
@@ -1837,7 +2025,7 @@ export function AppointmentRequestSection({}: AppointmentRequestSectionProps) {
                                             ? item.timeSlots
                                                 .map(formatTimeLabel)
                                                 .join(", ")
-                                            : "Click to select time slots"}
+                                            : "Select time slots"}
                                         </p>
                                       </div>
 
@@ -1849,9 +2037,7 @@ export function AppointmentRequestSection({}: AppointmentRequestSectionProps) {
                                             : "bg-white text-[#416352]",
                                         ].join(" ")}
                                       >
-                                        {hasSelectedTimeSlot
-                                          ? "Selected"
-                                          : "Select"}
+                                        {hasSelectedTimeSlot ? "Change" : "Select"}
                                       </span>
                                     </div>
                                   </button>
@@ -1878,8 +2064,8 @@ export function AppointmentRequestSection({}: AppointmentRequestSectionProps) {
 
                             <DialogDescription className="font-manrope text-[14px] font-medium leading-6 text-[#727973]">
                               {selectedWeekLabel
-                                ? `${selectedWeekLabel}. Choose a day to select time slots.`
-                                : "Monday to Saturday of the selected week. Choose a day to select time slots."}
+                                ? `${selectedWeekLabel}. Choose a day to add, change, or remove time slots.`
+                                : "Monday to Saturday of the selected week. Choose a day to add, change, or remove time slots."}
                             </DialogDescription>
                           </DialogHeader>
 
@@ -1933,7 +2119,7 @@ export function AppointmentRequestSection({}: AppointmentRequestSectionProps) {
                                             ? item.timeSlots
                                                 .map(formatTimeLabel)
                                                 .join(", ")
-                                            : "Click to select time slots"}
+                                            : "Select time slots"}
                                         </p>
                                       </div>
 
@@ -1945,9 +2131,7 @@ export function AppointmentRequestSection({}: AppointmentRequestSectionProps) {
                                             : "bg-white text-[#416352]",
                                         ].join(" ")}
                                       >
-                                        {hasSelectedTimeSlot
-                                          ? "Selected"
-                                          : "Select"}
+                                        {hasSelectedTimeSlot ? "Change" : "Select"}
                                       </span>
                                     </div>
                                   </button>
@@ -1980,7 +2164,7 @@ export function AppointmentRequestSection({}: AppointmentRequestSectionProps) {
                         left={
                           <GhostNavButton onClick={handlePrev}>
                             <ArrowLeft className="mr-2 h-4 w-4" />
-                            Previous: Parent Information
+                            Previous: Owner Information
                           </GhostNavButton>
                         }
                         right={
@@ -1989,7 +2173,7 @@ export function AppointmentRequestSection({}: AppointmentRequestSectionProps) {
                             loading={isPostingStep4}
                             disabled={isPostingStep4}
                           >
-                            Next: Medical information{" "}
+                            Next: Medical Information{" "}
                             <ArrowRight className="ml-2 h-4 w-4" />
                           </PrimaryButton>
                         }
@@ -2000,14 +2184,15 @@ export function AppointmentRequestSection({}: AppointmentRequestSectionProps) {
                   {step === 5 && (
                     <div>
                       <SectionTitle
-                        title="Give us a bit of your Pet’s history"
-                        subtitle=""
+                        title="Tell us about your pet's history"
+                        subtitle="Share the symptoms, timing, and any useful records so the team can review before calling you back."
                       />
 
                       <FormSectionLabel label="Medical Information" />
 
                       <Field label="Symptoms or Concerns">
                         <TextArea
+                          ref={setFieldRef("symptoms")}
                           placeholder="Tell us what you've noticed about your pet’s behavior or physical state..."
                           value={values.symptoms}
                           onChange={(e) =>
@@ -2018,9 +2203,10 @@ export function AppointmentRequestSection({}: AppointmentRequestSectionProps) {
                       </Field>
 
                       <div className="mt-5 grid grid-cols-1 gap-5 md:grid-cols-2">
-                        <Field label="Current Medications">
+                        <Field label="Current Medications (Optional)">
                           <TextInput
-                            placeholder="e.g. None"
+                            ref={setFieldRef("currentMedications")}
+                            placeholder="e.g. None reported"
                             value={values.currentMedications}
                             onChange={(e) =>
                               updateField("currentMedications", e.target.value)
@@ -2046,6 +2232,7 @@ export function AppointmentRequestSection({}: AppointmentRequestSectionProps) {
                       <div className="mt-5 max-w-[320px]">
                         <Field label="How Long Has This Been Happening?">
                           <TextInput
+                            ref={setFieldRef("duration")}
                             placeholder="e.g. 2 days, since morning"
                             value={values.duration}
                             onChange={(e) =>
@@ -2075,6 +2262,7 @@ export function AppointmentRequestSection({}: AppointmentRequestSectionProps) {
 
                             <input
                               type="file"
+                              ref={medicalFileInputRef}
                               className="hidden"
                               accept=".pdf,.jpg,.jpeg,.png"
                               onChange={(e) =>
@@ -2087,9 +2275,34 @@ export function AppointmentRequestSection({}: AppointmentRequestSectionProps) {
                           </label>
 
                           {values.uploadedFile ? (
-                            <p className="mt-3 font-manrope text-sm font-medium leading-6 text-[#4B6D5C]">
-                              Selected: {values.uploadedFile.name}
-                            </p>
+                            <div className="mt-3 flex flex-wrap items-center gap-3">
+                              <p className="font-manrope text-sm font-medium leading-6 text-[#4B6D5C]">
+                                Selected: {values.uploadedFile.name}
+                              </p>
+
+                              <button
+                                type="button"
+                                className="rounded-full border border-[#D8DDD6] bg-white px-4 py-2 font-manrope text-[12px] font-bold text-[#2E6B46]"
+                                onClick={() =>
+                                  medicalFileInputRef.current?.click()
+                                }
+                              >
+                                Replace file
+                              </button>
+
+                              <button
+                                type="button"
+                                className="rounded-full border border-[#E7C9C9] bg-white px-4 py-2 font-manrope text-[12px] font-bold text-[#B33A3A]"
+                                onClick={() => {
+                                  if (medicalFileInputRef.current) {
+                                    medicalFileInputRef.current.value = "";
+                                  }
+                                  updateField("uploadedFile", null);
+                                }}
+                              >
+                                Remove file
+                              </button>
+                            </div>
                           ) : null}
 
                           {draftPreview?.files?.length ? (
@@ -2123,7 +2336,7 @@ export function AppointmentRequestSection({}: AppointmentRequestSectionProps) {
                         left={
                           <GhostNavButton onClick={handlePrev}>
                             <ArrowLeft className="mr-2 h-4 w-4" />
-                            Previous: Book Date
+                            Previous: Preferred Times
                           </GhostNavButton>
                         }
                         right={
@@ -2157,17 +2370,17 @@ export function AppointmentRequestSection({}: AppointmentRequestSectionProps) {
                           <div className="grid grid-cols-1 gap-y-8 md:grid-cols-2 md:gap-x-12">
                             <PreviewItem
                               label="Visit Type"
-                              value={previewVisitType}
+                              value={previewVisitTypeLabel}
                             />
                             <PreviewItem
                               label="Preferred Contact Method"
-                              value={previewContactMethod}
+                              value={previewContactMethodLabel}
                             />
                           </div>
 
                           <FormSectionLabel
                             className="mt-10"
-                            label="Patient Information"
+                            label="Pet Information"
                           />
                           <div className="grid grid-cols-1 gap-y-8 md:grid-cols-2 md:gap-x-12">
                             <PreviewItem
@@ -2228,7 +2441,7 @@ export function AppointmentRequestSection({}: AppointmentRequestSectionProps) {
                             label="Owner Information"
                           />
                           <div className="grid grid-cols-1 gap-y-8 md:grid-cols-2 md:gap-x-12">
-                            <PreviewItem label="Owner" value={previewOwner} />
+                            <PreviewItem label="Owner" value={previewOwnerLabel} />
                             <PreviewItem
                               label="Email Address"
                               value={draftPreview?.email || values.email || "—"}
@@ -2364,6 +2577,7 @@ export function AppointmentRequestSection({}: AppointmentRequestSectionProps) {
                       <div className="mt-10 space-y-6">
                         <>
                           <CheckRow
+                            buttonRef={setFieldRef("confirmContact")}
                             checked={values.confirmContact}
                             onClick={() =>
                               updateField(
@@ -2378,6 +2592,7 @@ export function AppointmentRequestSection({}: AppointmentRequestSectionProps) {
 
                         <>
                           <CheckRow
+                            buttonRef={setFieldRef("confirmCommunication")}
                             checked={values.confirmCommunication}
                             onClick={() =>
                               updateField(
@@ -2407,7 +2622,7 @@ export function AppointmentRequestSection({}: AppointmentRequestSectionProps) {
                                 className="inline-flex items-center rounded-full bg-[#FF1820] px-7 py-4 font-manrope text-[18px] font-semibold leading-6 text-white shadow-[0_10px_24px_rgba(255,24,32,0.24)]"
                               >
                                 <Phone className="mr-2 h-4 w-4" />
-                                Call now
+                                Call Now
                               </button>
                             }
                           />
@@ -2551,8 +2766,24 @@ function StepSuccess() {
 
         <p className="mx-auto mt-8 max-w-[720px] manrope text-[20px] font-medium leading-[34px] text-[#414844] md:text-[20px]">
           Thank you for contacting Lili Veterinary Hospital. Our team will
-          review your request and follow up with you to confirm the next step.
+          review your request and call you within 2 business hours to confirm
+          the next step.
         </p>
+
+        <div className="mt-10">
+          <PhoneCallDialog
+            location="appointment_success"
+            trigger={
+              <button
+                type="button"
+                className="inline-flex items-center rounded-full bg-[#FF1820] px-7 py-4 font-manrope text-[18px] font-semibold leading-6 text-white shadow-[0_10px_24px_rgba(255,24,32,0.24)]"
+              >
+                <Phone className="mr-2 h-4 w-4" />
+                Call Now
+              </button>
+            }
+          />
+        </div>
       </div>
     </div>
   );
@@ -2569,11 +2800,11 @@ function SectionTitle({
     <div className="flex items-center justify-between">
       <div>
         <h3 className="font-queen text-[40px] font-normal leading-[52px] text-[#1B1C19] md:text-[52px] md:leading-[68px] lg:text-[64px] lg:leading-[84px]">
-          {title}
+          {sanitizeCopy(title)}
         </h3>
         {subtitle ? (
           <p className="mt-5 max-w-[620px] text-[#414844] manrope text-[16px] font-normal leading-[24px] md:text-[17px] md:leading-[26px] lg:text-[18px] lg:leading-[29.25px]">
-            {subtitle}
+            {sanitizeCopy(subtitle)}
           </p>
         ) : null}
       </div>
@@ -2594,7 +2825,7 @@ function FormSectionLabel({
   return (
     <div className={`mt-8 border-b border-[#ECE8E2] pb-3 ${className}`}>
       <p className="font-founders text-[10px] font-bold uppercase leading-[14px] tracking-[1.2px] text-[#727973] md:text-[11px] md:leading-[15px] lg:text-[12px] lg:leading-[16px]">
-        {label}
+        {sanitizeCopy(label)}
       </p>
     </div>
   );
@@ -2619,10 +2850,14 @@ function Field({
   );
 }
 
-function TextInput(props: React.InputHTMLAttributes<HTMLInputElement>) {
+const TextInput = React.forwardRef<
+  HTMLInputElement,
+  React.InputHTMLAttributes<HTMLInputElement>
+>(function TextInput(props, ref) {
   return (
     <input
       {...props}
+      ref={ref}
       className={[
         "h-[56px] w-full rounded-full border border-[#E7E2DA] bg-[#ECEAE4] px-5",
         "font-manrope text-[16px] font-medium leading-6 text-[#222]",
@@ -2631,24 +2866,34 @@ function TextInput(props: React.InputHTMLAttributes<HTMLInputElement>) {
       ].join(" ")}
     />
   );
-}
+});
 
 function SelectInput({
   value,
   options,
+  placeholder,
   onChange,
+  inputRef,
 }: {
   value: string;
   options: string[];
+  placeholder?: string;
   onChange: (value: string) => void;
+  inputRef?: React.Ref<HTMLSelectElement>;
 }) {
   return (
     <div className="relative">
       <select
+        ref={inputRef}
         value={value}
         onChange={(e) => onChange(e.target.value)}
         className="h-[56px] w-full cursor-pointer appearance-none rounded-full border border-[#E7E2DA] bg-[#ECEAE4] px-5 pr-12 font-manrope text-[16px] font-medium leading-6 text-[#222] outline-none focus:border-[#4D7A63]"
       >
+        {placeholder ? (
+          <option value="" disabled>
+            {placeholder}
+          </option>
+        ) : null}
         {options.map((option) => (
           <option key={option} value={option}>
             {option}
@@ -2661,10 +2906,14 @@ function SelectInput({
   );
 }
 
-function TextArea(props: React.TextareaHTMLAttributes<HTMLTextAreaElement>) {
+const TextArea = React.forwardRef<
+  HTMLTextAreaElement,
+  React.TextareaHTMLAttributes<HTMLTextAreaElement>
+>(function TextArea(props, ref) {
   return (
     <textarea
       {...props}
+      ref={ref}
       className={[
         "min-h-[140px] w-full rounded-[20px] border border-[#E7E2DA] bg-[#ECEAE4] px-5 py-4",
         "font-manrope text-[16px] font-medium leading-6 text-[#222]",
@@ -2673,23 +2922,26 @@ function TextArea(props: React.TextareaHTMLAttributes<HTMLTextAreaElement>) {
       ].join(" ")}
     />
   );
-}
+});
 
 function SegmentedTwo({
   left,
   right,
   value,
   onChange,
+  buttonRef,
 }: {
   left: string;
   right: string;
   value: string;
   onChange: (value: string) => void;
+  buttonRef?: React.Ref<HTMLButtonElement>;
 }) {
   return (
     <div className="grid grid-cols-2 rounded-full border border-[#E7E2DA] bg-[#ECEAE4] p-1">
       <button
         type="button"
+        ref={buttonRef}
         onClick={() => onChange(left.toLowerCase())}
         className={[
           "rounded-full px-4 py-3 font-manrope text-[16px] font-medium leading-6",
@@ -2721,15 +2973,18 @@ function OptionPill({
   onClick,
   icon,
   label,
+  buttonRef,
 }: {
   selected: boolean;
   onClick: () => void;
   icon: React.ReactNode;
   label: string;
+  buttonRef?: React.Ref<HTMLButtonElement>;
 }) {
   return (
     <button
       type="button"
+      ref={buttonRef}
       onClick={onClick}
       className={[
         "flex cursor-pointer flex-col items-center justify-center gap-3 rounded-full px-6 py-5",
@@ -2853,14 +3108,74 @@ function GhostNavButton({
   );
 }
 
+function SelectedSlotSummaryList({
+  selections,
+  onRemove,
+}: {
+  selections: PreferredSelection[];
+  onRemove: (date: string) => void;
+}) {
+  if (!selections.length) return null;
+
+  return (
+    <div className="rounded-[24px] border border-[#D8E8DD] bg-[#F5FBF7] p-5 md:col-span-10">
+      <div className="flex flex-col gap-2 md:flex-row md:items-end md:justify-between">
+        <div>
+          <h4 className="font-founders text-[20px] font-medium text-[#1B1C19]">
+            Selected times
+          </h4>
+          <p className="mt-1 font-manrope text-[13px] font-medium leading-5 text-[#416352]">
+            Use the day cards below to change times, or remove a selection here.
+          </p>
+        </div>
+
+        <p className="font-manrope text-[12px] font-bold uppercase tracking-[0.12em] text-[#416352]">
+          Up to {MAX_WEEK_TIME_SLOTS} slots total
+        </p>
+      </div>
+
+      <div className="mt-4 grid gap-3 md:grid-cols-2 xl:grid-cols-3">
+        {selections.map((selection) => (
+          <div
+            key={selection.date}
+            className="rounded-[18px] border border-[#CBE7D4] bg-white px-4 py-4"
+          >
+            <div className="flex items-start justify-between gap-3">
+              <div className="min-w-0">
+                <p className="font-manrope text-[14px] font-bold text-[#1B1C19]">
+                  {formatWeekDayLabel(selection.date)}
+                </p>
+                <p className="mt-1 font-manrope text-[13px] leading-5 text-[#416352]">
+                  {selection.timeSlots.map(formatTimeLabel).join(", ")}
+                </p>
+              </div>
+
+              <button
+                type="button"
+                className="rounded-full border border-[#E7C9C9] px-3 py-1 font-manrope text-[11px] font-bold text-[#B33A3A]"
+                onClick={() => onRemove(selection.date)}
+              >
+                Remove
+              </button>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
 function PreviewItem({ label, value }: { label: string; value: string }) {
+  const resolvedValue =
+    label === "Timezone" ? CLINIC_TIMEZONE_LABEL : displayValue(value);
+
   return (
     <div className="border-l-[4px] border-[#CBE7D4] pl-5">
       <p className="manrope mt-3 text-[12px] font-bold uppercase tracking-[0.15em] text-[#727973]">
-        {label}
+        {sanitizeCopy(label)}
       </p>
       <p className="mt-2 manrope text-[20px] font-medium leading-7 text-[#1B1C19]">
-        {value}
+        {resolvedValue}
       </p>
     </div>
   );
@@ -2870,14 +3185,17 @@ function CheckRow({
   checked,
   onClick,
   label,
+  buttonRef,
 }: {
   checked: boolean;
   onClick: () => void;
   label: string;
+  buttonRef?: React.Ref<HTMLButtonElement>;
 }) {
   return (
     <button
       type="button"
+      ref={buttonRef}
       onClick={onClick}
       className="flex items-start gap-4 text-left"
     >
@@ -2893,7 +3211,7 @@ function CheckRow({
       </span>
 
       <span className="manrope text-[14px] font-semibold leading-7 text-[#414844]">
-        {label}
+        {sanitizeCopy(label)}
       </span>
     </button>
   );
@@ -2914,6 +3232,9 @@ function TimeSlotDialog({
 }) {
   if (!selection || dayIndex === null) return null;
 
+  const availableSlots = getTimeSlotsForSelection(selection);
+  const clinicHoursLabel = getClinicHoursLabel(selection);
+
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="max-h-[88vh] overflow-hidden rounded-[32px] border border-[#E7E2DA] bg-white p-0 text-[#1B1C19] sm:max-w-[760px] [&>button]:hidden">
@@ -2931,6 +3252,9 @@ function TimeSlotDialog({
               <DialogDescription className="mt-2 font-manrope text-[14px] font-medium leading-6 text-[#727973]">
                 Choose all the times that work for you on this day.
               </DialogDescription>
+              <p className="mt-2 font-manrope text-[12px] font-bold uppercase tracking-[0.12em] text-[#416352]">
+                {clinicHoursLabel}
+              </p>
             </div>
 
             <DialogClose asChild>
@@ -2963,7 +3287,7 @@ function TimeSlotDialog({
           </div>
 
           <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-4">
-            {DAY_TIME_SLOTS.map((slot) => {
+            {availableSlots.map((slot) => {
               const selected = selection.timeSlots.includes(slot);
 
               return (
