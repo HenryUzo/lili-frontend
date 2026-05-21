@@ -50,6 +50,29 @@ export type AppointmentDraftResponse = {
   updatedAt: string;
 };
 
+export type AppointmentRescheduleContextResponse = {
+  token: string;
+  responseDeadline: string;
+  appointmentRequestId: string;
+  petName: string;
+  ownerName: string;
+  visitType:
+    | "URGENT_CARE"
+    | "WELLNESS_EXAM"
+    | "VACCINATIONS"
+    | "DENTAL_CARE"
+    | "SURGERY"
+    | "DIAGNOSTICS"
+    | "NEW_PATIENT_VISIT"
+    | "OTHER";
+  confirmedStartAt: string | null;
+  timezone: string | null;
+  preferredSelections: Array<{
+    date: string;
+    timeSlots: string[];
+  }>;
+};
+
 export async function createAppointmentDraft() {
   const response = await api.post("/appointment-drafts");
   return response.data;
@@ -164,6 +187,32 @@ export async function submitAppointmentDraft(sessionToken: string) {
 export async function getAppointmentDraft(sessionToken: string) {
   const response = await api.get<AppointmentDraftResponse>(
     `/appointment-drafts/${sessionToken}`
+  );
+
+  return response.data;
+}
+
+export async function getAppointmentRescheduleContext(token: string) {
+  const response = await api.get<AppointmentRescheduleContextResponse>(
+    `/appointment-requests/reschedule/${token}`
+  );
+
+  return response.data;
+}
+
+export async function submitAppointmentReschedule(
+  token: string,
+  payload: {
+    preferredSelections: Array<{
+      date: string;
+      timeSlots: string[];
+    }>;
+    timezone: string;
+  }
+) {
+  const response = await api.post(
+    `/appointment-requests/reschedule/${token}/submit`,
+    payload
   );
 
   return response.data;

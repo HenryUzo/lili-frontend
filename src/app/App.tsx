@@ -15,6 +15,7 @@ import ServiceDiagnosticCare from "./pages/ServicesDiagnosticCare";
 import ServicesDentalCare from "./pages/ServicesDentalCare";
 import ServicesSurgery from "./pages/ServicesSurgery";
 import Appointment from "./pages/Appointment";
+import AppointmentReschedule from "./pages/AppointmentReschedule";
 import Contact from "./pages/Contact";
 import { Toaster } from "sonner";
 import { ROUTE } from "../router";
@@ -34,6 +35,7 @@ const router = createBrowserRouter(
 
       <Route path={ROUTE.aboutUs} element={<About />} />
       <Route path={ROUTE.bookAppointment} element={<Appointment />} />
+      <Route path={ROUTE.bookAppointmentReschedule} element={<AppointmentReschedule />} />
 
       <Route path={ROUTE.newPatients} element={<NewPatients />} />
       <Route path={ROUTE.contact} element={<Contact />} />
