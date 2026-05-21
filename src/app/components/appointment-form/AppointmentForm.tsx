@@ -35,6 +35,11 @@ import {
   getAppointmentDraftSession,
 } from "../../../feature/appointment/storage";
 import {
+  hasPastPreferredSelection,
+  isPastDateInTimeZone,
+  isPastPreferredSlot,
+} from "../../../feature/appointment/time";
+import {
   Dialog,
   DialogClose,
   DialogContent,
@@ -464,16 +469,6 @@ function getMonthDays(monthDate: Date) {
   }
 
   return days;
-}
-
-function isPastDate(date: Date) {
-  const today = new Date();
-  today.setHours(0, 0, 0, 0);
-
-  const target = new Date(date);
-  target.setHours(0, 0, 0, 0);
-
-  return target < today;
 }
 
 function sanitizeCopy(value: string) {
@@ -1077,6 +1072,10 @@ export function AppointmentRequestSection({}: AppointmentRequestSectionProps) {
           }
         }
 
+        if (hasPastPreferredSelection(filledSelections, formValues.timezone)) {
+          return "Preferred times must be in the future.";
+        }
+
         return "";
       }
 
@@ -1186,6 +1185,11 @@ export function AppointmentRequestSection({}: AppointmentRequestSectionProps) {
 
     if (!selection?.date) {
       setSubmissionError("Please select a week first.");
+      return;
+    }
+
+    if (isPastPreferredSlot(selection.date, slot, values.timezone)) {
+      setSubmissionError("Please choose a future time slot.");
       return;
     }
 
@@ -1942,7 +1946,10 @@ export function AppointmentRequestSection({}: AppointmentRequestSectionProps) {
                               }
 
                               const isSunday = date.getDay() === 0;
-                              const isPast = isPastDate(date);
+                              const isPast = isPastDateInTimeZone(
+                                date,
+                                values.timezone || CLINIC_TIMEZONE,
+                              );
                               const disabled = isSunday || isPast;
 
                               const isInHighlightedRange = isDateInWeek(
@@ -2300,6 +2307,7 @@ export function AppointmentRequestSection({}: AppointmentRequestSectionProps) {
                         open={timeSlotDialogDayIndex !== null}
                         selection={selectedDialogDay}
                         dayIndex={timeSlotDialogDayIndex}
+                        timezone={values.timezone || CLINIC_TIMEZONE}
                         onOpenChange={(open) => {
                           if (!open) closeTimeSlotDialog();
                         }}
@@ -3324,12 +3332,14 @@ function TimeSlotDialog({
   open,
   selection,
   dayIndex,
+  timezone,
   onOpenChange,
   onToggleSlot,
 }: {
   open: boolean;
   selection: PreferredSelection | null | undefined;
   dayIndex: number | null;
+  timezone: string;
   onOpenChange: (open: boolean) => void;
   onToggleSlot: (dayIndex: number, slot: string) => void;
 }) {
@@ -3392,15 +3402,19 @@ function TimeSlotDialog({
           <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-4">
             {availableSlots.map((slot) => {
               const selected = selection.timeSlots.includes(slot);
+              const isPastSlot = isPastPreferredSlot(selection.date, slot, timezone);
 
               return (
                 <button
                   key={`${selection.date}-${slot}`}
                   type="button"
+                  disabled={isPastSlot}
                   onClick={() => onToggleSlot(dayIndex, slot)}
                   className={[
                     "rounded-full px-4 py-3 font-manrope text-[13px] font-bold transition-all",
-                    selected
+                    isPastSlot
+                      ? "cursor-not-allowed border border-[#E1DDD5] bg-[#F1EEE7] text-[#9BA19A]"
+                      : selected
                       ? "border border-[#416352] bg-[#E5EFE5] text-[#1F3F2F] shadow-[0_0_0_1px_#416352]"
                       : "border border-transparent bg-[#ECEAE4] text-[#2C2C2C] hover:border-[#416352] hover:bg-[#E1E5DC]",
                   ].join(" ")}

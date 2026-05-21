@@ -9,6 +9,12 @@ import {
   submitAppointmentReschedule,
   type AppointmentRescheduleContextResponse
 } from "../../feature/appointment/api";
+import {
+  getCurrentDateKeyInTimeZone,
+  getCurrentTimeKeyInTimeZone,
+  hasPastPreferredSelection,
+  isTodayInTimeZone
+} from "../../feature/appointment/time";
 
 type EditableSelection = {
   date: string;
@@ -72,6 +78,10 @@ function validateSelections(selections: EditableSelection[], timezone: string) {
     if (new Set(slots).size !== slots.length) {
       return "Duplicate times are not allowed for the same date.";
     }
+  }
+
+  if (hasPastPreferredSelection(filledSelections, timezone.trim())) {
+    return "Preferred times must be in the future.";
   }
 
   return "";
@@ -144,6 +154,7 @@ export default function AppointmentReschedule() {
   );
 
   const formError = validateSelections(selections, timezone);
+  const minDate = getCurrentDateKeyInTimeZone(timezone.trim() || "Africa/Lagos");
 
   function updateSelection(index: number, nextSelection: EditableSelection) {
     setSelections((current) => current.map((selection, currentIndex) => (currentIndex === index ? nextSelection : selection)));
@@ -316,6 +327,7 @@ export default function AppointmentReschedule() {
                   <input
                     type="date"
                     value={selection.date}
+                    min={minDate}
                     onChange={(event) =>
                       updateSelection(index, { ...selection, date: event.target.value })
                     }
@@ -328,6 +340,11 @@ export default function AppointmentReschedule() {
                         <input
                           type="time"
                           value={slot}
+                          min={
+                            selection.date && isTodayInTimeZone(selection.date, timezone.trim() || "Africa/Lagos")
+                              ? getCurrentTimeKeyInTimeZone(timezone.trim() || "Africa/Lagos")
+                              : undefined
+                          }
                           onChange={(event) => {
                             const nextSlots = selection.timeSlots.map((currentSlot, currentIndex) =>
                               currentIndex === slotIndex ? event.target.value : currentSlot
