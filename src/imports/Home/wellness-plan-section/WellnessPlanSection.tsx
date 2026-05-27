@@ -124,9 +124,9 @@ function WellnessPlanImagePanel() {
     >
       <div className="absolute inset-0 overflow-hidden rounded-[16px] pointer-events-none">
         <img
-          alt=""
+          alt="Veterinarian comforting a dog in an exam room with X-ray screens"
           className="absolute inset-0 size-full object-cover"
-          src={images.doctreatdog}
+          src={images.wellnessPlanXray}
         />
       </div>
     </div>
