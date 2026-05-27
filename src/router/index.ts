@@ -1,6 +1,7 @@
 export const ROUTE = {
   home: "/",
   bookAppointment: "/book-appointment",
+  bookAppointmentReschedule: "/book-appointment/reschedule/:token",
   wellnessPlans: "/services/wellness-plans",
   vaccination: "/services/vaccination",
   diagnosticCare: "/services/diagnostic-care",

@@ -19,8 +19,11 @@ import doccatwoman from "./doccatwoman.svg";
 import diagnosticClarity from "./diagnosticclarity.svg";
 import catandButterfly from "./catandbutterfly.svg";
 import longtermtext from "./longtermtext.svg";
+import diagnosisCard from "./diagnosis-card.png";
+import longTermHealthCard from "./long-term-health-card.png";
 import computerBg from "./computer.png";
 import doctreatdog from "./doctreatdog.png";
+import wellnessPlanXray from "./wellness-plan-xray.jpeg";
 import cutedogcat from "./cutedogcat.png";
 import essential from "./essential.svg";
 import compassionatewriting from "./compassionatewriting.svg";
@@ -226,8 +229,11 @@ export default {
   diagnosticClarity,
   catandButterfly,
   longtermtext,
+  diagnosisCard,
+  longTermHealthCard,
   computerBg,
   doctreatdog,
+  wellnessPlanXray,
   cutedogcat,
   essential,
   compassionatewriting,

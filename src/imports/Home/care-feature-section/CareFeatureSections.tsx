@@ -127,9 +127,12 @@ function DiagnosticClarity() {
             strength={6}
             rotation={0}
             resistance={800}
-            className=" md:w-[220px] lg:w-[626px] lg:rotate-0"
+            className="w-[360px] max-w-[92vw] md:w-[520px] lg:w-[626px] lg:rotate-0"
           >
-            <img src={images.diagnosticClarity} alt="" />
+            <img
+              src={images.diagnosisCard}
+              alt="Diagnostic Clarity and Medical Expertise"
+            />
           </InertiaHover>
         </div>
       </div>
@@ -165,7 +168,10 @@ function CatAndButterflyWithText() {
             resistance={800}
             className="z-[10000] w-[400px] rotate-[-1deg] lg:w-[626px] lg:rotate-0"
           >
-            <img src={images.longtermtext} alt="" />
+            <img
+              src={images.longTermHealthCard}
+              alt="Long-Term Pet Health and Preventive Wellness"
+            />
           </InertiaHover>
         </div>
       </div>
