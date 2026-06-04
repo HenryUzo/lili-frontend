@@ -97,12 +97,12 @@ function WellnessPlanContent() {
     <div className="relative flex min-h-px min-w-px flex-1 flex-col items-start justify-center gap-6 px-1 py-2 sm:gap-8 lg:gap-[45px] lg:px-0 lg:py-0">
       <div className="relative w-full max-w-[561.671px] font-founders text-[30px] leading-[1.05] tracking-[-0.04em] text-[#009444] not-italic sm:text-[38px] md:text-[44px] lg:text-[48px] lg:leading-[0] lg:tracking-[-1.44px]">
         <span className="leading-[1.077] font-founders font-medium">
-          Our Wellness Plan,
+          Lili Wellness Plan,
           <br aria-hidden="true" />
         </span>
         <span className="font-founders font-medium leading-[1.077] text-[#214a1e]">
           {" "}
-          Your Pets lives happy
+          Happy Healthy Pets
         </span>
       </div>
 
