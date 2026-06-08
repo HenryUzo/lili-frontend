@@ -127,17 +127,20 @@ function CareHighlights() {
       <img
         src={images.dogPaw}
         alt=""
+        aria-hidden="true"
         className="absolute sm:hidden block -right-6 -top-20 z-20  w-[70px]"
       />
       <img
         src={images.handFromDoctor}
         alt=""
+        aria-hidden="true"
         className="absolute sm:hidden block  -right-2 -bottom-10 z-20 w-[130px]"
       />
 
       <img
         src={images.catPaw}
         alt=""
+        aria-hidden="true"
         className="absolute sm:hidden block  -left-10 -bottom-10 z-20 w-[70px]"
       />
       <section className="w-full max-w-[760px] rounded-[22px] border-2 border-[#FFFFFF94] bg-[#D5F7D366]  p-4  backdrop-blur-xl supports-[backdrop-filter]:bg-[#D5F7D366] lg:rotate-0 -rotate-6">
@@ -173,8 +176,9 @@ export function Banner({ onViewPlans }: { onViewPlans?: () => void }) {
           </h1>
 
           <p className="font-founders text-[24px] lg:max-w-[388px] font-normal leading-[108%] tracking-[-0.03em]">
-            If your pet is sick or injured, our team may be able to provide
-            same-day care. Call ahead and we’ll guide you on the next best step.
+            Preventive care works best before concerns become urgent. Choose a
+            wellness plan and we will guide your pet's routine exams, screenings,
+            and vaccines year-round.
           </p>
 
           <div className="flex flex-wrap items-start gap-4 lg:justify-start justify-center">
@@ -335,7 +339,7 @@ function ProactiveCare() {
 
         <p className="my-3 text-center text-[18px] font-normal leading-[29.25px] tracking-[0] text-[#DADADA] lg:max-w-[670px] manrope">
           Wellness plans are designed to prevent illness before it happens.
-          Unlike emergency care which addresses sudden medical crises, our
+          Unlike emergency care, which addresses sudden medical crises, our
           wellness plans provide a structured, calm approach to routine health
           maintenance, ensuring your pet receives high-quality preventive
           screenings and vaccinations year-round.

@@ -212,11 +212,12 @@ function HeroSection() {
     tracking-[2px]
     uppercase text-[#62181899]"
             >
-              For Emergency and enquires
+              For emergencies and inquiries
             </span>
           </div>
           <a
             href="tel:(210) 257-8496"
+            aria-label="Call Lili Veterinary Hospital"
             className="
         relative
         overflow-hidden
