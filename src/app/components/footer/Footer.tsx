@@ -188,8 +188,12 @@ const SocialButton = ({
 
 const FooterIntro = () => (
   <div className="flex flex-col gap-[22.8px] items-start pb-[67.75px]">
-    <Link to={ROUTE.home} className="transition hover:opacity-85">
-      <img src={images.footerLogo} alt="Footer Logo" />
+    <Link
+      to={ROUTE.home}
+      aria-label="Go to homepage"
+      className="transition hover:opacity-85"
+    >
+      <img src={images.footerLogo} alt="Lili Veterinary Hospital" />
     </Link>
 
     <div className="max-w-[320px] w-full">
@@ -256,6 +260,7 @@ const FooterLocation = () => (
       href={DIRECTIONS_URL}
       target="_blank"
       rel="noreferrer"
+      aria-label="View Lili Veterinary Hospital on Google Maps"
       onClick={() => trackDirectionsClick("footer")}
       className="block h-[160px] w-full overflow-hidden rounded-[16px] shadow-[0px_20px_40px_-10px_rgba(21,30,21,0.08)] transition hover:opacity-95"
     >
@@ -269,7 +274,7 @@ const FooterLocation = () => (
     <div className="opacity-60 w-full">
       <div className="flex flex-col font-['Manrope:Regular',sans-serif] font-normal text-[#012d1d] text-[12px]">
         <p className="leading-[16px]">
-          © 2024 Lili Veterinary Hospital + Urgent Care. Lovingly pinned.
+          {"\u00A9"} 2024 Lili Veterinary Hospital + Urgent Care. Lovingly pinned.
         </p>
       </div>
     </div>

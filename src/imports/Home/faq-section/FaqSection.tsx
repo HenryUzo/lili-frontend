@@ -129,7 +129,7 @@ export default function FaqSection({
     <section className="relative w-full overflow-clip">
       <div className="absolute inset-0 pointer-events-none">
         <img
-          alt=""
+          alt="Happy dog and cat together"
           className="size-full object-cover"
           src={images.cutedogcat}
         />

@@ -77,21 +77,25 @@ function Banner() {
                <img
                 src={images.dogPaw}
                 alt=""
+                aria-hidden="true"
                 className="absolute lg:hidden -right-6 -top-20 z-20  w-[100px]"
               />
                  <img
                 src={images.sirenLight}
                 alt=""
+                aria-hidden="true"
                 className="absolute lg:hidden -right-6 -bottom-20  z-20  w-[100px]"
               />
               <img
                 src={images.loveSticker}
                 alt=""
+                aria-hidden="true"
                 className="absolute lg:hidden left-0 top-0 z-20 w-[70px]"
               />
                <img
                 src={images.catPaw}
                 alt=""
+                aria-hidden="true"
                 className="absolute lg:hidden  -left-10 -bottom-40 z-20 w-[140px]"
               />
               <div className="border-[#FFFFFF94] border-2 w-full max-w-[501px] mt-5 rounded-[16px] lg:rotate-0 rotate-2  bg-[#D5F7D366] backdrop-blur-[2px] py-[19px] px-[25px]">
@@ -412,7 +416,32 @@ function RoadMap() {
   }, []);
 
   return (
-    <section ref={sectionRef} className="relative w-full bg-[#214A1E]">
+    <>
+    <section className="relative w-full bg-[#214A1E] px-6 py-12 text-white lg:hidden">
+      <div className="mx-auto flex max-w-md flex-col gap-5 rounded-[28px] border border-white/15 bg-white/10 p-6 shadow-[0_20px_50px_rgba(0,0,0,0.12)] backdrop-blur-sm">
+        <p className="font-founders text-sm font-medium uppercase tracking-[0.18em] text-white/70">
+          Get in touch fast
+        </p>
+        <h2 className="font-founders text-[36px] font-medium leading-[0.95] tracking-[-0.04em]">
+          We are always here for you.
+        </h2>
+        <p className="font-founders text-lg leading-[1.35] text-white/80">
+          Visit us at our Stone Oak location or call ahead so our team can guide
+          your next step.
+        </p>
+        <a
+          target="_blank"
+          rel="noreferrer"
+          href="https://www.google.com/maps/place/Lili+Veterinary+Hospital+%2B+Urgent+Care/@29.6423004,-98.4789347,15z/data=!4m6!3m5!1s0x865c89d98657135d:0x4d615151bf45d1d7!8m2!3d29.6423004!4d-98.4789347!16s%2Fg%2F11bx8rygyq?entry=ttu&g_ep=EgoyMDI2MDQwOC4wIKXMDSoASAFQAw%3D%3D"
+          onClick={() => trackDirectionsClick("urgent_care_page")}
+          className="rounded-[18px] bg-white px-5 py-4 font-founders text-base font-medium leading-[1.25] text-[#214A1E] shadow-lg"
+        >
+          20210 Stone Oak Pkwy #301, San Antonio, TX 78258
+        </a>
+      </div>
+    </section>
+
+    <section ref={sectionRef} className="relative hidden w-full bg-[#214A1E] lg:block">
       <div className="relative w-full overflow-hidden">
         <img src={images.roadMap} alt="Map" className="block w-full h-auto" />
 
@@ -482,7 +511,7 @@ function RoadMap() {
       <div className="absolute bottom-[30%] left-1/2 z-[10000] flex flex-col -translate-x-1/2">
         <div className="flex flex-col items-center justify-center py-5">
           <h1 className="text-center font-queen text-[20px] leading-[108%] text-white md:text-[56px] lg:text-[72px]">
-            We are always here for you!!
+            We are always here for you.
           </h1>
           <img src={images.thuderArrrow} alt="" className="lg:w-fit w-1" />
         </div>
@@ -493,6 +522,7 @@ function RoadMap() {
         className="mt-[-22%] w-full z-50 relative"
       />
     </section>
+    </>
   );
 }
 
@@ -548,7 +578,7 @@ function WhatToExpect() {
     <section className="relative z-50 bg-[#F2FCED] px-6 pt-10 pb-20 md:px-16 lg:pb-40">
       <div className="flex flex-col items-center justify-center">
         <h1 className="heading max-w-[566px] text-center text-[32px] leading-[108%] text-[#214A1E] md:text-[48px] lg:text-[72px]">
-          What to expect when you come in...
+          What to expect during your visit
         </h1>
 
         {/* mobile carousel */}

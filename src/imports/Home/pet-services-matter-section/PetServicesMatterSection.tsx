@@ -146,7 +146,7 @@ function UrgentCareCard() {
         <div className="max-w-[448px]">
           <div className="font-['Manrope:Medium',sans-serif] text-[14px] font-medium text-[rgba(255,255,255,0.82)] sm:text-[15px] lg:text-[16px]">
             <p className="leading-[22px] sm:leading-[24px]">
-              Critical care when every second counts. No appointment
+              Critical care when every second counts. No appointment{" "}
             </p>
             <p className="leading-[22px] sm:leading-[24px]">
               needed for true emergencies.
@@ -321,7 +321,7 @@ export default function PetServicesMatterSection() {
                       title="Wellness Exams"
                       icon="wellness"
                       descriptionLines={
-                        "Routine checkups to ensure your companion stays ,in peak condition year-round."
+                        "Routine checkups to ensure your companion stays in peak condition year-round."
                       }
                     />
                   </div>

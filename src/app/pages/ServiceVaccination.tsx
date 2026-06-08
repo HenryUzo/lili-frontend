@@ -184,10 +184,20 @@ function CareHighlights() {
       </section>
    
 
-      <img src={images.sheild} alt="" className="w-[60px] absolute bottom-0 -left-6 sm:hidden block  " />
+      <img
+        src={images.sheild}
+        alt=""
+        aria-hidden="true"
+        className="w-[60px] absolute bottom-0 -left-6 sm:hidden block  "
+      />
 
 
-      <img src={images.injectionBottle} alt="" className="w-[160px] absolute bottom-0 left-20 sm:hidden block   " />
+      <img
+        src={images.injectionBottle}
+        alt=""
+        aria-hidden="true"
+        className="w-[160px] absolute bottom-0 left-20 sm:hidden block   "
+      />
 
         <img src={images.adorablePetFriendsDogCat} alt="adorablePetFriendsDogCat" className="w-[280px] absolute bottom-0 -right-10 sm:hidden block " />
    
@@ -407,8 +417,8 @@ const ServiceVaccination = () => {
             </>
           }
           description="Vaccinations are the foundational safety net for your pet’s lifelong wellness ecosystem, shielding them from environmental threats."
-          primaryButtonLabel="View Plans"
-          secondaryActionLabel="Book Wellness Visit"
+          primaryButtonLabel="View Vaccine Guidance"
+          secondaryActionLabel="Book Vaccination Visit"
           onSecondaryClick={ROUTE.bookAppointment}
           highlights={<CareHighlights />}
           contentClassName="lg:max-w-[562px]"
