@@ -17,6 +17,7 @@ import {
 import { trackNewPatientSubmitted } from "../../../lib/analytics";
 import { toast } from "sonner";
 import writeForm from "../../assests/images/write-form.svg";
+import personIcon from "../../assests/images/person-icon.svg";
 import pawIcon from "../../assests/images/paw-icon.svg";
 import vist from "../../assests/images/vist.svg";
 
@@ -570,7 +571,7 @@ export default function RegisterPetForm() {
 
         <div className="bg-white w-full lg:max-h-[507px] max-h-full overflow-y-auto px-8 py-7 space-y-8 scrollbar-thin">
         <div>
-          <SectionHeader icon={images?.personIcon} title="Owner Information" />
+          <SectionHeader icon={personIcon} title="Owner Information" />
 
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mt-5">
             <CustomInput
