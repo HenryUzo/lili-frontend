@@ -5,13 +5,19 @@ import type {
   HTMLInputTypeAttribute,
 } from "react";
 import images from "../../assests/images";
-import { Sex, Species } from "../../../feature/new-registration/api";
+import {
+  NewPatientReferralSource,
+  Sex,
+  Species,
+} from "../../../feature/new-registration/api";
 import {
   useCreateNewPatient,
+  useSaveNewPatientReferralSource,
   useUploadNewPatientFiles,
 } from "../../../feature/new-registration/hooks";
 import { trackNewPatientSubmitted } from "../../../lib/analytics";
 import { toast } from "sonner";
+import { NewPatientReferralSourceModal } from "./NewPatientReferralSourceModal";
 
 const inputBase =
   "w-full bg-[#EDF7E7] rounded-full px-4 py-3 text-[#1a3a1f] placeholder-transparent outline-none border border-transparent focus:border-[#3a7d44] focus:ring-2 focus:ring-[#3a7d44]/20 transition-all duration-200 text-sm font-medium";
@@ -99,6 +105,11 @@ type FormState = {
     consentToElectronicComms: boolean;
   };
   files: File[];
+};
+
+type ReferralCaptureState = {
+  requestId: string;
+  token: string;
 };
 
 const getInitialFormState = (): FormState => ({
@@ -345,9 +356,18 @@ function SectionHeader({ icon, title }: SectionHeaderProps) {
 
 export default function RegisterPetForm() {
   const [form, setForm] = useState<FormState>(() => getInitialFormState());
+  const [referralCaptureState, setReferralCaptureState] =
+    useState<ReferralCaptureState | null>(null);
+  const [selectedReferralSource, setSelectedReferralSource] =
+    useState<NewPatientReferralSource | null>(null);
+  const [referralSourceOtherText, setReferralSourceOtherText] = useState("");
+  const [referralSourceError, setReferralSourceError] = useState<string | null>(
+    null
+  );
 
   const createNewPatientMutation = useCreateNewPatient();
   const uploadFilesMutation = useUploadNewPatientFiles();
+  const saveReferralSourceMutation = useSaveNewPatientReferralSource();
 
   const isSubmitting =
     createNewPatientMutation.isPending || uploadFilesMutation.isPending;
@@ -459,13 +479,15 @@ export default function RegisterPetForm() {
         uploadedFileIds,
       };
 
-      await createNewPatientMutation.mutateAsync(payload);
+      const createdRequest = await createNewPatientMutation.mutateAsync(payload);
 
-      trackNewPatientSubmitted({
-        petSpecies: form.pet.species ?? null,
-        isUrgent: form.visit.isUrgent ?? null,
+      setReferralCaptureState({
+        requestId: createdRequest.id,
+        token: createdRequest.referralSourceCaptureToken,
       });
-      setForm(getInitialFormState());
+      setSelectedReferralSource(null);
+      setReferralSourceOtherText("");
+      setReferralSourceError(null);
     } catch {
       // Toasts are handled by the upload and create mutations.
     }
@@ -475,32 +497,71 @@ export default function RegisterPetForm() {
     setForm(getInitialFormState());
   };
 
+  const handleConfirmReferralSource = async () => {
+    if (!referralCaptureState || !selectedReferralSource) {
+      return;
+    }
+
+    setReferralSourceError(null);
+
+    try {
+      await saveReferralSourceMutation.mutateAsync({
+        requestId: referralCaptureState.requestId,
+        token: referralCaptureState.token,
+        source: selectedReferralSource,
+        otherText:
+          selectedReferralSource === "OTHER"
+            ? referralSourceOtherText.trim() || undefined
+            : undefined,
+      });
+
+      trackNewPatientSubmitted({
+        petSpecies: form.pet.species ?? null,
+        isUrgent: form.visit.isUrgent ?? null,
+      });
+
+      toast.success("New patient request submitted successfully.");
+      setReferralCaptureState(null);
+      setSelectedReferralSource(null);
+      setReferralSourceOtherText("");
+      setReferralSourceError(null);
+      setForm(getInitialFormState());
+    } catch (error: any) {
+      setReferralSourceError(
+        error?.response?.data?.error?.message ||
+          error?.message ||
+          "Failed to save referral source."
+      );
+    }
+  };
+
   return (
-    <form
-      onSubmit={handleSubmit}
-      className="lg:w-[811px] w-full rounded-[48px] overflow-hidden shadow-2xl relative z-[1000]"
-    >
-      <div className="bg-[#012D1D] px-8 py-7 w-full lg:h-[168px] h-[126px] flex items-center justify-between">
-        <div>
-          <h1 className="lg:text-[36px] text-2xl font-bold font-space text-white leading-tight mb-1">
-            Register Your Pet
-          </h1>
+    <>
+      <form
+        onSubmit={handleSubmit}
+        className="lg:w-[811px] w-full rounded-[48px] overflow-hidden shadow-2xl relative z-[1000]"
+      >
+        <div className="bg-[#012D1D] px-8 py-7 w-full lg:h-[168px] h-[126px] flex items-center justify-between">
+          <div>
+            <h1 className="lg:text-[36px] text-2xl font-bold font-space text-white leading-tight mb-1">
+              Register Your Pet
+            </h1>
 
-          <p className="text-[#C1ECD4] manrope text-base font-light">
-            Complete this form to help us prepare for your pet&apos;s first visit.
-          </p>
+            <p className="text-[#C1ECD4] manrope text-base font-light">
+              Complete this form to help us prepare for your pet&apos;s first visit.
+            </p>
+          </div>
+
+          <div className="lg:block hidden">
+            <img
+              src={images.writeForm}
+              alt=""
+              className="mix-blend-overlay opacity-30"
+            />
+          </div>
         </div>
 
-        <div className="lg:block hidden">
-          <img
-            src={images.writeForm}
-            alt=""
-            className="mix-blend-overlay opacity-30"
-          />
-        </div>
-      </div>
-
-      <div className="bg-white w-full lg:max-h-[507px] max-h-full overflow-y-auto px-8 py-7 space-y-8 scrollbar-thin">
+        <div className="bg-white w-full lg:max-h-[507px] max-h-full overflow-y-auto px-8 py-7 space-y-8 scrollbar-thin">
         <div>
           <SectionHeader icon={images?.personIcon} title="Owner Information" />
 
@@ -690,25 +751,43 @@ export default function RegisterPetForm() {
           </p>
         </div>
 
-        <div className="flex flex-col sm:flex-row gap-3 pt-2 pb-1">
-          <button
-            type="submit"
-            disabled={!canSubmit || isSubmitting}
-            className="flex-1 bg-[#1a3a1f] disabled:opacity-60 disabled:cursor-not-allowed text-white rounded-full py-3.5 text-sm font-semibold tracking-wide hover:bg-[#2a5a2f] active:scale-[0.98] transition-all duration-200 shadow-lg"
-          >
-            {isSubmitting ? "Submitting..." : "Register Pet"}
-          </button>
+          <div className="flex flex-col sm:flex-row gap-3 pt-2 pb-1">
+            <button
+              type="submit"
+              disabled={!canSubmit || isSubmitting}
+              className="flex-1 bg-[#1a3a1f] disabled:opacity-60 disabled:cursor-not-allowed text-white rounded-full py-3.5 text-sm font-semibold tracking-wide hover:bg-[#2a5a2f] active:scale-[0.98] transition-all duration-200 shadow-lg"
+            >
+              {isSubmitting ? "Submitting..." : "Register Pet"}
+            </button>
 
-          <button
-            type="button"
-            onClick={handleClear}
-            disabled={isSubmitting}
-            className="sm:w-36 border border-[#dceadc] text-[#3a5c40] rounded-full py-3.5 text-sm font-semibold tracking-wide hover:bg-[#EDF7EA] active:scale-[0.98] transition-all duration-200 disabled:opacity-60 disabled:cursor-not-allowed"
-          >
-            Clear Form
-          </button>
+            <button
+              type="button"
+              onClick={handleClear}
+              disabled={isSubmitting}
+              className="sm:w-36 border border-[#dceadc] text-[#3a5c40] rounded-full py-3.5 text-sm font-semibold tracking-wide hover:bg-[#EDF7EA] active:scale-[0.98] transition-all duration-200 disabled:opacity-60 disabled:cursor-not-allowed"
+            >
+              Clear Form
+            </button>
+          </div>
         </div>
-      </div>
-    </form>
+      </form>
+
+      <NewPatientReferralSourceModal
+        open={Boolean(referralCaptureState)}
+        selectedSource={selectedReferralSource}
+        otherText={referralSourceOtherText}
+        errorMessage={referralSourceError}
+        isSaving={saveReferralSourceMutation.isPending}
+        onSelectSource={(source) => {
+          setSelectedReferralSource(source);
+          setReferralSourceError(null);
+        }}
+        onOtherTextChange={(value) => {
+          setReferralSourceOtherText(value);
+          setReferralSourceError(null);
+        }}
+        onConfirm={handleConfirmReferralSource}
+      />
+    </>
   );
 }

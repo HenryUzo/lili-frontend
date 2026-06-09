@@ -3,6 +3,7 @@ import { toast } from "sonner";
 import {
   createNewPatient,
   CreateNewPatientPayload,
+  saveNewPatientReferralSource,
   uploadNewPatientFiles,
 } from "./api";
 
@@ -16,10 +17,7 @@ export function useCreateNewPatient() {
   return useMutation({
     mutationFn: (payload: CreateNewPatientPayload) =>
       createNewPatient(payload),
-
     onSuccess: () => {
-      toast.success("New patient request submitted successfully.");
-
       queryClient.invalidateQueries({
         queryKey: newPatientKeys.all,
       });
@@ -45,6 +43,24 @@ export function useUploadNewPatientFiles() {
           error?.message ||
           "Failed to upload new patient files."
       );
+    },
+  });
+}
+
+export function useSaveNewPatientReferralSource() {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: (input: {
+      requestId: string;
+      token: string;
+      source: Parameters<typeof saveNewPatientReferralSource>[0]["source"];
+      otherText?: string;
+    }) => saveNewPatientReferralSource(input),
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: newPatientKeys.all,
+      });
     },
   });
 }

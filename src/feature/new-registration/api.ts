@@ -2,6 +2,15 @@ import { api } from "../../lib/api/clients";
 
 export type Species = "DOG" | "CAT";
 export type Sex = "MALE" | "FEMALE";
+export type NewPatientReferralSource =
+  | "PET_PARADISE"
+  | "WEBSITE"
+  | "GOOGLE"
+  | "PET_BARN"
+  | "WELCOME_HOME_MAGAZINE"
+  | "REFERRED_BY_ANOTHER_VETERINARIAN"
+  | "REFERRED_BY_FRIEND_OR_FAMILY_MEMBER"
+  | "OTHER";
 
 export interface CreateNewPatientPayload {
   owner: {
@@ -49,8 +58,27 @@ export interface UploadedFileResponse {
   updatedAt: string;
 }
 
+export interface CreateNewPatientResponse {
+  id: string;
+  referralSourceCaptureToken: string;
+}
+
 export async function createNewPatient(payload: CreateNewPatientPayload) {
-  const response = await api.post("/new-patient-requests", payload);
+  const response = await api.post<CreateNewPatientResponse>("/new-patient-requests", payload);
+  return response.data;
+}
+
+export async function saveNewPatientReferralSource(input: {
+  requestId: string;
+  token: string;
+  source: NewPatientReferralSource;
+  otherText?: string;
+}) {
+  const response = await api.post(`/new-patient-requests/${input.requestId}/referral-source`, {
+    token: input.token,
+    source: input.source,
+    otherText: input.otherText
+  });
   return response.data;
 }
 
