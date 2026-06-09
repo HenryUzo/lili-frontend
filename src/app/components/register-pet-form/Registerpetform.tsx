@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { Suspense, lazy, useMemo, useState } from "react";
 import type {
   ChangeEventHandler,
   FormEvent,
@@ -17,7 +17,12 @@ import {
 } from "../../../feature/new-registration/hooks";
 import { trackNewPatientSubmitted } from "../../../lib/analytics";
 import { toast } from "sonner";
-import { NewPatientReferralSourceModal } from "./NewPatientReferralSourceModal";
+
+const NewPatientReferralSourceModal = lazy(() =>
+  import("./NewPatientReferralSourceModal").then((module) => ({
+    default: module.NewPatientReferralSourceModal,
+  }))
+);
 
 const inputBase =
   "w-full bg-[#EDF7E7] rounded-full px-4 py-3 text-[#1a3a1f] placeholder-transparent outline-none border border-transparent focus:border-[#3a7d44] focus:ring-2 focus:ring-[#3a7d44]/20 transition-all duration-200 text-sm font-medium";
@@ -772,22 +777,26 @@ export default function RegisterPetForm() {
         </div>
       </form>
 
-      <NewPatientReferralSourceModal
-        open={Boolean(referralCaptureState)}
-        selectedSource={selectedReferralSource}
-        otherText={referralSourceOtherText}
-        errorMessage={referralSourceError}
-        isSaving={saveReferralSourceMutation.isPending}
-        onSelectSource={(source) => {
-          setSelectedReferralSource(source);
-          setReferralSourceError(null);
-        }}
-        onOtherTextChange={(value) => {
-          setReferralSourceOtherText(value);
-          setReferralSourceError(null);
-        }}
-        onConfirm={handleConfirmReferralSource}
-      />
+      {referralCaptureState ? (
+        <Suspense fallback={null}>
+          <NewPatientReferralSourceModal
+            open
+            selectedSource={selectedReferralSource}
+            otherText={referralSourceOtherText}
+            errorMessage={referralSourceError}
+            isSaving={saveReferralSourceMutation.isPending}
+            onSelectSource={(source) => {
+              setSelectedReferralSource(source);
+              setReferralSourceError(null);
+            }}
+            onOtherTextChange={(value) => {
+              setReferralSourceOtherText(value);
+              setReferralSourceError(null);
+            }}
+            onConfirm={handleConfirmReferralSource}
+          />
+        </Suspense>
+      ) : null}
     </>
   );
 }

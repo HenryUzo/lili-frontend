@@ -64,7 +64,11 @@ export interface CreateNewPatientResponse {
 }
 
 export async function createNewPatient(payload: CreateNewPatientPayload) {
-  const response = await api.post<CreateNewPatientResponse>("/new-patient-requests", payload);
+  const response = await api.post<CreateNewPatientResponse>(
+    "/new-patient-requests",
+    payload,
+    { timeout: 45000 }
+  );
   return response.data;
 }
 
@@ -74,11 +78,15 @@ export async function saveNewPatientReferralSource(input: {
   source: NewPatientReferralSource;
   otherText?: string;
 }) {
-  const response = await api.post(`/new-patient-requests/${input.requestId}/referral-source`, {
-    token: input.token,
-    source: input.source,
-    otherText: input.otherText
-  });
+  const response = await api.post(
+    `/new-patient-requests/${input.requestId}/referral-source`,
+    {
+      token: input.token,
+      source: input.source,
+      otherText: input.otherText
+    },
+    { timeout: 30000 }
+  );
   return response.data;
 }
 
@@ -93,6 +101,7 @@ export async function uploadNewPatientFiles(files: File[]) {
     "/files",
     formData,
     {
+      timeout: 45000,
       headers: {
         "Content-Type": "multipart/form-data",
       },
