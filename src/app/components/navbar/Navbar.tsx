@@ -5,10 +5,10 @@ import {
   useLocation,
   useNavigate,
 } from "react-router-dom";
-import images from "../../assests/images";
 import PhoneCallDialog from "../../reuseable-components/call-modal";
 import { ROUTE } from "../../../router";
 import { trackCallClick } from "../../../lib/analytics";
+import logo from "../../assests/images/logo.svg";
 
 export type NavbarPhase = "navIntro" | "ready";
 
@@ -78,7 +78,7 @@ const AnimatedLogo = ({
   return (
     <div className={`relative shrink-0 ${className}`}>
       <img
-        src={images.logo}
+        src={logo}
         alt="LiliVet logo"
         className="block h-full w-full object-contain"
         draggable={false}
@@ -95,7 +95,7 @@ function StaticNavbarLogo({
   return (
     <div className={`relative shrink-0 ${className}`}>
       <img
-        src={images.logo}
+        src={logo}
         alt="LiliVet logo"
         className="block h-full w-full object-contain"
         draggable={false}

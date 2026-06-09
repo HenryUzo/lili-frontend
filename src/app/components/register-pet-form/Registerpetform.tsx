@@ -4,7 +4,6 @@ import type {
   FormEvent,
   HTMLInputTypeAttribute,
 } from "react";
-import images from "../../assests/images";
 import {
   NewPatientReferralSource,
   Sex,
@@ -17,6 +16,9 @@ import {
 } from "../../../feature/new-registration/hooks";
 import { trackNewPatientSubmitted } from "../../../lib/analytics";
 import { toast } from "sonner";
+import writeForm from "../../assests/images/write-form.svg";
+import pawIcon from "../../assests/images/paw-icon.svg";
+import vist from "../../assests/images/vist.svg";
 
 const NewPatientReferralSourceModal = lazy(() =>
   import("./NewPatientReferralSourceModal").then((module) => ({
@@ -559,7 +561,7 @@ export default function RegisterPetForm() {
 
           <div className="lg:block hidden">
             <img
-              src={images.writeForm}
+              src={writeForm}
               alt=""
               className="mix-blend-overlay opacity-30"
             />
@@ -597,7 +599,7 @@ export default function RegisterPetForm() {
         </div>
 
         <div>
-          <SectionHeader icon={images.pawIcon} title="Pet Information" />
+          <SectionHeader icon={pawIcon} title="Pet Information" />
 
           <div className="space-y-8 mt-5">
             <div className="grid grid-cols-1 sm:grid-cols-[2fr_1.5fr_1.5fr] gap-6">
@@ -677,7 +679,7 @@ export default function RegisterPetForm() {
         </div>
 
         <div>
-          <SectionHeader icon={images.vist} title="Visit Details" />
+          <SectionHeader icon={vist} title="Visit Details" />
 
           <div className="space-y-8 mt-5">
             <div className="grid grid-cols-1 sm:grid-cols-[2fr_1.2fr] gap-4">

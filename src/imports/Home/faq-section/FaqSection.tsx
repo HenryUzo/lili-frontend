@@ -1,5 +1,5 @@
-import images from "../../../app/assests/images";
 import svgPaths from "../../../app/components/svgpath";
+import cutedogcat from "../../../app/assests/images/cutedogcat.png";
 
 export type FAQItem = {
   question: string;
@@ -131,7 +131,9 @@ export default function FaqSection({
         <img
           alt="Happy dog and cat together"
           className="size-full object-cover"
-          src={images.cutedogcat}
+          src={cutedogcat}
+          loading="lazy"
+          decoding="async"
         />
         <div className="absolute inset-0 bg-[rgba(0,0,0,0.2)]" />
       </div>

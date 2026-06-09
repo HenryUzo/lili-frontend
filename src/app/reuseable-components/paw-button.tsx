@@ -4,7 +4,7 @@ import svgPaths from "../components/svgpath";
 import { useNavigate } from "react-router";
 import { ROUTE } from "../../router";
 import HoverCursorWrapper from "./hover-cursor-wrapper";
-import images from "../assests/images";
+import pawWhite from "../assests/images/pawwhite.svg";
 
 
 type PawButtonVariant = "primary" | "secondary";
@@ -217,7 +217,7 @@ export default function PawButton({
   };
 
   return (
-    <HoverCursorWrapper  cursorImage={images.pawWhite} >
+    <HoverCursorWrapper  cursorImage={pawWhite} >
       <div
         ref={wrapperRef}
         className={`flex w-full shrink-0 flex-col items-center justify-center gap-2 lg:w-fit ${className}`}

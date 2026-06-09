@@ -1,3 +1,4 @@
+import { Suspense, lazy, type ReactNode } from "react";
 import {
   createBrowserRouter,
   createRoutesFromElements,
@@ -5,40 +6,78 @@ import {
   RouterProvider,
 } from "react-router-dom";
 import { Layout } from "./components/Layout";
-import { Home } from "./pages/Home";
-import { About } from "./pages/About";
-import { NewPatients } from "./pages/NewPatients";
-import { UrgentCare } from "./pages/UrgentCare";
-import ServicesWellnessPlan from "./pages/ServicesWellnessPlan";
-import ServiceVaccination from "./pages/ServiceVaccination";
-import ServiceDiagnosticCare from "./pages/ServicesDiagnosticCare";
-import ServicesDentalCare from "./pages/ServicesDentalCare";
-import ServicesSurgery from "./pages/ServicesSurgery";
-import Appointment from "./pages/Appointment";
-import AppointmentReschedule from "./pages/AppointmentReschedule";
-import Contact from "./pages/Contact";
 import { Toaster } from "sonner";
 import { ROUTE } from "../router";
-import NotFound from "./pages/NotFound";
+const Home = lazy(() =>
+  import("./pages/Home").then((module) => ({ default: module.Home })),
+);
+const About = lazy(() =>
+  import("./pages/About").then((module) => ({ default: module.About })),
+);
+const NewPatients = lazy(() =>
+  import("./pages/NewPatients").then((module) => ({
+    default: module.NewPatients,
+  })),
+);
+const UrgentCare = lazy(() =>
+  import("./pages/UrgentCare").then((module) => ({
+    default: module.UrgentCare,
+  })),
+);
+const ServicesWellnessPlan = lazy(() => import("./pages/ServicesWellnessPlan"));
+const ServiceVaccination = lazy(() => import("./pages/ServiceVaccination"));
+const ServiceDiagnosticCare = lazy(() => import("./pages/ServicesDiagnosticCare"));
+const ServicesDentalCare = lazy(() => import("./pages/ServicesDentalCare"));
+const ServicesSurgery = lazy(() => import("./pages/ServicesSurgery"));
+const Appointment = lazy(() => import("./pages/Appointment"));
+const AppointmentReschedule = lazy(() => import("./pages/AppointmentReschedule"));
+const Contact = lazy(() => import("./pages/Contact"));
+const NotFound = lazy(() => import("./pages/NotFound"));
+
+function RouteFallback() {
+  return (
+    <div className="min-h-[40vh] w-full bg-[#F2F7EE]" aria-hidden="true" />
+  );
+}
+
+function withSuspense(element: ReactNode) {
+  return <Suspense fallback={<RouteFallback />}>{element}</Suspense>;
+}
 
 const router = createBrowserRouter(
   createRoutesFromElements(
     <Route element={<Layout />}>
-        <Route path="*" element={<NotFound />} />
-      <Route path="/" element={<Home />} />
-      <Route path={ROUTE.urgentCare} element={<UrgentCare />} />
-      <Route path={ROUTE.wellnessPlans} element={<ServicesWellnessPlan />} />
-      <Route path={ROUTE.vaccination} element={<ServiceVaccination />} />
-      <Route path={ROUTE.diagnosticCare} element={<ServiceDiagnosticCare />} />
-      <Route path={ROUTE.dentalCare} element={<ServicesDentalCare />} />
-      <Route path={ROUTE.surgery} element={<ServicesSurgery />} />
-
-      <Route path={ROUTE.aboutUs} element={<About />} />
-      <Route path={ROUTE.bookAppointment} element={<Appointment />} />
-      <Route path={ROUTE.bookAppointmentReschedule} element={<AppointmentReschedule />} />
-
-      <Route path={ROUTE.newPatients} element={<NewPatients />} />
-      <Route path={ROUTE.contact} element={<Contact />} />
+      <Route path="*" element={withSuspense(<NotFound />)} />
+      <Route path="/" element={withSuspense(<Home />)} />
+      <Route path={ROUTE.urgentCare} element={withSuspense(<UrgentCare />)} />
+      <Route
+        path={ROUTE.wellnessPlans}
+        element={withSuspense(<ServicesWellnessPlan />)}
+      />
+      <Route
+        path={ROUTE.vaccination}
+        element={withSuspense(<ServiceVaccination />)}
+      />
+      <Route
+        path={ROUTE.diagnosticCare}
+        element={withSuspense(<ServiceDiagnosticCare />)}
+      />
+      <Route
+        path={ROUTE.dentalCare}
+        element={withSuspense(<ServicesDentalCare />)}
+      />
+      <Route path={ROUTE.surgery} element={withSuspense(<ServicesSurgery />)} />
+      <Route path={ROUTE.aboutUs} element={withSuspense(<About />)} />
+      <Route
+        path={ROUTE.bookAppointment}
+        element={withSuspense(<Appointment />)}
+      />
+      <Route
+        path={ROUTE.bookAppointmentReschedule}
+        element={withSuspense(<AppointmentReschedule />)}
+      />
+      <Route path={ROUTE.newPatients} element={withSuspense(<NewPatients />)} />
+      <Route path={ROUTE.contact} element={withSuspense(<Contact />)} />
     </Route>,
   ),
 );

@@ -48,7 +48,7 @@ const ServiceCard: React.FC<ServiceCardProps> = ({
     >
       {/* Icon */}
       <div className="w-8 h-8 flex items-center justify-center text-[#1D9E75]">
-       <img src={icon} alt="" />
+       <img src={icon} alt="" loading="lazy" decoding="async" />
       </div>
 
       {/* Title */}

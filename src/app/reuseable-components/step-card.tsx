@@ -47,7 +47,7 @@ const StepCard: React.FC<StepCardProps> = ({
     >
       {/* Icon container */}
       <div className="w-10 h-10 flex items-center justify-center text-[#b33a2a]">
-        <img src={icon} alt="calender" />
+        <img src={icon} alt="" loading="lazy" decoding="async" />
       </div>
 
       {/* Title */}

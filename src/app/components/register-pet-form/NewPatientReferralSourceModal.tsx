@@ -1,4 +1,3 @@
-import images from "../../assests/images";
 import type { NewPatientReferralSource } from "../../../feature/new-registration/api";
 import {
   Dialog,
@@ -7,6 +6,15 @@ import {
   DialogHeader,
   DialogTitle
 } from "../ui/dialog";
+import cozyPet from "../../assests/images/cozy-pet.png";
+import computerBg from "../../assests/images/computer.png";
+import cutedogcat from "../../assests/images/cutedogcat.png";
+import pet from "../../assests/images/pet.png";
+import blog from "../../assests/images/blog.svg";
+import doctorAndPatient from "../../assests/images/doctor-patient.png";
+import happyDogs from "../../assests/images/happy-dogs.png";
+import others from "../../assests/images/others.png";
+import logoTwo from "../../assests/images/logo2.svg";
 
 type ReferralOption = {
   value: NewPatientReferralSource;
@@ -19,49 +27,49 @@ const REFERRAL_OPTIONS: ReferralOption[] = [
   {
     value: "PET_PARADISE",
     label: "Pet Paradise",
-    image: images.cozyPet,
+    image: cozyPet,
     accentClassName: "from-[#F7FBEA] to-[#EDF7E7]"
   },
   {
     value: "WEBSITE",
     label: "Website",
-    image: images.computerBg,
+    image: computerBg,
     accentClassName: "from-[#EAF7F0] to-[#E7F5EC]"
   },
   {
     value: "GOOGLE",
     label: "Google",
-    image: images.cutedogcat,
+    image: cutedogcat,
     accentClassName: "from-[#FFF7E6] to-[#FFF1D8]"
   },
   {
     value: "PET_BARN",
     label: "Pet barn",
-    image: images.pet,
+    image: pet,
     accentClassName: "from-[#F5EEFF] to-[#F0E5FF]"
   },
   {
     value: "WELCOME_HOME_MAGAZINE",
     label: "Welcome home Magazine",
-    image: images.blog,
+    image: blog,
     accentClassName: "from-[#EAF3FF] to-[#E4F0FF]"
   },
   {
     value: "REFERRED_BY_ANOTHER_VETERINARIAN",
     label: "Referred by another Veterinarian",
-    image: images.doctorAndPatient,
+    image: doctorAndPatient,
     accentClassName: "from-[#EEF8F0] to-[#E3F2E8]"
   },
   {
     value: "REFERRED_BY_FRIEND_OR_FAMILY_MEMBER",
     label: "Referred by a friend or family member",
-    image: images.happyDogs,
+    image: happyDogs,
     accentClassName: "from-[#FFF4E8] to-[#FFECDD]"
   },
   {
     value: "OTHER",
     label: "Other",
-    image: images.others,
+    image: others,
     accentClassName: "from-[#FBEAF3] to-[#F8E3EF]"
   }
 ];
@@ -105,7 +113,7 @@ export function NewPatientReferralSourceModal({
 
           <DialogHeader className="relative text-center sm:text-left">
             <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-white shadow-[0_12px_30px_rgba(18,52,28,0.08)] sm:mx-0">
-              <img src={images.logoTwo} alt="" className="h-10 w-auto" />
+              <img src={logoTwo} alt="" className="h-10 w-auto" />
             </div>
             <DialogTitle className="mt-4 font-founders text-[30px] font-medium leading-[1.02] text-[#12341C] sm:text-[38px]">
               How did you find out about Lili Vet?

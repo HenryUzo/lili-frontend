@@ -74,6 +74,8 @@ const UrgentCareSection: React.FC<UrgentCareSectionProps> = ({
             src={imageSrc}
             alt={imageAlt}
             className="h-full w-full object-cover object-center"
+            loading="lazy"
+            decoding="async"
           />
         </div>
       )}

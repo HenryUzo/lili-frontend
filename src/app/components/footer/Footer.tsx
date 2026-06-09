@@ -1,5 +1,4 @@
 import { Link } from "react-router-dom";
-import images from "../../assests/images";
 import {
   CLINIC_PHONE_NUMBER,
   DIRECTIONS_URL,
@@ -17,6 +16,8 @@ import {
 } from "../../../lib/external-links";
 import { ROUTE } from "../../../router";
 import svgPaths from "../svgpath";
+import footerLogo from "../../assests/images/footer-logo.svg";
+import mapMoney from "../../assests/images/location-money.svg";
 
 function handleFooterShare() {
   if (typeof window === "undefined") return;
@@ -193,7 +194,7 @@ const FooterIntro = () => (
       aria-label="Go to homepage"
       className="transition hover:opacity-85"
     >
-      <img src={images.footerLogo} alt="Lili Veterinary Hospital" />
+      <img src={footerLogo} alt="Lili Veterinary Hospital" />
     </Link>
 
     <div className="max-w-[320px] w-full">
@@ -265,9 +266,11 @@ const FooterLocation = () => (
       className="block h-[160px] w-full overflow-hidden rounded-[16px] shadow-[0px_20px_40px_-10px_rgba(21,30,21,0.08)] transition hover:opacity-95"
     >
       <img
-        src={images.mapMoney}
+        src={mapMoney}
         alt="Map location"
         className="w-full h-full object-cover"
+        loading="lazy"
+        decoding="async"
       />
     </a>
 
