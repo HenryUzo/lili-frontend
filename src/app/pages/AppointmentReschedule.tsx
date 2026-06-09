@@ -3,6 +3,7 @@ import { useMutation, useQuery } from "@tanstack/react-query";
 import { AlertCircle, CalendarClock, CheckCircle2, Plus, X } from "lucide-react";
 import { useParams } from "react-router-dom";
 import { toast } from "sonner";
+import AppQueryProvider from "../components/AppQueryProvider";
 import Seo from "../components/seo/Seo";
 import {
   getAppointmentRescheduleContext,
@@ -106,7 +107,7 @@ function formatDateTime(value?: string | null) {
   }).format(parsed);
 }
 
-export default function AppointmentReschedule() {
+function AppointmentRescheduleContent() {
   const { token = "" } = useParams();
   const [selections, setSelections] = useState<EditableSelection[]>([emptySelection()]);
   const [timezone, setTimezone] = useState("Africa/Lagos");
@@ -421,5 +422,13 @@ export default function AppointmentReschedule() {
         </div>
       </main>
     </>
+  );
+}
+
+export default function AppointmentReschedule() {
+  return (
+    <AppQueryProvider>
+      <AppointmentRescheduleContent />
+    </AppQueryProvider>
   );
 }

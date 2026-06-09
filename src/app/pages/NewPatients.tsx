@@ -1,4 +1,5 @@
 import { Suspense, lazy } from "react";
+import AppQueryProvider from "../components/AppQueryProvider";
 import PawButton from "../reuseable-components/paw-button";
 import RegisterPetForm from "../components/register-pet-form/Registerpetform";
 import StepCard from "../reuseable-components/step-card";
@@ -269,16 +270,18 @@ export function NewPatients() {
         description="Welcome to Lili Veterinary Hospital! Our new patient services in San Antonio include personalized wellness exams, preventive care, and urgent support. We treat your pets like family, ensuring a smooth transition to our compassionate care."
         path={ROUTE.newPatients}
       />
-      <main className="w-full">
-        <NewToLiliVetHero />
-        <HowItWorks />
-        <WhatToBring />
-        <ComprehensiveCare />
-        <UrgentCare />
-        <Suspense fallback={<div className="min-h-[720px] w-full bg-[#0D2E1C]" />}>
-          <FaqSection />
-        </Suspense>
-      </main>
+      <AppQueryProvider>
+        <main className="w-full">
+          <NewToLiliVetHero />
+          <HowItWorks />
+          <WhatToBring />
+          <ComprehensiveCare />
+          <UrgentCare />
+          <Suspense fallback={<div className="min-h-[720px] w-full bg-[#0D2E1C]" />}>
+            <FaqSection />
+          </Suspense>
+        </main>
+      </AppQueryProvider>
     </>
 
   );

@@ -1,5 +1,4 @@
-import React, { useEffect, useLayoutEffect, useRef, useState } from "react";
-import { gsap } from "gsap";
+import React, { useEffect, useRef, useState } from "react";
 import {
   NavLink as RouterNavLink,
   useLocation,
@@ -10,24 +9,11 @@ import { ROUTE } from "../../../router";
 import { trackCallClick } from "../../../lib/analytics";
 import logo from "../../assests/images/logo.svg";
 
-export type NavbarPhase = "navIntro" | "ready";
-
-type NavbarProps = {
-  phase?: NavbarPhase;
-  onIntroComplete?: () => void;
-};
-
-type AnimatedLogoProps = {
-  className?: string;
-};
-
 type NavItem = {
   text: string;
   link: string;
   exact?: boolean;
 };
-
-const INTRO_WORD = "LILIVET".split("");
 
 const MAIN_NAV_ITEMS: NavItem[] = [
   { text: "Home", link: "/", exact: true },
@@ -71,21 +57,6 @@ function isServiceRoute(pathname: string) {
 function getNavbarBg(pathname: string) {
   return NAVBAR_BG_BY_ROUTE[pathname] || "#F2F7EE";
 }
-
-const AnimatedLogo = ({
-  className = "w-[82.4px] h-[68.73px]",
-}: AnimatedLogoProps) => {
-  return (
-    <div className={`relative shrink-0 ${className}`}>
-      <img
-        src={logo}
-        alt="LiliVet logo"
-        className="block h-full w-full object-contain"
-        draggable={false}
-      />
-    </div>
-  );
-};
 
 function StaticNavbarLogo({
   className = "w-[82.4px] h-[68.73px]",
@@ -195,8 +166,6 @@ function DesktopNavItem({ text, link, exact }: NavItem) {
 function ServicesDropdown() {
   const location = useLocation();
   const wrapperRef = useRef<HTMLDivElement | null>(null);
-  const menuRef = useRef<HTMLDivElement | null>(null);
-  const itemRefs = useRef<(HTMLAnchorElement | null)[]>([]);
   const closeTimerRef = useRef<number | null>(null);
   const [open, setOpen] = useState(false);
 
@@ -209,83 +178,16 @@ function ServicesDropdown() {
     }
   };
 
-  const setItemRef = (index: number) => (node: HTMLAnchorElement | null) => {
-    itemRefs.current[index] = node;
-  };
-
   const openMenu = () => {
-    if (!menuRef.current) return;
-
     clearCloseTimer();
-
-    const items = itemRefs.current.filter(Boolean);
-
     setOpen(true);
-    gsap.killTweensOf([menuRef.current, ...items]);
-    gsap.set(menuRef.current, { pointerEvents: "auto" });
-
-    const tl = gsap.timeline({ defaults: { overwrite: "auto" } });
-
-    tl.to(menuRef.current, {
-      autoAlpha: 1,
-      y: 0,
-      scale: 1,
-      duration: 0.22,
-      ease: "power2.out",
-    });
-
-    tl.to(
-      items,
-      {
-        autoAlpha: 1,
-        y: 0,
-        duration: 0.18,
-        stagger: 0.04,
-        ease: "power2.out",
-      },
-      "-=0.12",
-    );
   };
 
   const closeMenu = () => {
     clearCloseTimer();
 
     closeTimerRef.current = window.setTimeout(() => {
-      if (!menuRef.current) return;
-
-      const items = itemRefs.current.filter(Boolean);
-
       setOpen(false);
-      gsap.killTweensOf([menuRef.current, ...items]);
-
-      const tl = gsap.timeline({
-        defaults: { overwrite: "auto" },
-        onComplete: () => {
-          if (menuRef.current) {
-            gsap.set(menuRef.current, { pointerEvents: "none" });
-          }
-        },
-      });
-
-      tl.to([...items].reverse(), {
-        autoAlpha: 0,
-        y: 8,
-        duration: 0.12,
-        stagger: 0.025,
-        ease: "power2.in",
-      });
-
-      tl.to(
-        menuRef.current,
-        {
-          autoAlpha: 0,
-          y: 10,
-          scale: 0.96,
-          duration: 0.16,
-          ease: "power2.in",
-        },
-        "-=0.04",
-      );
     }, 80);
   };
 
@@ -297,48 +199,12 @@ function ServicesDropdown() {
     }
   };
 
-  useLayoutEffect(() => {
-    if (!menuRef.current) return;
-
-    const ctx = gsap.context(() => {
-      gsap.set(menuRef.current, {
-        autoAlpha: 0,
-        y: 10,
-        scale: 0.96,
-        pointerEvents: "none",
-        transformOrigin: "top center",
-      });
-
-      gsap.set(itemRefs.current.filter(Boolean), {
-        autoAlpha: 0,
-        y: 8,
-      });
-    }, wrapperRef);
-
-    return () => {
-      clearCloseTimer();
-      ctx.revert();
-    };
-  }, []);
-
   useEffect(() => {
     clearCloseTimer();
     setOpen(false);
-
-    if (menuRef.current) {
-      gsap.set(menuRef.current, {
-        autoAlpha: 0,
-        y: 10,
-        scale: 0.96,
-        pointerEvents: "none",
-      });
-    }
-
-    gsap.set(itemRefs.current.filter(Boolean), {
-      autoAlpha: 0,
-      y: 8,
-    });
   }, [location.pathname]);
+
+  useEffect(() => () => clearCloseTimer(), []);
 
   return (
     <div
@@ -373,22 +239,24 @@ function ServicesDropdown() {
       </button>
 
       <div
-        ref={menuRef}
-        className="absolute left-1/2 top-full z-[120] mt-[-1.5rem] w-[170px] -translate-x-1/2 pt-3"
+        className={`absolute left-1/2 top-full z-[120] mt-[-1.5rem] w-[170px] -translate-x-1/2 pt-3 transition-all duration-200 ease-out ${
+          open
+            ? "pointer-events-auto translate-y-0 scale-100 opacity-100"
+            : "pointer-events-none translate-y-2 scale-[0.96] opacity-0"
+        }`}
       >
         <div className="overflow-hidden rounded-[18px] bg-white shadow-[0_18px_40px_rgba(0,0,0,0.14)] ring-1 ring-black/5">
           {SERVICE_MENU_ITEMS.map((item, index) => (
             <RouterNavLink
               key={item.link}
-              ref={setItemRef(index)}
               to={item.link}
               end={item.exact ?? item.link === "/"}
               className={({ isActive }) =>
-                `flex h-[47px] items-center justify-center border-b border-[#EAEAEA] px-4 text-center font-paytone text-[13px] leading-none transition-colors last:border-b-0 ${
+                `flex h-[47px] items-center justify-center border-b border-[#EAEAEA] px-4 text-center font-paytone text-[13px] leading-none transition-all duration-200 last:border-b-0 ${
                   isActive
                     ? "bg-[#F6FAF3] text-[#006838]"
                     : "text-[#214a1e] hover:bg-[#F8F8F8]"
-                }`
+                } ${open ? "translate-y-0 opacity-100" : "translate-y-2 opacity-0"}`
               }
             >
               {item.text}
@@ -455,10 +323,7 @@ function HamburgerIcon({ isOpen }: { isOpen: boolean }) {
   );
 }
 
-export default function Navbar({
-  phase = "ready",
-  onIntroComplete,
-}: NavbarProps) {
+export default function Navbar() {
   const location = useLocation();
   const navbarBg = getNavbarBg(location.pathname);
 
@@ -467,309 +332,34 @@ export default function Navbar({
     isServiceRoute(location.pathname),
   );
 
-  const navbarShellRef = useRef<HTMLDivElement | null>(null);
-  const navLogoSlotRef = useRef<HTMLDivElement | null>(null);
-  const navIntroOverlayRef = useRef<HTMLDivElement | null>(null);
-  const navIntroLogoRef = useRef<HTMLDivElement | null>(null);
-  const navIntroTextRef = useRef<HTMLDivElement | null>(null);
-  const introPlayedRef = useRef(false);
-
   const closeMenu = () => setOffcanvasOpen(false);
-  const isReady = phase === "ready";
   const mobileServicesActive = isServiceRoute(location.pathname);
 
   useEffect(() => {
-    const shouldLockScroll = phase !== "ready" || offcanvasOpen;
-    document.body.style.overflow = shouldLockScroll ? "hidden" : "";
+    document.body.style.overflow = offcanvasOpen ? "hidden" : "";
 
     return () => {
       document.body.style.overflow = "";
     };
-  }, [phase, offcanvasOpen]);
+  }, [offcanvasOpen]);
 
   useEffect(() => {
     closeMenu();
     setMobileServicesOpen(isServiceRoute(location.pathname));
   }, [location.pathname]);
 
-  useLayoutEffect(() => {
-    if (phase !== "navIntro") {
-      introPlayedRef.current = false;
-      return;
-    }
-
-    if (introPlayedRef.current) return;
-    if (
-      !navbarShellRef.current ||
-      !navLogoSlotRef.current ||
-      !navIntroOverlayRef.current ||
-      !navIntroLogoRef.current
-    ) {
-      return;
-    }
-
-    introPlayedRef.current = true;
-
-    let rafId = 0;
-    let ctx: gsap.Context | undefined;
-
-    rafId = window.requestAnimationFrame(() => {
-      ctx = gsap.context(() => {
-        const navbarShell = navbarShellRef.current!;
-        const slot = navLogoSlotRef.current!;
-        const overlay = navIntroOverlayRef.current!;
-        const movingLogo = navIntroLogoRef.current!;
-        const textWrap = navIntroTextRef.current;
-        const sub = textWrap?.querySelector(".hero-sub");
-        const line = textWrap?.querySelector(".hero-line");
-        const letters =
-          textWrap?.querySelectorAll<HTMLElement>("[data-logo-letter]");
-        const navRevealTargets =
-          navbarShell.querySelectorAll<HTMLElement>("[data-nav-reveal]");
-
-        const startRect = movingLogo.getBoundingClientRect();
-        const targetRect = slot.getBoundingClientRect();
-
-        const deltaX = targetRect.left - startRect.left;
-        const deltaY = targetRect.top - startRect.top;
-        const scaleX = targetRect.width / startRect.width;
-        const scaleY = targetRect.height / startRect.height;
-
-        let lettersLoop: gsap.core.Tween | undefined;
-        let lineLoop: gsap.core.Tween | undefined;
-
-        gsap.set(slot, { autoAlpha: 0 });
-        gsap.set(navRevealTargets, { autoAlpha: 0, y: 14 });
-        gsap.set(overlay, { autoAlpha: 1 });
-
-        gsap.set(movingLogo, {
-          position: "fixed",
-          left: startRect.left,
-          top: startRect.top,
-          width: startRect.width,
-          height: startRect.height,
-          x: 0,
-          y: 0,
-          scaleX: 1,
-          scaleY: 1,
-          margin: 0,
-          transformOrigin: "top left",
-          force3D: true,
-          willChange: "transform, opacity",
-          pointerEvents: "none",
-        });
-
-        if (textWrap) {
-          gsap.set(textWrap, { autoAlpha: 1, y: 0 });
-        }
-
-        if (sub) {
-          gsap.set(sub, { autoAlpha: 0, y: 20 });
-        }
-
-        if (line) {
-          gsap.set(line, { width: 0, autoAlpha: 0.6 });
-        }
-
-        if (letters?.length) {
-          gsap.set(letters, {
-            autoAlpha: 0,
-            y: 60,
-            rotateX: -90,
-            filter: "blur(8px)",
-            transformPerspective: 800,
-            transformOrigin: "50% 50% -20px",
-          });
-        }
-
-        const LOGO_HOLD_TIME = 2.2;
-        const LOGO_MOVE_TIME = 1.45;
-
-        const tl = gsap.timeline({
-          defaults: { ease: "power4.inOut" },
-          onComplete: () => {
-            lettersLoop?.kill();
-            lineLoop?.kill();
-
-            gsap.set(slot, {
-              autoAlpha: 1,
-              clearProps: "transform,opacity,visibility",
-            });
-
-            gsap.set(navRevealTargets, {
-              autoAlpha: 1,
-              y: 0,
-              clearProps: "transform,opacity,visibility",
-            });
-
-            gsap.set(overlay, { clearProps: "all" });
-            gsap.set(textWrap, { clearProps: "all" });
-
-            onIntroComplete?.();
-          },
-        });
-
-        tl.fromTo(
-          letters,
-          {
-            y: 60,
-            autoAlpha: 0,
-            rotateX: -90,
-            filter: "blur(8px)",
-          },
-          {
-            y: 0,
-            autoAlpha: 1,
-            rotateX: 0,
-            filter: "blur(0px)",
-            duration: 1,
-            ease: "elastic.out(1,0.3)",
-            stagger: { each: 0.03, from: "start" },
-            onComplete: () => {
-              if (!letters?.length) return;
-
-              lettersLoop = gsap.to(letters, {
-                y: -6,
-                duration: 0.9,
-                ease: "sine.inOut",
-                stagger: { each: 0.03, from: "start" },
-                repeat: -1,
-                yoyo: true,
-              });
-            },
-          },
-          0.35,
-        );
-
-        tl.fromTo(
-          sub,
-          { y: 20, autoAlpha: 0 },
-          {
-            y: 0,
-            autoAlpha: 1,
-            duration: 0.6,
-            ease: "power2.out",
-          },
-          0.95,
-        );
-
-        tl.to(
-          line,
-          {
-            width: "60%",
-            autoAlpha: 1,
-            duration: 0.8,
-            ease: "power3.out",
-            onComplete: () => {
-              lineLoop = gsap.to(line, {
-                autoAlpha: 0.35,
-                duration: 1,
-                ease: "sine.inOut",
-                repeat: -1,
-                yoyo: true,
-              });
-            },
-          },
-          1.05,
-        );
-
-        tl.to({}, { duration: LOGO_HOLD_TIME }, 0);
-
-        tl.to(
-          textWrap,
-          {
-            autoAlpha: 0,
-            y: -10,
-            duration: 0.3,
-            ease: "power2.out",
-          },
-          LOGO_HOLD_TIME - 0.15,
-        );
-
-        tl.to(
-          movingLogo,
-          {
-            x: deltaX,
-            y: deltaY,
-            scaleX,
-            scaleY,
-            duration: LOGO_MOVE_TIME,
-            ease: "power3.inOut",
-            onStart: () => {
-              lettersLoop?.kill();
-              lineLoop?.kill();
-            },
-          },
-          LOGO_HOLD_TIME,
-        );
-
-        tl.to(
-          slot,
-          {
-            autoAlpha: 1,
-            duration: 0.12,
-            ease: "power1.out",
-          },
-          LOGO_HOLD_TIME + LOGO_MOVE_TIME - 0.22,
-        );
-
-        tl.to(
-          movingLogo,
-          {
-            autoAlpha: 0,
-            duration: 0.16,
-            ease: "power1.out",
-          },
-          LOGO_HOLD_TIME + LOGO_MOVE_TIME - 0.08,
-        );
-
-        tl.to(
-          navRevealTargets,
-          {
-            autoAlpha: 1,
-            y: 0,
-            duration: 0.42,
-            stagger: 0.05,
-            ease: "power3.out",
-          },
-          LOGO_HOLD_TIME + LOGO_MOVE_TIME - 0.02,
-        );
-
-        tl.to(
-          overlay,
-          {
-            autoAlpha: 0,
-            duration: 0.22,
-            ease: "power2.out",
-          },
-          LOGO_HOLD_TIME + LOGO_MOVE_TIME + 0.02,
-        );
-      }, navbarShellRef);
-    });
-
-    return () => {
-      window.cancelAnimationFrame(rafId);
-      ctx?.revert();
-    };
-  }, [phase, onIntroComplete]);
-
   return (
     <>
       <div
-        ref={navbarShellRef}
         className="relative z-[100000] w-full shrink-0 transition-colors duration-500"
         style={{ backgroundColor: navbarBg }}
       >
         <div className="flex items-center justify-between px-[24px] py-[16px] md:px-[64px] md:py-[24px]">
-          <div
-            ref={navLogoSlotRef}
-            className="relative h-[68.73px] w-[82.4px] shrink-0"
-          >
+          <div className="relative h-[68.73px] w-[82.4px] shrink-0">
             <StaticNavbarLogo className="h-full w-full" />
           </div>
 
           <div
-            data-nav-reveal
             className="hidden items-center gap-[24px] xl:flex"
           >
             {MAIN_NAV_ITEMS.slice(0, 2).map((item) => (
@@ -799,7 +389,6 @@ export default function Navbar({
           </div>
 
           <div
-            data-nav-reveal
             className="hidden items-center gap-[12px] md:flex xl:hidden"
           >
             <BookAppointment />
@@ -809,7 +398,6 @@ export default function Navbar({
               className="ml-2 p-2"
               onClick={() => setOffcanvasOpen(true)}
               aria-label="Open menu"
-              disabled={!isReady}
               type="button"
             >
               <HamburgerIcon isOpen={false} />
@@ -817,11 +405,9 @@ export default function Navbar({
           </div>
 
           <button
-            data-nav-reveal
             className="flex p-2 md:hidden"
             onClick={() => setOffcanvasOpen(true)}
             aria-label="Open menu"
-            disabled={!isReady}
             type="button"
           >
             <HamburgerIcon isOpen={false} />
@@ -831,7 +417,7 @@ export default function Navbar({
 
       <div
         className={`fixed inset-0 z-40 bg-black/40 transition-opacity duration-300 xl:hidden ${
-          offcanvasOpen && isReady
+          offcanvasOpen
             ? "pointer-events-auto opacity-100"
             : "pointer-events-none opacity-0"
         }`}
@@ -840,7 +426,7 @@ export default function Navbar({
 
       <div
         className={`fixed right-0 top-0 z-[1000000] flex h-full w-[300px] flex-col bg-[#d6ebae] shadow-2xl transition-transform duration-300 ease-in-out xl:hidden ${
-          offcanvasOpen && isReady ? "translate-x-0" : "translate-x-full"
+          offcanvasOpen ? "translate-x-0" : "translate-x-full"
         }`}
       >
         <div className="flex items-center justify-between border-b border-[#b5d87a] px-[24px] py-[20px]">
@@ -954,44 +540,6 @@ export default function Navbar({
         </div>
       </div>
 
-      {phase === "navIntro" && (
-        <div
-          ref={navIntroOverlayRef}
-          className="fixed inset-0 z-[100000] overflow-hidden bg-[#d6ebae]"
-        >
-          <div className="absolute inset-0 flex flex-col items-center justify-center px-6">
-            <div
-              ref={navIntroLogoRef}
-              className="pointer-events-none relative h-[184px] w-[220px] md:h-[234px] md:w-[280px] lg:h-[267px] lg:w-[320px]"
-            >
-              <AnimatedLogo className="h-full w-full" />
-            </div>
-
-            <div
-              ref={navIntroTextRef}
-              className="pointer-events-none absolute bottom-5 flex flex-col items-center"
-            >
-              <h2 className="hero-heading handwritten mt-4 flex flex-wrap items-center justify-center font-paytone text-[34px] leading-none text-[#214a1e] md:text-[52px] lg:text-[68px]">
-                {INTRO_WORD.map((letter, index) => (
-                  <span
-                    key={`${letter}-${index}`}
-                    data-logo-letter
-                    className="inline-block"
-                  >
-                    {letter}
-                  </span>
-                ))}
-              </h2>
-
-              <p className="hero-sub mt-3 text-center text-[12px] uppercase tracking-[0.22em] text-[#214a1e]/80 md:text-[14px]">
-                care you can trust
-              </p>
-
-              <div className="hero-line mt-4 h-[2px] w-0 rounded-full bg-[#214a1e]/70" />
-            </div>
-          </div>
-        </div>
-      )}
     </>
   );
 }

@@ -1,4 +1,4 @@
-import { Helmet } from "react-helmet-async";
+import { useEffect } from "react";
 import {
   buildCanonicalUrl,
   DEFAULT_DESCRIPTION,
@@ -6,6 +6,12 @@ import {
   DEFAULT_TITLE,
   SITE_NAME,
 } from "../../../lib/seo-config";
+import {
+  clearStructuredData,
+  upsertCanonical,
+  upsertMeta,
+  upsertStructuredData,
+} from "../../../lib/headManager";
 
 type SeoProps = {
   title?: string;
@@ -38,46 +44,57 @@ export default function Seo({
   twitterDescription,
   structuredData,
 }: SeoProps) {
-  const canonicalUrl = buildCanonicalUrl(canonicalPath ?? path);
-  const robotsContent = robots ?? (noIndex ? "noindex,follow" : "index,follow");
-  const openGraphTitle = ogTitle ?? title;
-  const openGraphDescription = ogDescription ?? description;
-  const twitterMetaTitle = twitterTitle ?? openGraphTitle;
-  const twitterMetaDescription = twitterDescription ?? openGraphDescription;
-  const structuredDataList = Array.isArray(structuredData)
-    ? structuredData
-    : structuredData
-      ? [structuredData]
-      : [];
+  useEffect(() => {
+    const canonicalUrl = buildCanonicalUrl(canonicalPath ?? path);
+    const robotsContent = robots ?? (noIndex ? "noindex,follow" : "index,follow");
+    const openGraphTitle = ogTitle ?? title;
+    const openGraphDescription = ogDescription ?? description;
+    const twitterMetaTitle = twitterTitle ?? openGraphTitle;
+    const twitterMetaDescription = twitterDescription ?? openGraphDescription;
+    const structuredDataList = Array.isArray(structuredData)
+      ? structuredData
+      : structuredData
+        ? [structuredData]
+        : [];
 
-  if (typeof document !== "undefined" && document.title !== title) {
     document.title = title;
-  }
 
-  return (
-    <Helmet>
-      <title>{title}</title>
-      <meta name="description" content={description} />
-      <meta name="robots" content={robotsContent} />
-      <link rel="canonical" href={canonicalUrl} />
+    upsertMeta({ key: "name", value: "description" }, description);
+    upsertMeta({ key: "name", value: "robots" }, robotsContent);
+    upsertCanonical(canonicalUrl);
 
-      <meta property="og:title" content={openGraphTitle} />
-      <meta property="og:description" content={openGraphDescription} />
-      <meta property="og:type" content={type} />
-      <meta property="og:url" content={canonicalUrl} />
-      <meta property="og:image" content={image} />
-      <meta property="og:site_name" content={SITE_NAME} />
+    upsertMeta({ key: "property", value: "og:title" }, openGraphTitle);
+    upsertMeta({ key: "property", value: "og:description" }, openGraphDescription);
+    upsertMeta({ key: "property", value: "og:type" }, type);
+    upsertMeta({ key: "property", value: "og:url" }, canonicalUrl);
+    upsertMeta({ key: "property", value: "og:image" }, image);
+    upsertMeta({ key: "property", value: "og:site_name" }, SITE_NAME);
 
-      <meta name="twitter:card" content="summary_large_image" />
-      <meta name="twitter:title" content={twitterMetaTitle} />
-      <meta name="twitter:description" content={twitterMetaDescription} />
-      <meta name="twitter:image" content={image} />
+    upsertMeta({ key: "name", value: "twitter:card" }, "summary_large_image");
+    upsertMeta({ key: "name", value: "twitter:title" }, twitterMetaTitle);
+    upsertMeta({ key: "name", value: "twitter:description" }, twitterMetaDescription);
+    upsertMeta({ key: "name", value: "twitter:image" }, image);
 
-      {structuredDataList.map((item, index) => (
-        <script key={index} type="application/ld+json">
-          {JSON.stringify(item)}
-        </script>
-      ))}
-    </Helmet>
-  );
+    upsertStructuredData("route", structuredDataList);
+
+    return () => {
+      clearStructuredData("route");
+    };
+  }, [
+    canonicalPath,
+    description,
+    image,
+    noIndex,
+    ogDescription,
+    ogTitle,
+    path,
+    robots,
+    structuredData,
+    title,
+    twitterDescription,
+    twitterTitle,
+    type,
+  ]);
+
+  return null;
 }
