@@ -1,4 +1,4 @@
-import { Suspense, lazy, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 import type {
   ChangeEventHandler,
   FormEvent,
@@ -20,12 +20,7 @@ import writeForm from "../../assests/images/write-form.svg";
 import personIcon from "../../assests/images/person-icon.svg";
 import pawIcon from "../../assests/images/paw-icon.svg";
 import vist from "../../assests/images/vist.svg";
-
-const NewPatientReferralSourceModal = lazy(() =>
-  import("./NewPatientReferralSourceModal").then((module) => ({
-    default: module.NewPatientReferralSourceModal,
-  }))
-);
+import { NewPatientReferralSourceModal } from "./NewPatientReferralSourceModal";
 
 const inputBase =
   "w-full bg-[#EDF7E7] rounded-full px-4 py-3 text-[#1a3a1f] placeholder-transparent outline-none border border-transparent focus:border-[#3a7d44] focus:ring-2 focus:ring-[#3a7d44]/20 transition-all duration-200 text-sm font-medium";
@@ -364,6 +359,7 @@ function SectionHeader({ icon, title }: SectionHeaderProps) {
 
 export default function RegisterPetForm() {
   const [form, setForm] = useState<FormState>(() => getInitialFormState());
+  const [isFinishingSubmission, setIsFinishingSubmission] = useState(false);
   const [referralCaptureState, setReferralCaptureState] =
     useState<ReferralCaptureState | null>(null);
   const [selectedReferralSource, setSelectedReferralSource] =
@@ -379,6 +375,7 @@ export default function RegisterPetForm() {
 
   const isSubmitting =
     createNewPatientMutation.isPending || uploadFilesMutation.isPending;
+  const isFormBusy = isSubmitting || isFinishingSubmission;
 
   const canSubmit = useMemo(() => {
     return (
@@ -449,6 +446,8 @@ export default function RegisterPetForm() {
       return;
     }
 
+    setIsFinishingSubmission(true);
+
     try {
       const uploadedFileIds = form.files.length
         ? (
@@ -498,6 +497,8 @@ export default function RegisterPetForm() {
       setReferralSourceError(null);
     } catch {
       // Toasts are handled by the upload and create mutations.
+    } finally {
+      setIsFinishingSubmission(false);
     }
   };
 
@@ -762,16 +763,16 @@ export default function RegisterPetForm() {
           <div className="flex flex-col sm:flex-row gap-3 pt-2 pb-1">
             <button
               type="submit"
-              disabled={!canSubmit || isSubmitting}
+              disabled={!canSubmit || isFormBusy}
               className="flex-1 bg-[#1a3a1f] disabled:opacity-60 disabled:cursor-not-allowed text-white rounded-full py-3.5 text-sm font-semibold tracking-wide hover:bg-[#2a5a2f] active:scale-[0.98] transition-all duration-200 shadow-lg"
             >
-              {isSubmitting ? "Submitting..." : "Register Pet"}
+              {isFormBusy ? "Submitting..." : "Register Pet"}
             </button>
 
             <button
               type="button"
               onClick={handleClear}
-              disabled={isSubmitting}
+              disabled={isFormBusy}
               className="sm:w-36 border border-[#dceadc] text-[#3a5c40] rounded-full py-3.5 text-sm font-semibold tracking-wide hover:bg-[#EDF7EA] active:scale-[0.98] transition-all duration-200 disabled:opacity-60 disabled:cursor-not-allowed"
             >
               Clear Form
@@ -780,25 +781,37 @@ export default function RegisterPetForm() {
         </div>
       </form>
 
-      {referralCaptureState ? (
-        <Suspense fallback={null}>
-          <NewPatientReferralSourceModal
-            open
-            selectedSource={selectedReferralSource}
-            otherText={referralSourceOtherText}
-            errorMessage={referralSourceError}
-            isSaving={saveReferralSourceMutation.isPending}
-            onSelectSource={(source) => {
-              setSelectedReferralSource(source);
-              setReferralSourceError(null);
-            }}
-            onOtherTextChange={(value) => {
-              setReferralSourceOtherText(value);
-              setReferralSourceError(null);
-            }}
-            onConfirm={handleConfirmReferralSource}
-          />
-        </Suspense>
+      <NewPatientReferralSourceModal
+        open={Boolean(referralCaptureState)}
+        selectedSource={selectedReferralSource}
+        otherText={referralSourceOtherText}
+        errorMessage={referralSourceError}
+        isSaving={saveReferralSourceMutation.isPending}
+        onSelectSource={(source) => {
+          setSelectedReferralSource(source);
+          setReferralSourceError(null);
+        }}
+        onOtherTextChange={(value) => {
+          setReferralSourceOtherText(value);
+          setReferralSourceError(null);
+        }}
+        onConfirm={handleConfirmReferralSource}
+      />
+
+      {isFinishingSubmission ? (
+        <div className="fixed inset-0 z-[1999990] flex items-center justify-center bg-[#0B2112]/58 px-6 backdrop-blur-[6px]">
+          <div className="w-full max-w-[460px] rounded-[28px] border border-[#DCE9D9] bg-white px-7 py-8 text-center shadow-[0_28px_80px_rgba(11,33,18,0.22)]">
+            <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-[#EDF7EA]">
+              <span className="h-7 w-7 animate-spin rounded-full border-[3px] border-[#1F6B39] border-t-transparent" />
+            </div>
+            <h2 className="mt-5 font-space text-[28px] font-bold leading-tight text-[#12341C]">
+              Finishing your submission
+            </h2>
+            <p className="mt-3 font-manrope text-[15px] font-medium leading-7 text-[#5D7063]">
+              We&apos;re saving your pet&apos;s registration details so we can ask one final question before completion.
+            </p>
+          </div>
+        </div>
       ) : null}
     </>
   );

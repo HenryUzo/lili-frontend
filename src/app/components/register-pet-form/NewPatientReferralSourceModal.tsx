@@ -6,11 +6,11 @@ import {
   DialogHeader,
   DialogTitle
 } from "../ui/dialog";
-import cozyPet from "../../assests/images/cozy-pet.png";
-import computerBg from "../../assests/images/computer.png";
-import cutedogcat from "../../assests/images/cutedogcat.png";
-import pet from "../../assests/images/pet.png";
-import blog from "../../assests/images/blog.svg";
+import googleMark from "../../assests/images/referral-google.svg";
+import petBarnLogo from "../../assests/images/referral-petbarn.png";
+import petParadiseLogo from "../../assests/images/referral-pet-paradise.png";
+import welcomeHomeLogo from "../../assests/images/referral-welcome-home.png";
+import websiteLiliLogo from "../../assests/images/referral-website-lili.png";
 import doctorAndPatient from "../../assests/images/doctor-patient.png";
 import happyDogs from "../../assests/images/happy-dogs.png";
 import others from "../../assests/images/others.png";
@@ -19,60 +19,135 @@ import logoTwo from "../../assests/images/logo2.svg";
 type ReferralOption = {
   value: NewPatientReferralSource;
   label: string;
-  image: string;
   accentClassName: string;
+  imageClassName?: string;
 };
 
 const REFERRAL_OPTIONS: ReferralOption[] = [
   {
     value: "PET_PARADISE",
     label: "Pet Paradise",
-    image: cozyPet,
-    accentClassName: "from-[#F7FBEA] to-[#EDF7E7]"
+    accentClassName: "from-[#F7FBEA] to-[#EDF7E7]",
+    imageClassName: "h-[72px] w-[140px]"
   },
   {
     value: "WEBSITE",
     label: "Website",
-    image: computerBg,
-    accentClassName: "from-[#EAF7F0] to-[#E7F5EC]"
+    accentClassName: "from-[#EAF7F0] to-[#E7F5EC]",
+    imageClassName: "h-[68px] w-[68px]"
   },
   {
     value: "GOOGLE",
     label: "Google",
-    image: cutedogcat,
-    accentClassName: "from-[#FFF7E6] to-[#FFF1D8]"
+    accentClassName: "from-[#FFF7E6] to-[#FFF1D8]",
+    imageClassName: "h-[68px] w-[68px]"
   },
   {
     value: "PET_BARN",
     label: "Pet barn",
-    image: pet,
-    accentClassName: "from-[#F5EEFF] to-[#F0E5FF]"
+    accentClassName: "from-[#F5EEFF] to-[#F0E5FF]",
+    imageClassName: "h-[68px] w-[68px]"
   },
   {
     value: "WELCOME_HOME_MAGAZINE",
     label: "Welcome home Magazine",
-    image: blog,
-    accentClassName: "from-[#EAF3FF] to-[#E4F0FF]"
+    accentClassName: "from-[#EAF3FF] to-[#E4F0FF]",
+    imageClassName: "h-[72px] w-[140px]"
   },
   {
     value: "REFERRED_BY_ANOTHER_VETERINARIAN",
     label: "Referred by another Veterinarian",
-    image: doctorAndPatient,
     accentClassName: "from-[#EEF8F0] to-[#E3F2E8]"
   },
   {
     value: "REFERRED_BY_FRIEND_OR_FAMILY_MEMBER",
     label: "Referred by a friend or family member",
-    image: happyDogs,
     accentClassName: "from-[#FFF4E8] to-[#FFECDD]"
   },
   {
     value: "OTHER",
     label: "Other",
-    image: others,
     accentClassName: "from-[#FBEAF3] to-[#F8E3EF]"
   }
 ];
+
+function ReferralCardVisual({
+  option,
+}: {
+  option: ReferralOption;
+}) {
+  switch (option.value) {
+    case "PET_PARADISE":
+      return (
+        <img
+          src={petParadiseLogo}
+          alt="Pet Paradise"
+          className="h-[72px] w-[140px] rounded-[18px] bg-white px-2 py-1 object-contain shadow-[0_10px_24px_rgba(22,45,26,0.12)]"
+        />
+      );
+    case "WEBSITE":
+      return (
+        <img
+          src={websiteLiliLogo}
+          alt="Lili Vet website"
+          className="h-[68px] w-[68px] rounded-[18px] object-contain shadow-[0_10px_24px_rgba(22,45,26,0.12)]"
+        />
+      );
+    case "GOOGLE":
+      return (
+        <div className="flex h-[68px] w-[68px] items-center justify-center rounded-[18px] bg-white shadow-[0_10px_24px_rgba(22,45,26,0.12)]">
+          <img
+            src={googleMark}
+            alt="Google"
+            className="h-11 w-11 object-contain"
+          />
+        </div>
+      );
+    case "PET_BARN":
+      return (
+        <img
+          src={petBarnLogo}
+          alt="Pets Love Pet Barn"
+          className="h-[68px] w-[68px] rounded-[18px] object-cover shadow-[0_10px_24px_rgba(22,45,26,0.12)]"
+        />
+      );
+    case "WELCOME_HOME_MAGAZINE":
+      return (
+        <img
+          src={welcomeHomeLogo}
+          alt="Welcome Home Magazine"
+          className="h-[72px] w-[140px] rounded-[18px] bg-white p-2 object-contain shadow-[0_10px_24px_rgba(22,45,26,0.12)]"
+        />
+      );
+    case "REFERRED_BY_ANOTHER_VETERINARIAN":
+      return (
+        <img
+          src={doctorAndPatient}
+          alt=""
+          aria-hidden="true"
+          className="h-16 w-16 rounded-[18px] object-cover shadow-[0_10px_24px_rgba(22,45,26,0.12)]"
+        />
+      );
+    case "REFERRED_BY_FRIEND_OR_FAMILY_MEMBER":
+      return (
+        <img
+          src={happyDogs}
+          alt=""
+          aria-hidden="true"
+          className="h-16 w-16 rounded-[18px] object-cover shadow-[0_10px_24px_rgba(22,45,26,0.12)]"
+        />
+      );
+    case "OTHER":
+      return (
+        <img
+          src={others}
+          alt=""
+          aria-hidden="true"
+          className="h-16 w-16 rounded-[18px] object-cover shadow-[0_10px_24px_rgba(22,45,26,0.12)]"
+        />
+      );
+  }
+}
 
 export function NewPatientReferralSourceModal({
   open,
@@ -148,12 +223,13 @@ export function NewPatientReferralSourceModal({
                           }`}
                         />
                       </div>
-                      <img
-                        src={option.image}
-                        alt=""
-                        aria-hidden="true"
-                        className="h-16 w-16 rounded-[18px] object-cover shadow-[0_10px_24px_rgba(22,45,26,0.12)]"
-                      />
+                      <div
+                        className={`flex shrink-0 items-center justify-center ${
+                          option.imageClassName ?? "h-16 w-16"
+                        }`}
+                      >
+                        <ReferralCardVisual option={option} />
+                      </div>
                     </div>
                     <div className="mt-auto pt-8">
                       <p className="font-founders text-[22px] font-medium leading-[1.05] text-[#12341C]">
