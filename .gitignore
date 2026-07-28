@@ -28,3 +28,6 @@ dist-ssr
 .qodo
 
 .env
+.vercel/
+petparadise-home.html
+tmp-*.html
