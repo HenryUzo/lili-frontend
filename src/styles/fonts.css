@@ -2,7 +2,7 @@
 
 @font-face {
   font-family: "Test Founders Grotesk";
-  src: url("../app/assests/fonts/TestFoundersGrotesk/TestFoundersGrotesk-Light-BF66175e9730f02.otf")
+  src: url("../app/assests/fonts/TestFoundersGrotesk-Light-BF66175e9730f02.otf")
     format("opentype");
   font-weight: 300;
   font-style: normal;
@@ -62,4 +62,3 @@
   font-style: normal;
   font-display: swap;
 }
-

@@ -26,6 +26,9 @@ type SeoProps = {
   ogDescription?: string;
   twitterTitle?: string;
   twitterDescription?: string;
+  publishedTime?: string;
+  modifiedTime?: string;
+  author?: string;
   structuredData?: Record<string, unknown> | Array<Record<string, unknown>>;
 };
 
@@ -42,6 +45,9 @@ export default function Seo({
   ogDescription,
   twitterTitle,
   twitterDescription,
+  publishedTime,
+  modifiedTime,
+  author,
   structuredData,
 }: SeoProps) {
   useEffect(() => {
@@ -75,6 +81,18 @@ export default function Seo({
     upsertMeta({ key: "name", value: "twitter:description" }, twitterMetaDescription);
     upsertMeta({ key: "name", value: "twitter:image" }, image);
 
+    if (type === "article") {
+      if (publishedTime) {
+        upsertMeta({ key: "property", value: "article:published_time" }, publishedTime);
+      }
+      if (modifiedTime) {
+        upsertMeta({ key: "property", value: "article:modified_time" }, modifiedTime);
+      }
+      if (author) {
+        upsertMeta({ key: "property", value: "article:author" }, author);
+      }
+    }
+
     upsertStructuredData("route", structuredDataList);
 
     return () => {
@@ -82,12 +100,15 @@ export default function Seo({
     };
   }, [
     canonicalPath,
+    author,
     description,
     image,
+    modifiedTime,
     noIndex,
     ogDescription,
     ogTitle,
     path,
+    publishedTime,
     robots,
     structuredData,
     title,

@@ -15,6 +15,21 @@ export const api = axios.create({
   },
 });
 
+export type PetCareNewsletterPetPreference = "DOG" | "CAT" | "BOTH";
+
+export type PetCareNewsletterSubscriptionRequest = {
+  email: string;
+  petPreference: PetCareNewsletterPetPreference;
+  consent: true;
+  website?: string;
+};
+
+export type PetCareNewsletterSubscriptionResponse = {
+  success: true;
+  status: "confirmation_required";
+  message: string;
+};
+
 api.interceptors.request.use((config) => {
   const sessionToken = sessionStorage.getItem("appointmentDraftSessionToken");
 
@@ -40,3 +55,20 @@ api.interceptors.response.use(
     });
   }
 );
+
+export async function subscribeToPetCareNewsletter(
+  input: PetCareNewsletterSubscriptionRequest
+) {
+  const response = await api.post<PetCareNewsletterSubscriptionResponse>(
+    "/pet-care/newsletter-subscriptions",
+    {
+      email: input.email,
+      petPreference: input.petPreference,
+      consent: input.consent,
+      source: "pet-care-library",
+      website: input.website ?? ""
+    }
+  );
+
+  return response.data;
+}

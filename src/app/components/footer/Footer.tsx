@@ -101,6 +101,11 @@ const quickActions = [
     href: REVIEW_URL,
     onClick: () => trackReviewClick("footer"),
   },
+  {
+    label: "Privacy Policy",
+    kind: "internal",
+    to: ROUTE.privacyPolicy,
+  },
 ] as const;
 
 function handleTrackedExternalLinkClick(

@@ -33,6 +33,22 @@ const Appointment = lazy(() => import("./pages/Appointment"));
 const AppointmentReschedule = lazy(() => import("./pages/AppointmentReschedule"));
 const Contact = lazy(() => import("./pages/Contact"));
 const NotFound = lazy(() => import("./pages/NotFound"));
+const PetCareLibrary = lazy(() =>
+  import("./pages/pet-care/PetCareLibrary").then((module) => ({
+    default: module.PetCareLibrary,
+  })),
+);
+const PetCareCategory = lazy(() =>
+  import("./pages/pet-care/PetCareCategory").then((module) => ({
+    default: module.PetCareCategory,
+  })),
+);
+const PetCareArticle = lazy(() =>
+  import("./pages/pet-care/PetCareArticle").then((module) => ({
+    default: module.PetCareArticle,
+  })),
+);
+const PrivacyPolicy = lazy(() => import("./pages/legal/PrivacyPolicy"));
 
 function RouteFallback() {
   return (
@@ -78,6 +94,16 @@ const router = createBrowserRouter(
       />
       <Route path={ROUTE.newPatients} element={withSuspense(<NewPatients />)} />
       <Route path={ROUTE.contact} element={withSuspense(<Contact />)} />
+      <Route path={ROUTE.petCare} element={withSuspense(<PetCareLibrary />)} />
+      <Route
+        path={ROUTE.petCareCategory}
+        element={withSuspense(<PetCareCategory />)}
+      />
+      <Route
+        path={ROUTE.petCareArticle}
+        element={withSuspense(<PetCareArticle />)}
+      />
+      <Route path={ROUTE.privacyPolicy} element={withSuspense(<PrivacyPolicy />)} />
     </Route>,
   ),
 );

@@ -11,4 +11,8 @@ export const ROUTE = {
   contact:"/contact-us",
   urgentCare:"/urgent-care",
   newPatients:"/new-patients",
+  petCare: "/pet-care",
+  petCareCategory: "/pet-care/category/:categorySlug",
+  petCareArticle: "/pet-care/:articleSlug",
+  privacyPolicy: "/privacy-policy",
 };

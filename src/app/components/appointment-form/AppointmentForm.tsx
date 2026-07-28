@@ -17,7 +17,10 @@ import images from "../../assests/images";
 import InertiaHover from "../../reuseable-components/inertia-hover";
 import PhoneCallDialog from "../../reuseable-components/call-modal";
 import PhonePanel from "../../reuseable-components/phone-panel";
-import { trackAppointmentSubmitted } from "../../../lib/analytics";
+import {
+  trackAppointmentSubmitted,
+  trackFormStart,
+} from "../../../lib/analytics";
 
 import {
   useAppointmentDraft,
@@ -1338,6 +1341,13 @@ export function AppointmentRequestSection({}: AppointmentRequestSectionProps) {
     }
   };
 
+  const hasTrackedFormStartRef = useRef(false);
+  const trackAppointmentFormStartOnce = useCallback(() => {
+    if (hasTrackedFormStartRef.current) return;
+    hasTrackedFormStartRef.current = true;
+    trackFormStart("appointment", "appointment_form");
+  }, []);
+
   const handleFirstStepSubmit = async () => {
     const valid = validateFields(stepFields[1]);
     if (!valid) return;
@@ -1520,7 +1530,13 @@ export function AppointmentRequestSection({}: AppointmentRequestSectionProps) {
     <section className="bg-[#F6F6F6] px-4 py-6 md:px-8 md:py-16 xl:px-12">
       <div className="mx-auto grid max-w-[1440px] grid-cols-1 gap-16 xl:grid-cols-[minmax(0,1fr)_421px]">
         <main className="min-w-0">
-          <form ref={formCardRef} onSubmit={handleSubmitForm} noValidate>
+          <form
+            ref={formCardRef}
+            onSubmit={handleSubmitForm}
+            onFocusCapture={trackAppointmentFormStartOnce}
+            onChangeCapture={trackAppointmentFormStartOnce}
+            noValidate
+          >
             {!submitted && currentMeta && (
               <StepHeader
                 step={step}

@@ -8,6 +8,7 @@ import Seo from "../components/seo/Seo";
 import { ROUTE } from "../../router";
 import TeamCard from "../reuseable-components/team-card";
 import { PhoneIcon } from "../../imports/Home/banner-section/BannerSection";
+import { trackCallClick } from "../../lib/analytics";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -417,6 +418,7 @@ export function About() {
             <a
             href="tel:(210) 257-8496"
             aria-label="Call Lili Veterinary Hospital"
+            onClick={() => trackCallClick("about_mobile_hero")}
             className="
         relative
         overflow-hidden

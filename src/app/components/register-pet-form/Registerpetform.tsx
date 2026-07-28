@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useMemo, useRef, useState } from "react";
 import type {
   ChangeEventHandler,
   FormEvent,
@@ -14,7 +14,10 @@ import {
   useSaveNewPatientReferralSource,
   useUploadNewPatientFiles,
 } from "../../../feature/new-registration/hooks";
-import { trackNewPatientSubmitted } from "../../../lib/analytics";
+import {
+  trackFormStart,
+  trackNewPatientSubmitted,
+} from "../../../lib/analytics";
 import { toast } from "sonner";
 import writeForm from "../../assests/images/write-form.svg";
 import personIcon from "../../assests/images/person-icon.svg";
@@ -544,10 +547,19 @@ export default function RegisterPetForm() {
     }
   };
 
+  const hasTrackedFormStartRef = useRef(false);
+  const trackNewPatientFormStartOnce = () => {
+    if (hasTrackedFormStartRef.current) return;
+    hasTrackedFormStartRef.current = true;
+    trackFormStart("new_patient", "new_patient_form");
+  };
+
   return (
     <>
       <form
         onSubmit={handleSubmit}
+        onFocusCapture={trackNewPatientFormStartOnce}
+        onChangeCapture={trackNewPatientFormStartOnce}
         className="lg:w-[811px] w-full rounded-[48px] overflow-hidden shadow-2xl relative z-[1000]"
       >
         <div className="bg-[#012D1D] px-8 py-7 w-full lg:h-[168px] h-[126px] flex items-center justify-between">

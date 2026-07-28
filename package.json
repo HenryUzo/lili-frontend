@@ -7,8 +7,12 @@
     "node": "20.x"
   },
   "scripts": {
-    "build": "vite build",
-    "dev": "vite"
+    "build": "vite build && node scripts/generate-pet-care-static.mjs",
+    "content:validate": "node scripts/validate-pet-care-content.mjs",
+    "content:status": "node scripts/report-pet-care-status.mjs",
+    "dev": "vite",
+    "seo:verify": "node scripts/verify-pet-care-seo.mjs",
+    "seo:verify:live": "node scripts/verify-pet-care-live.mjs"
   },
   "dependencies": {
     "@emotion/react": "11.14.0",

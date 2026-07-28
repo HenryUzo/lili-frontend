@@ -8,6 +8,7 @@ import AlertMarquee from "../../../app/reuseable-components/alert-marquee";
 import { useNavigate } from "react-router";
 import { ROUTE } from "../../../router";
 import BadgeWordmark from "../../../app/components/badge-word-mark/BadgeWordmark";
+import { trackCallClick } from "../../../lib/analytics";
 function ServiceBadge() {
   return (
     <div>
@@ -218,6 +219,7 @@ function HeroSection() {
           <a
             href="tel:(210) 257-8496"
             aria-label="Call Lili Veterinary Hospital"
+            onClick={() => trackCallClick("home_mobile_hero")}
             className="
         relative
         overflow-hidden

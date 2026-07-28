@@ -1,6 +1,7 @@
 import { ArrowUp } from "lucide-react";
 import { useEffect, useState } from "react";
 import { createPortal } from "react-dom";
+import { trackCallClick } from "../../../lib/analytics";
 
 function PhoneIcon({ size = 18 }: { size?: number }) {
   return (
@@ -48,6 +49,7 @@ export default function ScrollToTopButton() {
         <a
    href="tel:(210) 257-8496"
         aria-label="Call Lili Veterinary Hospital"
+        onClick={() => trackCallClick("floating_call_button")}
         className={`fixed bottom-24 right-8 z-[9999] flex h-12 w-12 items-center justify-center rounded-full bg-[#ED1C24B2] text-white shadow-lg transition-all duration-300 ${visible
           ? "pointer-events-auto translate-y-0 opacity-100"
           : "pointer-events-none translate-y-3 opacity-0"
