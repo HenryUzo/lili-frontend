@@ -92,8 +92,8 @@ function ScrollableMarquee() {
       <div className="relative w-full ">
         <img
           src={images.compassionatewriting}
-          className="absolute top-[10rem] z-30 right-[10rem] md:block hidden"
-          alt="Veterinary care with love."
+          className="absolute top-[10rem]  z-30 right-[10rem] md:block hidden"
+          alt=""
         />
         <img
           src={images.greenCurve}
