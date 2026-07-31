@@ -27,6 +27,7 @@ import wellnessPlanXray from "./wellness-plan-xray.jpeg";
 import cutedogcat from "./cutedogcat.png";
 import essential from "./essential.svg";
 import compassionatewriting from "./compassionatewriting.svg";
+import vetCareWithLove from "./vet-care-with-love.svg";
 import whitePawPrint from "./paw.svg";
 import logoTwo from "./logo2.svg";
 import weareHereForyou from "./wearehereforyou.svg";
@@ -237,6 +238,7 @@ export default {
   cutedogcat,
   essential,
   compassionatewriting,
+  vetCareWithLove,
   whitePawPrint,
   logoTwo,
   weareHereForyou,

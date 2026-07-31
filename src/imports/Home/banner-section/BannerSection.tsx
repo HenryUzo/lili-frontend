@@ -7,7 +7,6 @@ import ScrollableMarquee from "../../../app/reuseable-components/scrollable-marq
 import AlertMarquee from "../../../app/reuseable-components/alert-marquee";
 import { useNavigate } from "react-router";
 import { ROUTE } from "../../../router";
-import BadgeWordmark from "../../../app/components/badge-word-mark/BadgeWordmark";
 import { trackCallClick } from "../../../lib/analytics";
 function ServiceBadge() {
   return (
@@ -96,27 +95,14 @@ function HeroPetIllustration() {
     </div>
   );
 }
-function ExceptionalWordmark() {
-  return (
-    <div
-      className="[width:clamp(280px,70vw,830.961px)] [height:clamp(72px,18vw,213.949px)] mb-[-63px] relative shrink-0"
-      data-name="exceptional"
-    >
-      <BadgeWordmark />
-    </div>
-  );
-}
-
 function HeroHeadlineBlock() {
   return (
-    <div className="content-stretch flex flex-col items-center pb-[40px] relative shrink-0 w-full">
-      <ExceptionalWordmark />
-      <div className="mt-6 lg:mt-[-3rem] mb-[-36px] w-full lg:ml-[-10rem] text-center font-founders text-[clamp(2rem,8vw,96px)] font-bold tracking-[-0.03em] text-[#009444]">
-        <p>
-          <span>care with </span>
-          <span className="text-[#ed1c24]">love</span>
-        </p>
-      </div>
+    <div className="flex w-full shrink-0 justify-center pb-[40px] lg:justify-start lg:pl-10">
+      <img
+        src={images.vetCareWithLove}
+        alt="Veterinary care with love."
+        className="h-auto w-[clamp(280px,70vw,735px)]"
+      />
     </div>
   );
 }
