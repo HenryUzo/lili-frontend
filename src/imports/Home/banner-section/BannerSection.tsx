@@ -1,4 +1,11 @@
-import { useEffect, useRef, useState, type CSSProperties } from "react";
+import {
+  useEffect,
+  useLayoutEffect,
+  useRef,
+  useState,
+  type CSSProperties,
+} from "react";
+import { gsap } from "gsap";
 import svgPaths from "../../../app/components/svgpath";
 import images from "../../../app/assests/images";
 import PawButton from "../../../app/reuseable-components/paw-button";
@@ -96,9 +103,45 @@ function HeroPetIllustration() {
   );
 }
 function HeroHeadlineBlock() {
+  const payoffRef = useRef<HTMLImageElement | null>(null);
+
+  useLayoutEffect(() => {
+    const payoff = payoffRef.current;
+    if (!payoff || window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      return;
+    }
+
+    const context = gsap.context(() => {
+      gsap.fromTo(
+        payoff,
+        { autoAlpha: 0, y: 28, scale: 0.92, rotate: -1 },
+        {
+          autoAlpha: 1,
+          y: 0,
+          scale: 1,
+          rotate: 0,
+          duration: 0.9,
+          ease: "back.out(1.5)",
+        }
+      );
+
+      gsap.to(payoff, {
+        y: -6,
+        duration: 2.2,
+        delay: 0.9,
+        ease: "sine.inOut",
+        repeat: -1,
+        yoyo: true,
+      });
+    }, payoff.parentElement ?? undefined);
+
+    return () => context.revert();
+  }, []);
+
   return (
     <div className="flex w-full shrink-0 justify-center pb-[40px] lg:justify-start lg:pl-10">
       <img
+        ref={payoffRef}
         src={images.vetCareWithLove}
         alt="Veterinary care with love."
         className="h-auto w-[clamp(280px,70vw,735px)]"
