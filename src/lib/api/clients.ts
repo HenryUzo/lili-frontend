@@ -72,3 +72,8 @@ export async function subscribeToPetCareNewsletter(
 
   return response.data;
 }
+
+export async function getPublishedPetCareArticles() {
+  const response = await api.get<{ items: unknown[] }>("/pet-care/articles");
+  return response.data.items;
+}

@@ -15,6 +15,7 @@ import {
   getPublishedArticles,
   isMedicallyReviewed,
   searchArticles,
+  usePublishedPetCareContent,
   type PetCareArticle,
   type PetCareCategorySlug,
 } from "../../../data/pet-care-articles";
@@ -211,6 +212,7 @@ function FeaturedCategoryArticle({
 }
 
 export function PetCareCategory() {
+  usePublishedPetCareContent();
   const { categorySlug } = useParams();
   const category = getCategoryBySlug(categorySlug);
   const [searchTerm, setSearchTerm] = useState("");

@@ -21,6 +21,7 @@ import {
   getPublishedCategories,
   getSeasonalArticles,
   searchArticles,
+  usePublishedPetCareContent,
   type PetCareCategorySlug,
 } from "../../../data/pet-care-articles";
 import { ROUTE } from "../../../router";
@@ -38,7 +39,6 @@ import {
 } from "../../../lib/pet-care-analytics";
 import images from "../../assests/images";
 
-const featuredArticle = getFeaturedArticle();
 const primaryCategorySlugs: PetCareCategorySlug[] = [
   "urgent-care",
   "dogs",
@@ -62,9 +62,11 @@ const categoryImages: Record<string, string> = {
 };
 
 export function PetCareLibrary() {
+  usePublishedPetCareContent();
   const [searchTerm, setSearchTerm] = useState("");
   const [activeCategory, setActiveCategory] = useState<PetCareCategorySlug | "all">("all");
   const [showAllCategories, setShowAllCategories] = useState(false);
+  const featuredArticle = getFeaturedArticle();
 
   const filteredArticles = useMemo(() => {
     const categoryArticles =

@@ -22,6 +22,7 @@ import {
   getArticleBySlug,
   getRelatedArticles,
   isMedicallyReviewed,
+  usePublishedPetCareContent,
 } from "../../../data/pet-care-articles";
 import {
   buildArticleFaqStructuredData,
@@ -37,6 +38,7 @@ import {
 import images from "../../assests/images";
 
 export function PetCareArticle() {
+  usePublishedPetCareContent();
   const { articleSlug } = useParams();
   const article = getArticleBySlug(articleSlug);
   const articleAnalyticsContext = {
