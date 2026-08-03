@@ -77,3 +77,34 @@ export async function getPublishedPetCareArticles() {
   const response = await api.get<{ items: unknown[] }>("/pet-care/articles");
   return response.data.items;
 }
+
+export type PetCarePreviewResponse = {
+  article: {
+    title: string;
+    excerpt: string;
+    summary: string;
+    categoryLabel: string;
+    readingTimeMinutes: number;
+    heroImageUrl?: string | null;
+    heroImageAlt: string;
+    sections: Array<{ id: string; title: string; content: string[]; bullets?: string[] }>;
+    reviewer?: { name: string; credentials: string; role: string } | null;
+    status: string;
+  };
+  comments: Array<{ id: string; authorName: string; comment: string; createdAt: string }>;
+  shareType: "COMMENT" | "REVIEWER";
+  expiresAt: string;
+  canApprove: boolean;
+};
+
+export async function getPetCarePreview(token: string) {
+  return (await api.get<PetCarePreviewResponse>(`/pet-care/previews/${token}`)).data;
+}
+
+export async function addPetCarePreviewComment(token: string, authorName: string, comment: string) {
+  return (await api.post(`/pet-care/previews/${token}/comments`, { authorName, comment })).data;
+}
+
+export async function approvePetCarePreview(token: string) {
+  return (await api.post(`/pet-care/previews/${token}/approve`)).data;
+}
