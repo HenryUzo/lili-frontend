@@ -43,8 +43,12 @@ export type PetCareCategory = {
 export type PetCareArticleSection = {
   id: string;
   title: string;
+  type?: "CONTENT" | "IMAGE";
   content: string[];
   bullets?: string[];
+  imageUrl?: string | null;
+  imageAlt?: string | null;
+  caption?: string | null;
 };
 
 export type PetCareArticleFaq = {

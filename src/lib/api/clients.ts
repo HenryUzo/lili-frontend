@@ -87,7 +87,16 @@ export type PetCarePreviewResponse = {
     readingTimeMinutes: number;
     heroImageUrl?: string | null;
     heroImageAlt: string;
-    sections: Array<{ id: string; title: string; content: string[]; bullets?: string[] }>;
+    sections: Array<{
+      id: string;
+      title: string;
+      type?: "CONTENT" | "IMAGE";
+      content: string[];
+      bullets?: string[];
+      imageUrl?: string | null;
+      imageAlt?: string | null;
+      caption?: string | null;
+    }>;
     reviewer?: { name: string; credentials: string; role: string } | null;
     status: string;
   };

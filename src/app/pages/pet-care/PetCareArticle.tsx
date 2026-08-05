@@ -264,11 +264,27 @@ export function PetCareArticle() {
                   <h2 className="text-3xl font-bold leading-tight text-[#073D2A] md:text-4xl">
                     {section.title}
                   </h2>
-                  {section.content.map((paragraph) => (
-                    <p key={paragraph} className="text-lg leading-9 text-[#384A40]">
-                      {paragraph}
-                    </p>
-                  ))}
+                  {section.type === "IMAGE" && section.imageUrl ? (
+                    <figure>
+                      <img
+                        src={section.imageUrl}
+                        alt={section.imageAlt ?? ""}
+                        className="max-h-[680px] w-full rounded-lg object-cover"
+                        loading="lazy"
+                      />
+                      {section.caption ? (
+                        <figcaption className="mt-3 text-sm leading-6 text-[#66786F]">
+                          {section.caption}
+                        </figcaption>
+                      ) : null}
+                    </figure>
+                  ) : (
+                    section.content.map((paragraph) => (
+                      <p key={paragraph} className="text-lg leading-9 text-[#384A40]">
+                        {paragraph}
+                      </p>
+                    ))
+                  )}
                   {section.bullets && (
                     <NotebookInfoCard title="Signs to watch" tone="gold">
                       <ArticleChecklist items={section.bullets} />
