@@ -97,6 +97,12 @@ export type PetCarePreviewResponse = {
       imageAlt?: string | null;
       caption?: string | null;
     }>;
+    warningCallout?: string | null;
+    keyTakeaways: string[];
+    monitorAtHome: string[];
+    faqs: Array<{ question: string; answer: string }>;
+    references: Array<{ label: string; url?: string | null }>;
+    vetQuote?: string | null;
     reviewer?: { name: string; credentials: string; role: string } | null;
     status: string;
   };
@@ -116,4 +122,8 @@ export async function addPetCarePreviewComment(token: string, authorName: string
 
 export async function approvePetCarePreview(token: string) {
   return (await api.post(`/pet-care/previews/${token}/approve`)).data;
+}
+
+export async function updatePetCarePreviewReviewerQuote(token: string, quote: string) {
+  return (await api.patch(`/pet-care/previews/${token}/reviewer-quote`, { quote })).data;
 }
