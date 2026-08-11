@@ -13,6 +13,7 @@ export const ROUTE = {
   newPatients:"/new-patients",
   petCare: "/pet-care",
   petCareCategory: "/pet-care/category/:categorySlug",
+  petCarePreview: "/pet-care/preview/:token",
   petCareArticle: "/pet-care/:articleSlug",
   privacyPolicy: "/privacy-policy",
 };

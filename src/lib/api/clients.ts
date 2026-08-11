@@ -72,3 +72,58 @@ export async function subscribeToPetCareNewsletter(
 
   return response.data;
 }
+
+export async function getPublishedPetCareArticles() {
+  const response = await api.get<{ items: unknown[] }>("/pet-care/articles");
+  return response.data.items;
+}
+
+export type PetCarePreviewResponse = {
+  article: {
+    title: string;
+    excerpt: string;
+    summary: string;
+    categoryLabel: string;
+    readingTimeMinutes: number;
+    heroImageUrl?: string | null;
+    heroImageAlt: string;
+    sections: Array<{
+      id: string;
+      title: string;
+      type?: "CONTENT" | "IMAGE";
+      content: string[];
+      bullets?: string[];
+      imageUrl?: string | null;
+      imageAlt?: string | null;
+      caption?: string | null;
+    }>;
+    warningCallout?: string | null;
+    keyTakeaways: string[];
+    monitorAtHome: string[];
+    faqs: Array<{ question: string; answer: string }>;
+    references: Array<{ label: string; url?: string | null }>;
+    vetQuote?: string | null;
+    reviewer?: { name: string; credentials: string; role: string } | null;
+    status: string;
+  };
+  comments: Array<{ id: string; authorName: string; comment: string; createdAt: string }>;
+  shareType: "COMMENT" | "REVIEWER";
+  expiresAt: string;
+  canApprove: boolean;
+};
+
+export async function getPetCarePreview(token: string) {
+  return (await api.get<PetCarePreviewResponse>(`/pet-care/previews/${token}`)).data;
+}
+
+export async function addPetCarePreviewComment(token: string, authorName: string, comment: string) {
+  return (await api.post(`/pet-care/previews/${token}/comments`, { authorName, comment })).data;
+}
+
+export async function approvePetCarePreview(token: string) {
+  return (await api.post(`/pet-care/previews/${token}/approve`)).data;
+}
+
+export async function updatePetCarePreviewReviewerQuote(token: string, quote: string) {
+  return (await api.patch(`/pet-care/previews/${token}/reviewer-quote`, { quote })).data;
+}

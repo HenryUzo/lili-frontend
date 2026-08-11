@@ -1,4 +1,6 @@
 import images from "../app/assests/images";
+import { useEffect, useState } from "react";
+import { getPublishedPetCareArticles } from "../lib/api/clients";
 import {
   articleAuthor as rawArticleAuthor,
   petCareArticles as rawArticles,
@@ -41,8 +43,12 @@ export type PetCareCategory = {
 export type PetCareArticleSection = {
   id: string;
   title: string;
+  type?: "CONTENT" | "IMAGE";
   content: string[];
   bullets?: string[];
+  imageUrl?: string | null;
+  imageAlt?: string | null;
+  caption?: string | null;
 };
 
 export type PetCareArticleFaq = {
@@ -144,7 +150,70 @@ export function formatReadingTime(minutes: number) {
   return `${minutes} min read`;
 }
 
-export const petCareArticles: PetCareArticle[] = rawArticles.map(normalizeArticle);
+export let petCareArticles: PetCareArticle[] = rawArticles.map(normalizeArticle);
+let petCareContentRequest: Promise<void> | null = null;
+
+type ApiPetCareArticle = Omit<PetCareArticle, "category" | "heroImage" | "image" | "imageAlt" | "author" | "authorName" | "reviewer" | "readingTime" | "relatedServicePath" | "relatedServiceLabel" | "status" | "reviewStatus"> & {
+  categorySlug: PetCareCategorySlug;
+  heroImageUrl?: string | null;
+  heroImageKey?: string | null;
+  reviewer?: { slug: string; name: string; credentials: string; role: string; photoUrl?: string | null; shortBio: string; isActive: boolean } | null;
+  authorName: string;
+  authorRole: string;
+  status: "PUBLISHED";
+  reviewStatus: "MEDICALLY_REVIEWED";
+  relatedService: RelatedService;
+};
+
+function normalizeApiArticle(article: ApiPetCareArticle): PetCareArticle {
+  const category = getCategoryOrThrow(article.categorySlug);
+  const localReviewer = article.reviewer ? getReviewerById(article.reviewer.slug) : undefined;
+  const reviewer = article.reviewer ? localReviewer ?? {
+    id: article.reviewer.slug,
+    name: article.reviewer.name,
+    credentials: article.reviewer.credentials,
+    role: article.reviewer.role,
+    title: "Veterinarian reviewed",
+    photo: article.reviewer.photoUrl ?? "",
+    photoFile: article.reviewer.photoUrl ?? "",
+    shortBio: article.reviewer.shortBio,
+    bio: article.reviewer.shortBio,
+    active: article.reviewer.isActive,
+  } : undefined;
+  const heroImage = article.heroImageUrl || (article.heroImageKey ? imageMap[article.heroImageKey] : undefined);
+
+  return {
+    ...article,
+    status: "published",
+    reviewStatus: "medically-reviewed",
+    category,
+    heroImage: heroImage ?? "",
+    image: heroImage ?? "",
+    imageAlt: article.heroImageAlt,
+    author: { id: "lili-vet-care-team", name: article.authorName, role: article.authorRole },
+    authorName: article.authorName,
+    reviewer,
+    reviewerId: reviewer?.id,
+    readingTime: formatReadingTime(article.readingTimeMinutes),
+    relatedServicePath: article.relatedService.path,
+    relatedServiceLabel: article.relatedService.title,
+  };
+}
+
+export function usePublishedPetCareContent() {
+  const [, setVersion] = useState(0);
+  useEffect(() => {
+    if (!petCareContentRequest) {
+      petCareContentRequest = getPublishedPetCareArticles()
+        .then((items) => {
+          const normalized = (items as ApiPetCareArticle[]).map(normalizeApiArticle);
+          if (normalized.length) petCareArticles = normalized;
+        })
+        .catch(() => undefined);
+    }
+    petCareContentRequest.then(() => setVersion((version) => version + 1));
+  }, []);
+}
 
 export function isPublishedArticle(article: PetCareArticle) {
   return article.status === "published";

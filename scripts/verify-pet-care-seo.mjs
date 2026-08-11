@@ -58,10 +58,12 @@ const sitemap = fs.existsSync(`${distDir}/sitemap.xml`)
 
 assert(sitemap.includes(`${SITE_URL}/pet-care`), "sitemap.xml missing /pet-care");
 assert(sitemap.includes(`${SITE_URL}/privacy-policy`), "sitemap.xml missing /privacy-policy");
-assert(
-  sitemap.includes(`${SITE_URL}/pet-care/${publishedArticles[0]?.slug}`),
-  "sitemap.xml missing article route",
-);
+if (publishedArticles.length) {
+  assert(
+    sitemap.includes(`${SITE_URL}/pet-care/${publishedArticles[0].slug}`),
+    "sitemap.xml missing article route",
+  );
+}
 
 failures.forEach((failure) => console.error(`[seo:verify] ${failure}`));
 

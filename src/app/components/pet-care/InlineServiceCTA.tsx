@@ -30,22 +30,23 @@ export function InlineServiceCTA({
   ctaLocation = "pet_care_inline_cta",
 }: InlineServiceCTAProps) {
   return (
-    <aside className="relative overflow-hidden rounded-[38px] border-2 border-white bg-[#D6EBAE] p-5 md:p-7">
+    <aside className="relative min-h-[280px] overflow-hidden rounded-[38px] border-2 border-white bg-[#D6EBAE] p-6 md:min-h-[340px] md:p-8">
       <img
         src={images.doctorPetEmoji}
         alt=""
         aria-hidden="true"
-        className="absolute -right-8 -top-8 hidden w-40 rotate-12 opacity-80 lg:block"
+        className="absolute inset-0 h-full w-full object-cover object-center"
       />
-      <div className="relative grid gap-5 lg:grid-cols-[1fr_auto] lg:items-center">
-        <div className="space-y-2">
+      <div className="absolute inset-0 bg-[#D6EBAE]/80" aria-hidden="true" />
+      <div className="relative z-10 flex h-full max-w-[660px] flex-col justify-center gap-7">
+        <div className="space-y-3">
           <p className="font-queen text-3xl leading-none text-[#ED1C24]">
             Lili Vet care team
           </p>
           <h2 className="text-2xl font-bold text-[#073D2A]">{title}</h2>
-          <p className="max-w-2xl text-base leading-7 text-[#53635A]">{text}</p>
+          <p className="max-w-xl text-base leading-7 text-[#53635A]">{text}</p>
         </div>
-        <div className="flex flex-col gap-3 sm:flex-row">
+        <div className="flex flex-col gap-3 sm:flex-row sm:flex-wrap">
           <Link
             to={ROUTE.bookAppointment}
             onClick={() =>
