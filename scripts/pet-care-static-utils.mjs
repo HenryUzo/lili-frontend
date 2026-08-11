@@ -3,12 +3,12 @@ import path from "node:path";
 import { fileURLToPath } from "node:url";
 import {
   articleAuthor,
-  petCareArticles,
   petCareCategories,
   veterinaryReviewers,
 } from "../src/content/pet-care/pet-care-content.mjs";
 
-export { articleAuthor, petCareArticles };
+export { articleAuthor };
+export let petCareArticles = [];
 
 export const __dirname = path.dirname(fileURLToPath(import.meta.url));
 export const rootDir = path.resolve(__dirname, "..");
@@ -31,17 +31,16 @@ export const baseRoutes = [
   { path: "/privacy-policy", lastmod: "2026-07-28" },
 ];
 
-export const publishedArticles = petCareArticles.filter(
-  (article) => article.status === "published",
-);
+export let publishedArticles = [];
+export let publishedCategorySlugs = new Set();
+export let publishedCategories = [];
 
-export const publishedCategorySlugs = new Set(
-  publishedArticles.map((article) => article.categorySlug),
-);
-
-export const publishedCategories = petCareCategories.filter((category) =>
-  publishedCategorySlugs.has(category.slug),
-);
+export function setPetCareArticles(articles) {
+  petCareArticles = articles;
+  publishedArticles = petCareArticles.filter((article) => article.status === "published");
+  publishedCategorySlugs = new Set(publishedArticles.map((article) => article.categorySlug));
+  publishedCategories = petCareCategories.filter((category) => publishedCategorySlugs.has(category.slug));
+}
 
 export function escapeHtml(value = "") {
   return String(value)
@@ -79,6 +78,8 @@ export function getRouteLastmod() {
 }
 
 export function getArticleImageUrl(article) {
+  if (article.heroImageUrl) return article.heroImageUrl;
+
   const assetsDir = path.join(distDir, "assets");
   const parsed = path.parse(article.heroImageFile);
 
@@ -157,7 +158,7 @@ export function buildBreadcrumb(items) {
 
 export function buildArticleJsonLd(article) {
   const category = getCategory(article.categorySlug);
-  const reviewer = getReviewer(article.reviewerId);
+  const reviewer = article.reviewer ?? getReviewer(article.reviewerId);
 
   return {
     "@context": "https://schema.org",
@@ -168,7 +169,7 @@ export function buildArticleJsonLd(article) {
     image: getArticleImageUrl(article),
     datePublished: article.publishedAt,
     dateModified: article.updatedAt,
-    author: { "@type": "Organization", name: articleAuthor.name },
+    author: { "@type": "Organization", name: article.authorName ?? articleAuthor.name },
     publisher: {
       "@type": "Organization",
       name: SITE_NAME,

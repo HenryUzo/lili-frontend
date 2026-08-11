@@ -83,7 +83,7 @@ export function PetCareLibrary() {
   const latestArticles = searchTerm || activeCategory !== "all"
     ? filteredArticles.filter(
         (article) =>
-          article.id !== featuredArticle.id &&
+          article.id !== featuredArticle?.id &&
           !popularArticles.some((popularArticle) => popularArticle.id === article.id),
       )
     : baseLatestArticles;
@@ -116,20 +116,20 @@ export function PetCareLibrary() {
         path="/pet-care"
       />
 
-      <section className="relative min-h-[calc(100svh-120px)] overflow-hidden bg-[#F2F7EE] px-4 py-12 md:px-8 lg:py-20 xl:px-12">
-        <div className="absolute -right-28 top-8 h-80 w-80 rounded-full bg-[#D6EBAE]" aria-hidden="true" />
+      <section className="relative overflow-hidden bg-[#F2F7EE] px-4 py-10 sm:py-12 md:px-8 lg:min-h-[calc(100svh-120px)] lg:py-20 xl:px-12">
+        <div className="absolute -right-28 top-8 hidden h-80 w-80 rounded-full bg-[#D6EBAE] lg:block" aria-hidden="true" />
         <div className="absolute bottom-0 right-0 hidden h-48 w-full rounded-t-[60%] bg-white/55 lg:block" aria-hidden="true" />
-        <div className="mx-auto grid max-w-[1400px] gap-10 lg:grid-cols-[0.9fr_1.1fr] lg:items-center">
-          <div className="space-y-7">
-            <div className="inline-flex rotate-[-2deg] rounded-full border-2 border-white bg-[#D6EBAE] px-4 py-2 font-queen text-2xl text-[#204E1C]">
+        <div className="mx-auto grid max-w-[1400px] gap-8 lg:gap-10 lg:grid-cols-[0.9fr_1.1fr] lg:items-center">
+          <div className="space-y-6 lg:space-y-7">
+            <div className="inline-flex rotate-[-2deg] rounded-full border-2 border-white bg-[#D6EBAE] px-4 py-2 font-queen text-xl text-[#204E1C] sm:text-2xl">
               Lili Vet Pet Care Library
             </div>
             <div className="space-y-5">
-              <h1 className="max-w-4xl text-5xl font-bold leading-[0.95] tracking-normal text-[#073D2A] md:text-7xl lg:text-[86px]">
+              <h1 className="max-w-4xl text-[42px] font-bold leading-[0.96] tracking-normal text-[#073D2A] sm:text-5xl md:text-7xl lg:text-[86px]">
                 Helpful guidance for every stage of your pet's{" "}
                 <span className="text-[#ED1C24]">life</span>
               </h1>
-              <p className="max-w-3xl text-xl leading-9 text-[#53635A]">
+              <p className="max-w-3xl text-lg leading-8 text-[#53635A] sm:text-xl sm:leading-9">
                 Veterinarian-reviewed guidance to help San Antonio pet parents make
                 confident decisions about their pets' health and care.
               </p>
@@ -190,24 +190,24 @@ export function PetCareLibrary() {
               </Link>
             </div>
           </div>
-          <div className="relative min-h-[520px]">
-            <div className="absolute left-8 top-10 h-[420px] w-[420px] rounded-full bg-[#D6EBAE]" aria-hidden="true" />
-            <div className="absolute right-8 top-20 h-[260px] w-[260px] rounded-full bg-[#FFE066]" aria-hidden="true" />
+          <div className="relative hidden min-h-[520px] lg:block">
+            <div className="absolute left-1/2 top-6 h-[280px] w-[280px] -translate-x-1/2 rounded-full bg-[#D6EBAE] sm:h-[360px] sm:w-[360px] lg:left-8 lg:top-10 lg:h-[420px] lg:w-[420px] lg:translate-x-0" aria-hidden="true" />
+            <div className="absolute right-5 top-10 h-[160px] w-[160px] rounded-full bg-[#FFE066] sm:right-8 sm:top-16 sm:h-[210px] sm:w-[210px] lg:top-20 lg:h-[260px] lg:w-[260px]" aria-hidden="true" />
             <img
               src={images.cutedogcat}
               alt="Happy dog and cat representing pet care guidance"
-              className="absolute bottom-0 left-1/2 z-10 w-[min(92vw,720px)] -translate-x-1/2 object-contain"
+              className="absolute bottom-0 left-1/2 z-10 w-[min(94vw,440px)] -translate-x-1/2 object-contain lg:w-[min(92vw,720px)]"
             />
-            <DecorativeAnnotation className="absolute left-4 top-12 z-20" >
+            <DecorativeAnnotation className="absolute left-2 top-4 z-20 scale-90 sm:left-4 sm:top-8 sm:scale-100 lg:top-12" >
               Start here
             </DecorativeAnnotation>
-            <div className="absolute right-4 top-4 z-20 rotate-6 rounded-full border-4 border-white bg-[#FFFDF6] p-5 text-center">
+            <div className="absolute right-2 top-2 z-20 rotate-6 rounded-full border-4 border-white bg-[#FFFDF6] p-3 text-center sm:right-4 sm:top-4 sm:p-5">
               <ShieldCheck className="mx-auto h-7 w-7 text-[#006838]" aria-hidden="true" />
               <p className="mt-2 max-w-[120px] text-sm font-black uppercase leading-4 text-[#073D2A]">
                 Veterinarian reviewed
               </p>
             </div>
-            <div className="absolute bottom-6 left-2 z-20 max-w-[260px] rotate-[-3deg] rounded-[22px] border-2 border-white bg-[#FFF8D7] p-4">
+            <div className="absolute bottom-2 left-1 z-20 hidden max-w-[260px] rotate-[-3deg] rounded-[22px] border-2 border-white bg-[#FFF8D7] p-4 sm:block lg:bottom-6 lg:left-2">
               <p className="font-queen text-3xl text-[#ED1C24]">San Antonio care notes</p>
               <p className="text-sm font-bold leading-5 text-[#073D2A]">
                 Practical guidance for urgent signs, wellness, vaccines, and everyday decisions.
@@ -219,16 +219,23 @@ export function PetCareLibrary() {
 
       <section className="px-4 py-10 md:px-8 xl:px-12">
         <div className="mx-auto max-w-[1320px]">
-          <FeaturedArticleCard
-            article={featuredArticle}
-            onArticleClick={(article) =>
-              trackPetCareRelatedArticleClick({
-                article_slug: "pet-care-library",
-                related_article_slug: article.slug,
-                cta_location: "pet_care_library_featured",
-              })
-            }
-          />
+          {featuredArticle ? (
+            <FeaturedArticleCard
+              article={featuredArticle}
+              onArticleClick={(article) =>
+                trackPetCareRelatedArticleClick({
+                  article_slug: "pet-care-library",
+                  related_article_slug: article.slug,
+                  cta_location: "pet_care_library_featured",
+                })
+              }
+            />
+          ) : (
+            <PetCareEmptyState
+              title="New pet care guidance is coming soon"
+              text="Our team is preparing veterinarian-reviewed resources for pet parents."
+            />
+          )}
         </div>
       </section>
 
@@ -348,7 +355,13 @@ export function PetCareLibrary() {
 
       <section className="px-4 py-10 md:px-8 xl:px-12">
         <div className="relative mx-auto max-w-[1320px] overflow-hidden rounded-[46px] bg-[#012D1D] p-6 text-white md:p-10">
-          <img src={images.happyDogs} alt="" aria-hidden="true" className="absolute -bottom-20 -left-10 hidden w-[420px] rounded-full object-cover opacity-30 lg:block" />
+          <img
+            src={images.petCareSeasonalBanner}
+            alt=""
+            aria-hidden="true"
+            className="absolute inset-0 h-full w-full object-cover object-[68%_center]"
+          />
+          <div className="absolute inset-0 bg-[#012D1D]/15" aria-hidden="true" />
           <div className="relative grid gap-8 lg:grid-cols-[0.95fr_1.05fr] lg:items-center">
             <div>
               <p className="font-queen text-4xl text-[#D6EBAE]">
@@ -385,7 +398,7 @@ export function PetCareLibrary() {
                       cta_location: "pet_care_library_seasonal_section",
                     })
                   }
-                  className="grid gap-4 rounded-[26px] bg-[#F2F8EA] p-4 text-[#073D2A] transition hover:-translate-y-1 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-white sm:grid-cols-[150px_1fr]"
+                  className="grid gap-4 rounded-[26px] bg-[#F2F8EA]/95 p-4 text-[#073D2A] backdrop-blur-sm transition hover:-translate-y-1 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-white sm:grid-cols-[150px_1fr]"
                 >
                   <img
                     src={article.heroImage}
@@ -452,7 +465,11 @@ export function PetCareLibrary() {
       <section className="px-4 py-10 pb-20 md:px-8 xl:px-12">
         <div className="mx-auto max-w-[1320px]">
           <div className="grid overflow-hidden rounded-[46px] bg-[#FFFDF6] lg:grid-cols-[0.78fr_1.22fr]">
-            <img src={images.doctreatdog} alt="Veterinarian caring for a dog" className="h-full min-h-[320px] w-full object-cover" />
+            <img
+              src={images.doctreatdog}
+              alt="Veterinarian caring for a dog"
+              className="hidden h-full min-h-[320px] w-full object-cover lg:block"
+            />
             <div className="flex flex-col justify-center p-7 md:p-10">
               <p className="font-queen text-4xl text-[#ED1C24]">We're here to help</p>
               <h2 className="mt-2 text-4xl font-bold text-[#073D2A] md:text-5xl">

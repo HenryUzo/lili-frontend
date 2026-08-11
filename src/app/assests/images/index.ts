@@ -110,6 +110,7 @@ import dentalCareBg from "./dental-care-bg.png";
 import diagnosticCareBg from "./diagnostic-care-bg.png";
 import cozyPet from "./cozy-pet.png";
 import happyDogs from "./happy-dogs.png";
+import petCareSeasonalBanner from "./pet-care-seasonal-banner.png";
 import rogina from "./rogina.webp";
 import roginaDesc from "./rogina-about-card.png";
 import serzure from "./serzure.png";
@@ -320,6 +321,7 @@ pet404,
   diagnosticCareBg,
   cozyPet,
   happyDogs,
+  petCareSeasonalBanner,
   damienIvory,
   damienIvoryDesc,
   rogina,

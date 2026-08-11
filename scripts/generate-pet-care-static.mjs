@@ -19,7 +19,35 @@ import {
   routeToFile,
   SITE_NAME,
   SITE_URL,
+  setPetCareArticles,
 } from "./pet-care-static-utils.mjs";
+
+async function loadPublishedCmsArticles() {
+  const rawApiBase = process.env.VITE_API_BASE_URL?.trim() || "https://lilivet.onrender.com/api";
+  const apiBase = rawApiBase.replace(/\/+$/, "").endsWith("/api")
+    ? rawApiBase.replace(/\/+$/, "")
+    : `${rawApiBase.replace(/\/+$/, "")}/api`;
+
+  try {
+    const response = await fetch(`${apiBase}/pet-care/articles`, {
+      signal: AbortSignal.timeout(15_000),
+    });
+    if (!response.ok) throw new Error(`CMS returned ${response.status}`);
+
+    const payload = await response.json();
+    const articles = Array.isArray(payload.items) ? payload.items : [];
+    setPetCareArticles(
+      articles.map((article) => ({
+        ...article,
+        status: String(article.status).toLowerCase(),
+      })),
+    );
+  } catch (error) {
+    console.warn(`[pet-care-static] Unable to load CMS articles: ${error.message}`);
+  }
+}
+
+await loadPublishedCmsArticles();
 
 const templatePath = path.join(distDir, "index.html");
 const template = fs.readFileSync(templatePath, "utf8");
@@ -122,7 +150,7 @@ function renderCategory(category) {
 
 function renderArticle(article) {
   const category = getCategory(article.categorySlug);
-  const reviewer = getReviewer(article.reviewerId);
+  const reviewer = article.reviewer ?? getReviewer(article.reviewerId);
   const routePath = `/pet-care/${article.slug}`;
   const faqJson = buildFaqJsonLd(article);
 

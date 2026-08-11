@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { Link, useParams } from "react-router-dom";
-import { ArrowRight, Home, ListChecks, ShieldCheck } from "lucide-react";
+import { ArrowRight, ChevronDown, Home, ListChecks, ShieldCheck } from "lucide-react";
 import Seo from "../../components/seo/Seo";
 import {
   ArticleChecklist,
@@ -121,8 +121,8 @@ export function PetCareArticle() {
                 { label: article.title },
               ]}
             />
-            <div className="relative grid gap-10 lg:grid-cols-[0.9fr_1.1fr] lg:items-center">
-              <div className="space-y-6">
+            <div className="relative space-y-10 lg:space-y-12">
+              <div className="max-w-[980px] space-y-6">
               <Link
                 to={`/pet-care/category/${article.categorySlug}`}
                 onClick={() =>
@@ -135,7 +135,7 @@ export function PetCareArticle() {
               >
                 {article.category.label}
               </Link>
-              <h1 className="max-w-5xl text-5xl font-bold leading-[1.02] text-[#073D2A] md:text-7xl">
+              <h1 className="text-5xl font-bold leading-[1.02] text-[#073D2A] md:text-7xl">
                 {article.title}
               </h1>
               <p className="font-queen text-4xl leading-none text-[#ED1C24]">
@@ -159,20 +159,20 @@ export function PetCareArticle() {
                 <ReviewerBadge reviewer={article.reviewer} reviewedAt={article.reviewedAt} />
               )}
               </div>
-              <div className="relative min-h-[420px]">
-                <div className="absolute left-6 top-8 h-80 w-80 rounded-full bg-[#D6EBAE]" aria-hidden="true" />
-                <div className="absolute right-8 top-20 h-52 w-52 rounded-full bg-[#FFE066]" aria-hidden="true" />
-                <div className="absolute left-1/2 top-1/2 z-10 w-[min(88vw,610px)] -translate-x-1/2 -translate-y-1/2 rotate-[2deg] rounded-[42px] border-[12px] border-white bg-white p-3">
+              <div className="relative mx-auto min-h-[360px] w-full max-w-[900px] sm:min-h-[480px]">
+                <div className="absolute left-0 top-6 h-52 w-52 rounded-full bg-[#D6EBAE] sm:left-6 sm:top-8 sm:h-80 sm:w-80" aria-hidden="true" />
+                <div className="absolute right-0 top-20 h-32 w-32 rounded-full bg-[#FFE066] sm:right-8 sm:h-52 sm:w-52" aria-hidden="true" />
+                <div className="absolute left-1/2 top-1/2 z-10 w-[min(94vw,760px)] -translate-x-1/2 -translate-y-1/2 rotate-[2deg] rounded-[32px] border-[10px] border-white bg-white p-2 sm:rounded-[42px] sm:border-[12px] sm:p-3">
                   <img
                     src={article.heroImage}
                     alt={article.heroImageAlt}
-                    className="aspect-[4/3] w-full rounded-[30px] object-cover"
+                    className="aspect-[16/9] w-full rounded-[24px] object-cover sm:rounded-[30px]"
                   />
                 </div>
-                <DecorativeAnnotation className="absolute left-0 top-8 z-20">
+                <DecorativeAnnotation className="absolute left-0 top-0 z-20 sm:top-8">
                   Vet reviewed
                 </DecorativeAnnotation>
-                <div className="absolute right-0 top-0 z-20 rotate-6 rounded-full border-4 border-white bg-[#FFFDF6] p-5 text-center">
+                <div className="absolute right-0 top-0 z-20 rotate-6 rounded-full border-4 border-white bg-[#FFFDF6] p-3 text-center sm:p-5">
                   <ShieldCheck className="mx-auto h-7 w-7 text-[#006838]" aria-hidden="true" />
                   <p className="mt-2 max-w-[120px] text-sm font-black uppercase leading-4 text-[#073D2A]">
                     Reviewed guide
@@ -184,7 +184,7 @@ export function PetCareArticle() {
         </header>
 
         <div className="px-4 pb-20 md:px-8 xl:px-12">
-          <div className="mx-auto grid max-w-[1320px] gap-8 lg:grid-cols-[230px_minmax(0,1fr)_260px]">
+          <div className="mx-auto grid max-w-[1320px] gap-8 lg:grid-cols-[230px_minmax(0,1fr)]">
             <aside className="hidden lg:block">
               <div className="sticky top-28 rotate-[-1deg] rounded-[28px] border-2 border-white bg-[#FFFDF6] p-5">
                 <div className="flex items-center gap-2 text-sm font-bold uppercase tracking-[0.14em] text-[#008F49]">
@@ -204,27 +204,7 @@ export function PetCareArticle() {
                 </nav>
               </div>
             </aside>
-            <aside className="order-last hidden lg:block">
-              <div className="sticky top-28 space-y-5">
-                {medicallyReviewed && article.reviewer && (
-                  <VetTipCard
-                    reviewer={article.reviewer}
-                    quote="When you are unsure, calling early is often the safest next step."
-                  />
-                )}
-                <InlineServiceCTA
-                  title="Need help deciding?"
-                  text="Our team can help route you to the right care option."
-                  servicePath={article.relatedService.path}
-                  serviceLabel={article.relatedService.title}
-                  articleSlug={article.slug}
-                  articleCategory={article.categorySlug}
-                  ctaLocation="pet_care_article_sidebar"
-                />
-              </div>
-            </aside>
-
-            <div ref={articleContentRef} className="min-w-0 space-y-10">
+            <div ref={articleContentRef} className="min-w-0 space-y-20">
               <details className="rounded-[24px] border border-[#D8E8CE] bg-white p-4 lg:hidden">
                 <summary className="cursor-pointer font-bold text-[#073D2A] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#006838]">
                   On this page
@@ -244,10 +224,6 @@ export function PetCareArticle() {
                   ))}
                 </nav>
               </details>
-
-              <NotebookInfoCard title="Key takeaways">
-                <ArticleChecklist items={article.keyTakeaways} />
-              </NotebookInfoCard>
 
               <UrgentWarningBox>
                 If your pet is struggling to breathe, unconscious, having uncontrolled
@@ -308,28 +284,38 @@ export function PetCareArticle() {
                 </section>
               ))}
 
+              <NotebookInfoCard title="Key takeaways">
+                <ArticleChecklist items={article.keyTakeaways} />
+              </NotebookInfoCard>
+
               <NotebookInfoCard title="What you can monitor at home">
                 <ArticleChecklist items={article.monitorAtHome} />
               </NotebookInfoCard>
 
-              <section className="relative overflow-hidden rounded-[40px] bg-[#E9F7DE] p-5 md:p-8">
-                <img src={images.cozyPet} alt="" aria-hidden="true" className="absolute -right-16 -bottom-16 hidden w-80 opacity-25 lg:block" />
-                <p className="font-queen text-4xl text-[#ED1C24]">
+              <section className="relative overflow-hidden rounded-[32px] bg-[#343936] px-5 py-10 md:rounded-[40px] md:px-10 md:py-14">
+                <img src={images.cozyPet} alt="" aria-hidden="true" className="absolute -right-20 -bottom-24 hidden w-96 opacity-10 lg:block" />
+                <div className="relative max-w-3xl">
+                  <p className="font-queen text-4xl text-[#FF706D]">
                   Frequently Asked Questions
-                </p>
-                <h2 className="mt-2 text-3xl font-bold text-[#073D2A]">
+                  </p>
+                  <h2 className="mt-2 text-3xl font-bold text-white md:text-4xl">
                   Frequently asked questions
-                </h2>
-                <div className="grid gap-4">
-                  {article.faqs.map((faq) => (
+                  </h2>
+                </div>
+                <div className="relative mt-8 grid gap-3">
+                  {article.faqs.map((faq, index) => (
                     <details
                       key={faq.question}
-                      className="rounded-[22px] border-2 border-white bg-white/90 p-5 backdrop-blur"
+                      className="group rounded-[20px] border border-white/20 bg-[#F7FAF2] px-5 py-1 md:px-6"
                     >
-                      <summary className="cursor-pointer text-lg font-bold text-[#073D2A]">
-                        {faq.question}
+                      <summary className="flex cursor-pointer list-none items-center gap-4 py-5 text-lg font-bold text-[#073D2A] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#FF706D] [&::-webkit-details-marker]:hidden">
+                        <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-[#D6EBAE] text-xs font-black text-[#006838]">
+                          {String(index + 1).padStart(2, "0")}
+                        </span>
+                        <span className="flex-1">{faq.question}</span>
+                        <ChevronDown className="h-5 w-5 shrink-0 text-[#006838] transition-transform duration-200 group-open:rotate-180" aria-hidden="true" />
                       </summary>
-                      <p className="mt-3 leading-7 text-[#53635A]">{faq.answer}</p>
+                      <p className="border-t border-[#D8E8CE] pb-5 pt-4 leading-7 text-[#53635A]">{faq.answer}</p>
                     </details>
                   ))}
                 </div>
@@ -364,30 +350,32 @@ export function PetCareArticle() {
                 </div>
               </section>
 
-              <AuthorReviewerProfile author={article.author} reviewer={article.reviewer} />
-              <MedicalDisclaimer />
+              <div className="space-y-8">
+                <AuthorReviewerProfile author={article.author} reviewer={article.reviewer} />
+                <MedicalDisclaimer />
 
-              <section className="rounded-[24px] border border-[#D8E8CE] bg-white p-6">
-                <h2 className="text-2xl font-bold text-[#073D2A]">References</h2>
-                <ul className="mt-4 grid gap-2 text-sm leading-6 text-[#53635A]">
-                  {article.references.map((reference) => (
-                    <li key={reference.label}>
-                      {reference.url ? (
-                        <a
-                          href={reference.url}
-                          target="_blank"
-                          rel="noreferrer"
-                          className="font-bold text-[#006838] underline-offset-4 hover:underline"
-                        >
-                          {reference.label}
-                        </a>
-                      ) : (
-                        reference.label
-                      )}
-                    </li>
-                  ))}
-                </ul>
-              </section>
+                <section className="rounded-[24px] border border-[#D8E8CE] bg-white p-6">
+                  <h2 className="text-2xl font-bold text-[#073D2A]">References</h2>
+                  <ul className="mt-4 grid gap-2 text-sm leading-6 text-[#53635A]">
+                    {article.references.map((reference) => (
+                      <li key={reference.label}>
+                        {reference.url ? (
+                          <a
+                            href={reference.url}
+                            target="_blank"
+                            rel="noreferrer"
+                            className="font-bold text-[#006838] underline-offset-4 hover:underline"
+                          >
+                            {reference.label}
+                          </a>
+                        ) : (
+                          reference.label
+                        )}
+                      </li>
+                    ))}
+                  </ul>
+                </section>
+              </div>
 
               <NewsletterModule />
 
