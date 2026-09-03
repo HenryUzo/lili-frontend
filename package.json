@@ -11,6 +11,7 @@
     "content:validate": "node scripts/validate-pet-care-content.mjs",
     "content:status": "node scripts/report-pet-care-status.mjs",
     "dev": "vite",
+    "test:campaigns": "node --test tests/dental-promotion.test.mjs",
     "seo:verify": "node scripts/verify-pet-care-seo.mjs",
     "seo:verify:live": "node scripts/verify-pet-care-live.mjs"
   },
