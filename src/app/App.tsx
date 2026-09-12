@@ -52,6 +52,7 @@ const PetCarePreview = lazy(() =>
   import("./pages/pet-care/PetCarePreview").then((module) => ({ default: module.PetCarePreview })),
 );
 const PrivacyPolicy = lazy(() => import("./pages/legal/PrivacyPolicy"));
+const WellnessGiveaway = lazy(() => import("./pages/WellnessGiveaway"));
 
 function RouteFallback() {
   return (
@@ -108,6 +109,7 @@ const router = createBrowserRouter(
       />
       <Route path={ROUTE.petCarePreview} element={withSuspense(<PetCarePreview />)} />
       <Route path={ROUTE.privacyPolicy} element={withSuspense(<PrivacyPolicy />)} />
+      <Route path={ROUTE.wellnessGiveaway} element={withSuspense(<WellnessGiveaway />)} />
     </Route>,
   ),
 );
