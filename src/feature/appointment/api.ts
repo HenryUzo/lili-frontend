@@ -25,6 +25,8 @@ export type AppointmentDraftResponse = {
   email: string | null;
   phoneNumber: string | null;
   preferredContactMethod: "CALL" | "TEXT" | "EMAIL" | null;
+  marketingEmailOptIn: boolean;
+  marketingSmsOptIn: boolean;
   preferredSelections: Array<{
     date: string;
     timeSlots: string[];
@@ -115,6 +117,8 @@ export async function postAppointmentDraftStep3(
     email: string;
     phoneNumber: string;
     preferredContactMethod: "CALL" | "TEXT" | "EMAIL";
+    marketingEmailOptIn: boolean;
+    marketingSmsOptIn: boolean;
   },
 ) {
   const response = await api.patch(
@@ -216,4 +220,35 @@ export async function submitAppointmentReschedule(
   );
 
   return response.data;
+}
+
+export type AppointmentBookingSettings = {
+  mode: "STANDARD" | "SIMPLIFIED";
+  timezone: "America/Chicago";
+  maxDaysAhead: number;
+  hours: {
+    weekdays: { open: string; close: string };
+    saturday: { open: string; close: string };
+    sunday: null;
+  };
+};
+
+export async function getAppointmentBookingSettings() {
+  const response = await api.get<AppointmentBookingSettings>("/appointment-booking/settings");
+  return response.data;
+}
+
+export async function submitSimplifiedAppointment(payload: {
+  clientFullName: string;
+  petName: string;
+  petType: "DOG" | "CAT";
+  email: string;
+  phoneNumber: string;
+  reasonForVisit: string;
+  preferredDate: string;
+  preferredTime: string;
+  website: string;
+}) {
+  const response = await api.post("/appointment-booking/simplified", payload);
+  return response.data as { id: string; requestedDate: string; requestedTime: string; timezone: string };
 }
