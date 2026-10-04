@@ -1,7 +1,8 @@
 import { addDays, addMonths, format, isAfter, isBefore, isSameDay, startOfDay, startOfMonth, subMonths } from "date-fns";
-import { AlertTriangle, CalendarDays, Cat, ChevronDown, ChevronLeft, ChevronRight, Clock3, Dog, Phone } from "lucide-react";
+import { AlertTriangle, Cat, ChevronDown, ChevronLeft, ChevronRight, Clock3, Dog, Phone } from "lucide-react";
 import { FormEvent, useMemo, useState } from "react";
 import { submitSimplifiedAppointment } from "../../../feature/appointment/api";
+import images from "../../assests/images";
 
 const today = startOfDay(new Date());
 const latestDate = addDays(today, 60);
@@ -39,6 +40,15 @@ function timeSlots(date: Date | null) {
 function displayTime(value: string) {
   const [hour, minute] = value.split(":").map(Number);
   return `${hour % 12 || 12}:${String(minute).padStart(2, "0")} ${hour >= 12 ? "PM" : "AM"}`;
+}
+
+function formatUsPhone(value: string) {
+  let digits = value.replace(/\D/g, "");
+  if (digits.length > 10 && digits.startsWith("1")) digits = digits.slice(1);
+  digits = digits.slice(0, 10);
+  if (digits.length <= 3) return digits;
+  if (digits.length <= 6) return `(${digits.slice(0, 3)}) ${digits.slice(3)}`;
+  return `(${digits.slice(0, 3)}) ${digits.slice(3, 6)}-${digits.slice(6)}`;
 }
 
 export function SimplifiedAppointmentForm() {
@@ -79,6 +89,7 @@ export function SimplifiedAppointmentForm() {
       const firstSelection = preferredSelections[0];
       const result = await submitSimplifiedAppointment({
         ...fields,
+        phoneNumber: `+1 ${fields.phoneNumber}`,
         preferredDate: firstSelection.date,
         preferredTime: firstSelection.time,
         preferredSelections
@@ -93,7 +104,7 @@ export function SimplifiedAppointmentForm() {
     return (
       <section id="appointment-request-section" className="bg-[#F6F6F6] px-4 py-16 md:px-8">
         <div className="mx-auto max-w-2xl rounded-[32px] border border-[#C1C8C24D] bg-white p-8 text-center shadow-[0_12px_40px_rgba(27,28,25,0.07)] md:p-12">
-          <div className="mx-auto mb-5 flex size-14 items-center justify-center rounded-full bg-[#E5EFE5] text-[#077D39]"><CalendarDays /></div>
+          <img src={images.doctorPetEmoji} alt="Lili veterinarian with pets" className="mx-auto mb-6 h-auto w-36 object-contain sm:w-44" />
           <h2 className="font-founders text-[36px] font-medium leading-tight text-[#1B1C19]">Your request is in</h2>
           <p className="mt-3 font-manrope text-[15px] font-medium leading-6 text-[#414844]">We received your preferred appointment times:</p>
           <ol className="mx-auto mt-4 max-w-sm space-y-2 text-left">
@@ -128,7 +139,7 @@ export function SimplifiedAppointmentForm() {
                 </div>
               </fieldset>
               <label className="block font-manrope text-[13px] font-bold text-[#414844]">Email <span className="font-medium text-[#8B8F89]">(optional)</span><input type="email" value={fields.email} onChange={(e) => update("email", e.target.value)} autoComplete="email" className="mt-2 h-12 w-full rounded-[16px] border border-[#D8DDD6] bg-[#FCFCFA] px-4 font-manrope text-[15px] text-[#1B1C19] outline-none transition focus:border-[#416352] focus:bg-white focus:ring-2 focus:ring-[#416352]/15" /></label>
-              <label className="block font-manrope text-[13px] font-bold text-[#414844]">Phone number <span className="text-[#D32020]">*</span><input required type="tel" value={fields.phoneNumber} onChange={(e) => update("phoneNumber", e.target.value)} className="mt-2 h-12 w-full rounded-[16px] border border-[#D8DDD6] bg-[#FCFCFA] px-4 font-manrope text-[15px] text-[#1B1C19] outline-none transition focus:border-[#416352] focus:bg-white focus:ring-2 focus:ring-[#416352]/15" /><span className="mt-2 block font-manrope text-[11px] font-medium leading-4 text-[#727973]">We may text this number about this appointment request. Message rates may apply.</span></label>
+              <label className="block font-manrope text-[13px] font-bold text-[#414844]">Phone number <span className="text-[#D32020]">*</span><span className="mt-2 flex h-12 overflow-hidden rounded-[16px] border border-[#D8DDD6] bg-[#FCFCFA] transition focus-within:border-[#416352] focus-within:bg-white focus-within:ring-2 focus-within:ring-[#416352]/15"><span aria-hidden="true" className="flex items-center border-r border-[#D8DDD6] bg-[#F1F4F0] px-4 font-manrope text-[15px] font-bold text-[#2D4B39]">+1</span><input required type="tel" inputMode="tel" autoComplete="tel-national" placeholder="(210) 555-0123" pattern="\(\d{3}\) \d{3}-\d{4}" title="Enter a 10-digit U.S. phone number" value={fields.phoneNumber} onChange={(e) => update("phoneNumber", formatUsPhone(e.target.value))} className="min-w-0 flex-1 bg-transparent px-4 font-manrope text-[15px] text-[#1B1C19] outline-none" /></span><span className="mt-2 block font-manrope text-[11px] font-medium leading-4 text-[#727973]">We may text this number about this appointment request. Message rates may apply.</span></label>
               <label className="block font-manrope text-[13px] font-bold text-[#414844]">Reason for visit <span className="text-[#D32020]">*</span><textarea required rows={4} value={fields.reasonForVisit} onChange={(e) => update("reasonForVisit", e.target.value)} className="mt-2 w-full resize-y rounded-[16px] border border-[#D8DDD6] bg-[#FCFCFA] p-4 font-manrope text-[15px] text-[#1B1C19] outline-none transition focus:border-[#416352] focus:bg-white focus:ring-2 focus:ring-[#416352]/15" /></label>
               <input tabIndex={-1} autoComplete="off" aria-hidden="true" value={fields.website} onChange={(e) => update("website", e.target.value)} className="absolute -left-[9999px]" />
             </div>
