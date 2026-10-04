@@ -44,7 +44,7 @@ function displayTime(value: string) {
 export function SimplifiedAppointmentForm() {
   const [visibleMonth, setVisibleMonth] = useState(startOfMonth(today));
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
-  const [selectedTime, setSelectedTime] = useState("");
+  const [preferredSelections, setPreferredSelections] = useState<Array<{ date: string; time: string }>>([]);
   const [fields, setFields] = useState<{ clientFullName: string; petName: string; petType: "DOG" | "CAT"; email: string; phoneNumber: string; reasonForVisit: string; website: string }>({ clientFullName: "", petName: "", petType: "DOG", email: "", phoneNumber: "", reasonForVisit: "", website: "" });
   const [state, setState] = useState<{ loading: boolean; error: string; confirmation?: { id: string } }>({ loading: false, error: "" });
   const days = useMemo(() => monthDays(visibleMonth), [visibleMonth]);
@@ -53,15 +53,36 @@ export function SimplifiedAppointmentForm() {
   const monthsForVisibleYear = useMemo(() => availableMonths.filter((month) => month.getFullYear() === visibleMonth.getFullYear()), [visibleMonth]);
 
   const update = (name: keyof typeof fields, value: string) => setFields((current) => ({ ...current, [name]: value }));
+  const togglePreferredTime = (time: string) => {
+    if (!selectedDate) return;
+    const date = dateKey(selectedDate);
+    const exists = preferredSelections.some((selection) => selection.date === date && selection.time === time);
+    if (exists) {
+      setPreferredSelections((current) => current.filter((selection) => selection.date !== date || selection.time !== time));
+      return;
+    }
+    if (preferredSelections.length >= 3) {
+      setState((current) => ({ ...current, error: "You can choose up to three preferred times. Remove one to add another." }));
+      return;
+    }
+    setPreferredSelections((current) => [...current, { date, time }]);
+    setState((current) => ({ ...current, error: "" }));
+  };
   const submit = async (event: FormEvent) => {
     event.preventDefault();
-    if (!selectedDate || !selectedTime) {
-      setState({ loading: false, error: "Choose a preferred date and time." });
+    if (!preferredSelections.length) {
+      setState({ loading: false, error: "Choose at least one preferred date and time." });
       return;
     }
     setState({ loading: true, error: "" });
     try {
-      const result = await submitSimplifiedAppointment({ ...fields, preferredDate: dateKey(selectedDate), preferredTime: selectedTime });
+      const firstSelection = preferredSelections[0];
+      const result = await submitSimplifiedAppointment({
+        ...fields,
+        preferredDate: firstSelection.date,
+        preferredTime: firstSelection.time,
+        preferredSelections
+      });
       setState({ loading: false, error: "", confirmation: { id: result.id } });
     } catch (error: any) {
       setState({ loading: false, error: error?.response?.data?.error?.message || "We could not submit your request. Please try again." });
@@ -74,7 +95,10 @@ export function SimplifiedAppointmentForm() {
         <div className="mx-auto max-w-2xl rounded-[32px] border border-[#C1C8C24D] bg-white p-8 text-center shadow-[0_12px_40px_rgba(27,28,25,0.07)] md:p-12">
           <div className="mx-auto mb-5 flex size-14 items-center justify-center rounded-full bg-[#E5EFE5] text-[#077D39]"><CalendarDays /></div>
           <h2 className="font-founders text-[36px] font-medium leading-tight text-[#1B1C19]">Your request is in</h2>
-          <p className="mt-3 font-manrope text-[15px] font-medium leading-6 text-[#414844]">You requested {selectedDate && format(selectedDate, "EEEE, MMMM d")} at {displayTime(selectedTime)} Central Time.</p>
+          <p className="mt-3 font-manrope text-[15px] font-medium leading-6 text-[#414844]">We received your preferred appointment times:</p>
+          <ol className="mx-auto mt-4 max-w-sm space-y-2 text-left">
+            {preferredSelections.map((selection, index) => <li key={`${selection.date}-${selection.time}`} className="rounded-[14px] bg-[#F6F5F0] px-4 py-3 font-manrope text-[14px] font-bold text-[#2D4B39]">{index + 1}. {format(new Date(`${selection.date}T12:00:00`), "EEEE, MMMM d")} at {displayTime(selection.time)}</li>)}
+          </ol>
           <p className="mt-2 font-manrope font-bold text-[#416352]">This is not confirmed yet. Our team will contact you to confirm the appointment.</p>
         </div>
       </section>
@@ -87,7 +111,7 @@ export function SimplifiedAppointmentForm() {
         <div className="mb-8 max-w-2xl">
           <p className="font-manrope text-[11px] font-bold uppercase tracking-[0.14em] text-[#41635299]">Appointment request</p>
           <h2 className="mt-2 font-founders text-[36px] font-medium leading-[1.08] text-[#1B1C19] md:text-[46px]">Choose a time that works for you</h2>
-          <p className="mt-3 font-manrope text-[15px] font-medium leading-6 text-[#414844]">Send one preferred time. Our staff will review and confirm it with you.</p>
+          <p className="mt-3 font-manrope text-[15px] font-medium leading-6 text-[#414844]">Choose up to three preferred times. Our staff will review them and confirm one with you.</p>
         </div>
         <form onSubmit={submit} className="grid overflow-hidden rounded-[32px] border border-[#C1C8C24D] bg-white shadow-[0_12px_40px_rgba(27,28,25,0.07)] lg:grid-cols-[0.9fr_1.25fr_0.75fr]">
           <div className="border-b border-[#E7E2DA] bg-white p-5 sm:p-7 lg:border-b-0 lg:border-r lg:p-8">
@@ -135,18 +159,24 @@ export function SimplifiedAppointmentForm() {
             <div className="mt-2 grid grid-cols-7 gap-1">{days.map((day) => {
               const unavailable = day.getMonth() !== visibleMonth.getMonth() || day.getDay() === 0 || isBefore(day, today) || isAfter(day, latestDate);
               const active = selectedDate ? isSameDay(day, selectedDate) : false;
-              return <button key={day.toISOString()} type="button" disabled={unavailable} onClick={() => { setSelectedDate(day); setSelectedTime(""); }} className={`aspect-square min-h-10 rounded-[14px] border font-manrope text-sm font-bold transition ${active ? "border-[#077D39] bg-[#077D39] text-white shadow-[0_8px_18px_rgba(7,125,57,0.18)]" : "border-transparent text-[#2D4B39] hover:border-[#B7CDBD] hover:bg-[#EDF4EF]"} disabled:text-[#B4B4AA] disabled:hover:border-transparent disabled:hover:bg-transparent`}>{day.getDate()}</button>;
+              const hasPreference = preferredSelections.some((selection) => selection.date === dateKey(day));
+              return <button key={day.toISOString()} type="button" disabled={unavailable} onClick={() => setSelectedDate(day)} className={`relative aspect-square min-h-10 rounded-[14px] border font-manrope text-sm font-bold transition ${active ? "border-[#077D39] bg-[#077D39] text-white shadow-[0_8px_18px_rgba(7,125,57,0.18)]" : "border-transparent text-[#2D4B39] hover:border-[#B7CDBD] hover:bg-[#EDF4EF]"} disabled:text-[#B4B4AA] disabled:hover:border-transparent disabled:hover:bg-transparent`}>{day.getDate()}{hasPreference && !active && <span className="absolute bottom-1 left-1/2 size-1.5 -translate-x-1/2 rounded-full bg-[#077D39]" />}</button>;
             })}</div>
             <div className="mt-6 flex items-center gap-2 border-t border-[#E7E2DA] pt-4 font-manrope text-[12px] font-medium text-[#727973]"><Clock3 className="size-4 text-[#416352]" />All times shown in Central Time</div>
           </div>
 
           <div className="flex min-h-[280px] flex-col bg-white p-5 sm:p-7 lg:min-h-[420px] lg:p-8">
             <h3 className="font-founders text-[26px] font-medium text-[#1B1C19]">{selectedDate ? format(selectedDate, "EEE, MMM d") : "Select a date"}</h3>
-            <div className="mt-5 grid max-h-[380px] grid-cols-2 gap-2 overflow-y-auto pr-1 lg:grid-cols-1">{slots.map((slot) => <button key={slot} type="button" onClick={() => setSelectedTime(slot)} className={`h-11 rounded-full border px-4 font-manrope text-[13px] font-bold transition ${selectedTime === slot ? "border-[#077D39] bg-[#EAF7EF] text-[#077D39] shadow-[0_0_0_1px_#077D39]" : "border-[#D8DDD6] bg-white text-[#416352] hover:border-[#416352] hover:bg-[#F7FBF8]"}`}>{displayTime(slot)}</button>)}</div>
+            <p className="mt-1 font-manrope text-[12px] font-medium text-[#727973]">{preferredSelections.length} of 3 preferred times selected</p>
+            <div className="mt-4 grid max-h-[300px] grid-cols-2 gap-2 overflow-y-auto pr-1 lg:grid-cols-1">{slots.map((slot) => {
+              const selected = Boolean(selectedDate && preferredSelections.some((selection) => selection.date === dateKey(selectedDate) && selection.time === slot));
+              return <button key={slot} type="button" aria-pressed={selected} onClick={() => togglePreferredTime(slot)} className={`h-11 rounded-full border px-4 font-manrope text-[13px] font-bold transition ${selected ? "border-[#077D39] bg-[#EAF7EF] text-[#077D39] shadow-[0_0_0_1px_#077D39]" : "border-[#D8DDD6] bg-white text-[#416352] hover:border-[#416352] hover:bg-[#F7FBF8]"}`}>{displayTime(slot)}</button>;
+            })}</div>
             {!selectedDate && <p className="mt-5 font-manrope text-[13px] font-medium leading-5 text-[#727973]">Choose an available day to view request times.</p>}
+            {preferredSelections.length > 0 && <div className="mt-5 space-y-2 border-t border-[#E7E2DA] pt-4">{preferredSelections.map((selection, index) => <div key={`${selection.date}-${selection.time}`} className="flex items-center justify-between gap-3 rounded-[14px] bg-[#F6F5F0] px-3 py-2"><span className="font-manrope text-[12px] font-bold text-[#2D4B39]">{index + 1}. {format(new Date(`${selection.date}T12:00:00`), "MMM d")} · {displayTime(selection.time)}</span><button type="button" onClick={() => setPreferredSelections((current) => current.filter((item) => item !== selection))} className="font-manrope text-[11px] font-bold text-[#D32020] underline">Remove</button></div>)}</div>}
             <div className="mt-auto pt-6">
               {state.error && <p role="alert" className="mb-3 rounded-[14px] bg-[#FBF1F1] p-3 font-manrope text-[13px] font-bold text-[#D32020]">{state.error}</p>}
-              <button disabled={state.loading || !selectedDate || !selectedTime} className="h-12 w-full rounded-full bg-[#077D39] px-4 font-manrope text-[15px] font-semibold text-white shadow-[0_10px_24px_rgba(7,125,57,0.18)] transition hover:bg-[#006B31] disabled:cursor-not-allowed disabled:bg-[#B8C7BD] disabled:shadow-none">{state.loading ? "Sending request..." : "Request this time"}</button>
+              <button disabled={state.loading || !preferredSelections.length} className="h-12 w-full rounded-full bg-[#077D39] px-4 font-manrope text-[15px] font-semibold text-white shadow-[0_10px_24px_rgba(7,125,57,0.18)] transition hover:bg-[#006B31] disabled:cursor-not-allowed disabled:bg-[#B8C7BD] disabled:shadow-none">{state.loading ? "Sending request..." : "Request preferred times"}</button>
               <p className="mt-3 text-center font-manrope text-[11px] font-medium leading-4 text-[#727973]">Your appointment is pending until Lili Veterinary Hospital confirms it.</p>
             </div>
           </div>

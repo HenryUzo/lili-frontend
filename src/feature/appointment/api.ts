@@ -247,8 +247,9 @@ export async function submitSimplifiedAppointment(payload: {
   reasonForVisit: string;
   preferredDate: string;
   preferredTime: string;
+  preferredSelections: Array<{ date: string; time: string }>;
   website: string;
 }) {
   const response = await api.post("/appointment-booking/simplified", payload);
-  return response.data as { id: string; requestedDate: string; requestedTime: string; timezone: string };
+  return response.data as { id: string; requestedDate: string; requestedTime: string; requestedSelections: Array<{ date: string; time: string }>; timezone: string };
 }
