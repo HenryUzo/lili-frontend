@@ -33,6 +33,7 @@ import {
   useSubmitAppointmentDraft,
   useUploadAppointmentDraftFiles,
 } from "../../../feature/appointment/hooks";
+import { getAppointmentAttribution } from "../../../lib/attribution";
 import {
   clearAppointmentDraftSession,
   getAppointmentDraftSession,
@@ -94,6 +95,8 @@ type FormValues = {
   email: string;
   phone: string;
   preferredContactMethod: ContactMethod | "";
+  marketingEmailOptIn: boolean;
+  marketingSmsOptIn: boolean;
 
   preferredSelections: PreferredSelection[];
   timezone: string;
@@ -124,7 +127,7 @@ type DraftPreviewData = NonNullable<
 
 type DraftPreservedFields = Pick<
   FormValues,
-  "confirmContact" | "confirmCommunication" | "uploadedFile"
+  "confirmContact" | "confirmCommunication" | "uploadedFile" | "marketingEmailOptIn" | "marketingSmsOptIn"
 >;
 
 /* ------------------------------- constants -------------------------------- */
@@ -335,6 +338,8 @@ const defaultValues: FormValues = {
   email: "",
   phone: "",
   preferredContactMethod: "",
+  marketingEmailOptIn: false,
+  marketingSmsOptIn: false,
 
   preferredSelections: createEmptyWeekSelections(),
   timezone: CLINIC_TIMEZONE,
@@ -591,6 +596,8 @@ function mapDraftToFormValues(
     preferredContactMethod: draft.preferredContactMethod
       ? API_CONTACT_METHOD_TO_FORM[draft.preferredContactMethod]
       : defaultValues.preferredContactMethod,
+    marketingEmailOptIn: draft.marketingEmailOptIn || preserved.marketingEmailOptIn,
+    marketingSmsOptIn: draft.marketingSmsOptIn || preserved.marketingSmsOptIn,
 
     preferredSelections: selections,
     timezone: draft.timezone || defaultValues.timezone,
@@ -762,7 +769,7 @@ export function AppointmentRequestSection({}: AppointmentRequestSectionProps) {
       }
 
       if (!draftCreationPromiseRef.current) {
-        draftCreationPromiseRef.current = createSessionAsync()
+        draftCreationPromiseRef.current = createSessionAsync(getAppointmentAttribution())
           .then((draft) => {
             setSessionToken(draft.sessionToken);
             return draft.sessionToken;
@@ -836,6 +843,8 @@ export function AppointmentRequestSection({}: AppointmentRequestSectionProps) {
         confirmContact: prev.confirmContact,
         confirmCommunication: prev.confirmCommunication,
         uploadedFile: prev.uploadedFile,
+        marketingEmailOptIn: prev.marketingEmailOptIn,
+        marketingSmsOptIn: prev.marketingSmsOptIn,
       }),
     );
 
@@ -1440,6 +1449,8 @@ export function AppointmentRequestSection({}: AppointmentRequestSectionProps) {
           email: values.email.trim(),
           phoneNumber: values.phone.trim(),
           preferredContactMethod,
+          marketingEmailOptIn: values.marketingEmailOptIn,
+          marketingSmsOptIn: values.marketingSmsOptIn,
         },
       });
 
@@ -1852,6 +1863,12 @@ export function AppointmentRequestSection({}: AppointmentRequestSectionProps) {
                         </div>
                         <ErrorText message={errors.preferredContactMethod} />
                       </Field>
+
+                      <div className="mt-6 space-y-3 rounded-[16px] border border-[#DDEBE2] bg-[#F7FBF8] p-4">
+                        <p className="text-sm font-bold text-[#102E24]">Optional Lili Vet updates</p>
+                        <CheckRow checked={values.marketingEmailOptIn} onClick={() => updateField("marketingEmailOptIn", !values.marketingEmailOptIn)} label="Email me occasional Lili Veterinary Hospital news, pet-care tips, and offers. I can unsubscribe at any time." />
+                        <CheckRow checked={values.marketingSmsOptIn} onClick={() => updateField("marketingSmsOptIn", !values.marketingSmsOptIn)} label="Text me occasional Lili Veterinary Hospital news and offers. Message and data rates may apply. Reply STOP to opt out." />
+                      </div>
 
                       <EmergencyNotice className="mt-8" />
 

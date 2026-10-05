@@ -3,6 +3,7 @@ import { AlertTriangle, Cat, ChevronDown, ChevronLeft, ChevronRight, Clock3, Dog
 import { FormEvent, useMemo, useState } from "react";
 import { submitSimplifiedAppointment } from "../../../feature/appointment/api";
 import images from "../../assests/images";
+import { getAppointmentAttribution } from "../../../lib/attribution";
 
 const today = startOfDay(new Date());
 const latestDate = addDays(today, 60);
@@ -92,7 +93,8 @@ export function SimplifiedAppointmentForm() {
         phoneNumber: `+1 ${fields.phoneNumber}`,
         preferredDate: firstSelection.date,
         preferredTime: firstSelection.time,
-        preferredSelections
+        preferredSelections,
+        attribution: getAppointmentAttribution()
       });
       setState({ loading: false, error: "", confirmation: { id: result.id } });
     } catch (error: any) {

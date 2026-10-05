@@ -1,4 +1,5 @@
 import { api } from "../../lib/api/clients";
+import type { AppointmentAttribution } from "../../lib/attribution";
 
 
 export type AppointmentDraftResponse = {
@@ -75,8 +76,8 @@ export type AppointmentRescheduleContextResponse = {
   }>;
 };
 
-export async function createAppointmentDraft() {
-  const response = await api.post("/appointment-drafts");
+export async function createAppointmentDraft(attribution?: AppointmentAttribution) {
+  const response = await api.post("/appointment-drafts", { attribution });
   return response.data;
 }
 
@@ -249,6 +250,7 @@ export async function submitSimplifiedAppointment(payload: {
   preferredTime: string;
   preferredSelections: Array<{ date: string; time: string }>;
   website: string;
+  attribution?: AppointmentAttribution;
 }) {
   const response = await api.post("/appointment-booking/simplified", payload);
   return response.data as { id: string; requestedDate: string; requestedTime: string; requestedSelections: Array<{ date: string; time: string }>; timezone: string };
