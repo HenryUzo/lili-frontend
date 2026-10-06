@@ -3,6 +3,7 @@ import { AlertTriangle, Cat, ChevronDown, ChevronLeft, ChevronRight, Clock3, Dog
 import { FormEvent, useMemo, useState } from "react";
 import { submitSimplifiedAppointment } from "../../../feature/appointment/api";
 import images from "../../assests/images";
+import { trackAppointmentSubmitted } from "../../../lib/analytics";
 import { getAppointmentAttribution } from "../../../lib/attribution";
 
 const today = startOfDay(new Date());
@@ -95,6 +96,11 @@ export function SimplifiedAppointmentForm() {
         preferredTime: firstSelection.time,
         preferredSelections,
         attribution: getAppointmentAttribution()
+      });
+      trackAppointmentSubmitted({
+        visitType: "OTHER",
+        petSpecies: fields.petType,
+        preferredDatesCount: preferredSelections.length,
       });
       setState({ loading: false, error: "", confirmation: { id: result.id } });
     } catch (error: any) {
