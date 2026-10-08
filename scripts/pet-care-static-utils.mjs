@@ -20,6 +20,7 @@ export const baseRoutes = [
   { path: "/", lastmod: "2026-05-11" },
   { path: "/about-us", lastmod: "2026-05-11" },
   { path: "/book-appointment", lastmod: "2026-05-11" },
+  { path: "/proheart-6-special", lastmod: "2026-10-08" },
   { path: "/contact-us", lastmod: "2026-05-11" },
   { path: "/new-patients", lastmod: "2026-05-11" },
   { path: "/urgent-care", lastmod: "2026-05-11" },

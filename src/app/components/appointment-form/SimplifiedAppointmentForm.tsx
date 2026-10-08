@@ -5,6 +5,7 @@ import { submitSimplifiedAppointment } from "../../../feature/appointment/api";
 import images from "../../assests/images";
 import { trackAppointmentSubmitted } from "../../../lib/analytics";
 import { getAppointmentAttribution } from "../../../lib/attribution";
+import { isProheartPromotionActive, proheartPromotion } from "../../campaigns/proheart-promotion.mjs";
 
 const today = startOfDay(new Date());
 const latestDate = addDays(today, 60);
@@ -31,7 +32,7 @@ function monthDays(month: Date) {
 
 function timeSlots(date: Date | null) {
   if (!date || date.getDay() === 0) return [];
-  const closeHour = date.getDay() === 6 ? 16 : 19;
+  const closeHour = date.getDay() === 6 ? 17 : 19;
   const slots: string[] = [];
   for (let hour = 8; hour < closeHour; hour += 1) {
     slots.push(`${String(hour).padStart(2, "0")}:00`, `${String(hour).padStart(2, "0")}:30`);
@@ -57,7 +58,7 @@ export function SimplifiedAppointmentForm() {
   const [visibleMonth, setVisibleMonth] = useState(startOfMonth(today));
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
   const [preferredSelections, setPreferredSelections] = useState<Array<{ date: string; time: string }>>([]);
-  const [fields, setFields] = useState<{ clientFullName: string; petName: string; petType: "DOG" | "CAT"; email: string; phoneNumber: string; reasonForVisit: string; website: string }>({ clientFullName: "", petName: "", petType: "DOG", email: "", phoneNumber: "", reasonForVisit: "", website: "" });
+  const [fields, setFields] = useState<{ clientFullName: string; petName: string; petType: "DOG" | "CAT"; email: string; phoneNumber: string; reasonForVisit: string; website: string }>(() => ({ clientFullName: "", petName: "", petType: "DOG", email: "", phoneNumber: "", reasonForVisit: typeof window !== "undefined" && new URLSearchParams(window.location.search).get("promo") === proheartPromotion.slug && isProheartPromotionActive() ? "ProHeart 6 special" : "", website: "" }));
   const [state, setState] = useState<{ loading: boolean; error: string; confirmation?: { id: string } }>({ loading: false, error: "" });
   const days = useMemo(() => monthDays(visibleMonth), [visibleMonth]);
   const slots = useMemo(() => timeSlots(selectedDate), [selectedDate]);

@@ -17,4 +17,5 @@ export const ROUTE = {
   petCareArticle: "/pet-care/:articleSlug",
   privacyPolicy: "/privacy-policy",
   wellnessGiveaway: "/wellness-giveaway",
+  proheartSpecial: "/proheart-6-special",
 };

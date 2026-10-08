@@ -356,7 +356,7 @@ const defaultValues: FormValues = {
 };
 
 const WEEKDAY_TIME_SLOTS = generateQuarterHourSlots("08:00", "19:00");
-const SATURDAY_TIME_SLOTS = generateQuarterHourSlots("08:00", "16:00");
+const SATURDAY_TIME_SLOTS = generateQuarterHourSlots("08:00", "17:00");
 
 /* -------------------------------- helpers -------------------------------- */
 
@@ -368,7 +368,7 @@ function generateQuarterHourSlots(start: string, end: string) {
   const startTotal = startHour * 60 + startMinute;
   const endTotal = endHour * 60 + endMinute;
 
-  for (let minutes = startTotal; minutes <= endTotal; minutes += 15) {
+  for (let minutes = startTotal; minutes + 30 <= endTotal; minutes += 15) {
     const hours = Math.floor(minutes / 60);
     const mins = minutes % 60;
 
@@ -513,7 +513,7 @@ function getTimeSlotsForSelection(
 function getClinicHoursLabel(selection: PreferredSelection | null | undefined) {
   const slots = getTimeSlotsForSelection(selection);
   if (slots === SATURDAY_TIME_SLOTS) {
-    return "Saturday hours: 8:00 AM - 4:00 PM";
+    return "Saturday hours: 8:00 AM - 5:00 PM";
   }
 
   return "Weekday hours: 8:00 AM - 7:00 PM";
@@ -2050,7 +2050,7 @@ export function AppointmentRequestSection({}: AppointmentRequestSectionProps) {
                                 <p className="mt-1 font-manrope text-[13px] font-medium leading-5 text-[#727973]">
                                   {!hasSelectedWeek
                                     ? "Select a week from the calendar first."
-                                    : "Weekdays 8:00 AM - 7:00 PM | Sat 8:00 AM - 4:00 PM"}
+                                    : "Weekdays 8:00 AM - 7:00 PM | Sat 8:00 AM - 5:00 PM"}
                                 </p>
 
                                 {hasSelectedWeek ? (
@@ -2106,7 +2106,7 @@ export function AppointmentRequestSection({}: AppointmentRequestSectionProps) {
                               </p>
 
                               <p className="mt-2 font-manrope text-[12px] font-bold uppercase tracking-[0.12em] text-[#416352]">
-                                Weekdays 8:00 AM - 7:00 PM | Sat 8:00 AM - 4:00 PM
+                                Weekdays 8:00 AM - 7:00 PM | Sat 8:00 AM - 5:00 PM
                               </p>
                             </div>
 
@@ -2235,7 +2235,7 @@ export function AppointmentRequestSection({}: AppointmentRequestSectionProps) {
                             </p>
 
                             <p className="font-manrope text-[12px] font-medium text-[#727973]">
-                              Weekdays 8:00 AM - 7:00 PM | Sat 8:00 AM - 4:00 PM
+                              Weekdays 8:00 AM - 7:00 PM | Sat 8:00 AM - 5:00 PM
                             </p>
                           </div>
 

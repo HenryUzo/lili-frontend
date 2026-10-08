@@ -5,7 +5,7 @@ import { CLINIC_PHONE_DISPLAY } from "../../lib/analytics";
 
 const HOURS = [
   { day: "Monday – Friday", time: "8:00 AM - 7:00 PM" },
-  { day: "Saturday", time: "8:00 AM - 4:00 PM" },
+  { day: "Saturday", time: "8:00 AM - 5:00 PM" },
   { day: "Sunday", time: "Closed", alert: true },
 ];
 
