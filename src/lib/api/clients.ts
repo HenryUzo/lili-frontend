@@ -73,6 +73,11 @@ export async function subscribeToPetCareNewsletter(
   return response.data;
 }
 
+export type WellnessGiveawayCampaign = { name: string; raffleEnabled: boolean; prizeDescription: string; discountPercent: number; expiresAt: string | null; termsSummary: string; termsContent: string; termsVersion: string };
+export type WellnessGiveawayPet = { name: string; species: "DOG" | "CAT"; age?: string; breed?: string };
+export async function getWellnessGiveaway() { return (await api.get<WellnessGiveawayCampaign>("/wellness-giveaway/public")).data; }
+export async function submitWellnessGiveaway(input: { fullName: string; email: string; phoneNumber: string; pets: WellnessGiveawayPet[]; currentPatient: boolean; marketingOptIn: boolean; acceptTerms: true; website?: string }) { return (await api.post<{ rewardCode: string; discountPercent: number; expiresAt: string | null; raffleEnabled: boolean; prizeDescription: string; marketingConfirmationRequired: boolean }>("/wellness-giveaway/public/entries", input)).data; }
+
 export async function getPublishedPetCareArticles() {
   const response = await api.get<{ items: unknown[] }>("/pet-care/articles");
   return response.data.items;

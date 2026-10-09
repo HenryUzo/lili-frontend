@@ -14,6 +14,7 @@ import {
   saveAppointmentDraftSession,
 } from "./storage";
 import { appointmentDraftDetailQuery } from "./queries";
+import type { AppointmentAttribution } from "../../lib/attribution";
 
 export const appointmentDraftKeys = {
   all: ["appointmentDraft"] as const,
@@ -70,6 +71,8 @@ type Step3Variables = {
     email: string;
     phoneNumber: string;
     preferredContactMethod: Step3PreferredContactMethodApi;
+    marketingEmailOptIn: boolean;
+    marketingSmsOptIn: boolean;
   };
 };
 type Step5Variables = {
@@ -91,7 +94,7 @@ export function useCreateAppointmentDraft() {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: createAppointmentDraft,
+    mutationFn: (attribution?: AppointmentAttribution) => createAppointmentDraft(attribution),
     onSuccess: (data) => {
       saveAppointmentDraftSession(data.sessionToken, data.lastCompletedStep);
       queryClient.setQueryData(appointmentDraftKeys.all, data);

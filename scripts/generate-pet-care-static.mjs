@@ -28,22 +28,26 @@ async function loadPublishedCmsArticles() {
     ? rawApiBase.replace(/\/+$/, "")
     : `${rawApiBase.replace(/\/+$/, "")}/api`;
 
-  try {
-    const response = await fetch(`${apiBase}/pet-care/articles`, {
-      signal: AbortSignal.timeout(15_000),
-    });
-    if (!response.ok) throw new Error(`CMS returned ${response.status}`);
+  for (let attempt = 1; attempt <= 3; attempt += 1) {
+    try {
+      const response = await fetch(`${apiBase}/pet-care/articles`, {
+        signal: AbortSignal.timeout(30_000),
+      });
+      if (!response.ok) throw new Error(`CMS returned ${response.status}`);
 
-    const payload = await response.json();
-    const articles = Array.isArray(payload.items) ? payload.items : [];
-    setPetCareArticles(
-      articles.map((article) => ({
-        ...article,
-        status: String(article.status).toLowerCase(),
-      })),
-    );
-  } catch (error) {
-    console.warn(`[pet-care-static] Unable to load CMS articles: ${error.message}`);
+      const payload = await response.json();
+      if (!Array.isArray(payload.items)) throw new Error("CMS returned an invalid article list");
+      setPetCareArticles(
+        payload.items.map((article) => ({
+          ...article,
+          status: String(article.status).toLowerCase(),
+        })),
+      );
+      return;
+    } catch (error) {
+      if (attempt === 3) throw new Error(`Unable to load CMS articles after 3 attempts: ${error.message}`);
+      console.warn(`[pet-care-static] CMS attempt ${attempt} failed: ${error.message}`);
+    }
   }
 }
 

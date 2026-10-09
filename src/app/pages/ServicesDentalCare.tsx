@@ -13,6 +13,87 @@ import {
 import { HighlightFeature } from "./ServicesDiagnosticCare";
 import { ProactiveCare } from "../reuseable-components/proactive-care";
 import { Chat, Check, Cutlerys, SadIcon } from "../assests/svg";
+import { dentalPromotion, isCampaignActive } from "../campaigns/dental-promotion.mjs";
+import PawButton from "../reuseable-components/paw-button";
+import PhoneCallDialog from "../reuseable-components/call-modal";
+
+function DefaultDentalHero() {
+  return (
+    <ServicesBanner
+      title={
+        <>
+          Dental Care That Supports <br className="hidden lg:block" />
+          <span className="text-[#204E1C] bold">Long-Term Vitality</span>
+        </>
+      }
+      description="Beyond a bright smile, oral health is a vital window into your
+pet's overall wellbeing. We provide gentle, expert care in our
+San Antonio sanctuary."
+      primaryButtonLabel="Book Appointment"
+      secondaryActionLabel="Call Now"
+      phoneTrackingLocation="dental_care_page"
+      visual={
+        <div className="relative mr-[0rem] mt-[3rem] hidden sm:block">
+          <img src={images.dentalCareBg} alt="Healthy dog with a bright smile" className="lg:scale-[112%]" />
+          <div className="absolute right-[4rem] top-[-4rem] hidden flex-col items-start lg:flex">
+            <h1 className="font-queen rotate-[9.27deg] max-w-[278px] text-[50px] leading-[108%] tracking-[-0.03em] text-[#204E1C]">
+              100% Dedicated care
+            </h1>
+            <img src={images.urgentBentArrow} alt="" />
+          </div>
+        </div>
+      }
+      highlights={<CareHighlights />}
+      contentClassName="lg:max-w-[562px]"
+      descriptionClass="lg:max-w-[525px]"
+    />
+  );
+}
+
+function DentalPromotionHero() {
+  return (
+    <section className="relative overflow-hidden bg-[#F2F7EE] px-6 pb-0 pt-14 sm:px-10 md:px-16 lg:min-h-[650px] lg:px-20 lg:pb-0 lg:pt-20">
+      <div className="relative mx-auto grid max-w-[1280px] items-center gap-10 lg:min-h-[570px] lg:grid-cols-[1.05fr_0.95fr] lg:gap-16">
+        <div className="max-w-[660px]">
+          <p className="mb-5 inline-flex rounded-full bg-[#006838] px-4 py-2 text-xs font-bold tracking-[0.12em] text-white">
+            LIMITED-TIME DENTAL OFFER
+          </p>
+          <h1 className="font-founders text-[60px] font-medium leading-[0.98] tracking-[-0.03em] text-[#00462e] sm:text-[62px] lg:text-[78px]">
+            <span className="text-[#e9343f]">50% Off</span> Pet Dental Cleaning
+          </h1>
+          <p className="mt-6 max-w-[600px] font-founders text-xl leading-[1.35] text-[#25483b] sm:text-2xl">
+            Help your pet enjoy a cleaner, healthier smile this September and October. New clients and walk-ins are welcome.
+          </p>
+          <div className="mt-8 flex flex-wrap items-start gap-6">
+            <PawButton
+              label="Book Appointment Now"
+              variant="primary"
+              showIcon={false}
+              className="!w-fit"
+              buttonClassName="text-lg!"
+            />
+            <div className="mt-3">
+              <PhoneCallDialog
+                location="dental_care_promotion"
+                trigger={
+                  <button type="button" className="font-founders text-lg font-medium text-[#006838] underline underline-offset-4 transition hover:opacity-80">
+                    Call (210) 257-8496
+                  </button>
+                }
+              />
+            </div>
+          </div>
+          <p className="mt-5 text-sm font-medium leading-6 text-[#395748]">
+            Offer ends October 31, 2026. Discount applies to the dental cleaning service only.
+          </p>
+        </div>
+        <div className="mx-auto w-full max-w-[530px] lg:max-w-[620px] lg:self-end">
+          <img src={images.dentalCareBg} alt="Healthy dog with a bright smile" className="h-auto w-full lg:origin-bottom lg:translate-x-12 lg:scale-[1.35]" />
+        </div>
+      </div>
+    </section>
+  );
+}
 
 function CareHighlights() {
   const CARE_HIGHLIGHTS: HighlightFeature[] = [
@@ -881,39 +962,7 @@ const ServicesDentalCare = () => {
       path={ROUTE.dentalCare}
     />
      <main className="w-full">
-      <ServicesBanner
-        title={
-          <>
-            Dental Care That Supports <br className="hidden lg:block" />
-            <span className="text-[#204E1C]  bold">Long-Term Vitality</span>
-          </>
-        }
-        description="Beyond a bright smile, oral health is a vital window into your
-pet's overall wellbeing. We provide gentle, expert care in our
-San Antonio sanctuary."
-        primaryButtonLabel="Book Appointment"
-        secondaryActionLabel="Call Now"
-        phoneTrackingLocation="dental_care_page"
-        visual={
-          <div className="relative mr-[0rem] mt-[3rem] sm:block hidden">
-            <img
-              src={images.dentalCareBg}
-              alt="Dental Care banner"
-              className="lg:scale-[112%]"
-            />
-
-            <div className="absolute right-[4rem] top-[-4rem] hidden flex-col items-start lg:flex">
-              <h1 className="font-queen rotate-[9.27deg] max-w-[278px] text-[50px] leading-[108%] tracking-[-0.03em] text-[#204E1C]">
-                100% Dedicated care
-              </h1>
-              <img src={images.urgentBentArrow} alt="" />
-            </div>
-          </div>
-        }
-        highlights={<CareHighlights />}
-        contentClassName="lg:max-w-[562px]"
-        descriptionClass="lg:max-w-[525px]"
-      />
+      {isCampaignActive(dentalPromotion) ? <DentalPromotionHero /> : <DefaultDentalHero />}
       <ProactiveCare
         title="Oral Health Is a Cornerstone of Whole-Pet Wellness"
         desc="Left untreated, dental disease does more than cause bad breath. It can lead
