@@ -30,7 +30,7 @@ export const CLINIC_HOURS = [
   {
     dayOfWeek: "https://schema.org/Saturday",
     opens: "08:00",
-    closes: "16:00",
+    closes: "17:00",
   },
 ];
 

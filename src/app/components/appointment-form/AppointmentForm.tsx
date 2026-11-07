@@ -33,6 +33,7 @@ import {
   useSubmitAppointmentDraft,
   useUploadAppointmentDraftFiles,
 } from "../../../feature/appointment/hooks";
+import { getAppointmentAttribution } from "../../../lib/attribution";
 import {
   clearAppointmentDraftSession,
   getAppointmentDraftSession,
@@ -94,6 +95,8 @@ type FormValues = {
   email: string;
   phone: string;
   preferredContactMethod: ContactMethod | "";
+  marketingEmailOptIn: boolean;
+  marketingSmsOptIn: boolean;
 
   preferredSelections: PreferredSelection[];
   timezone: string;
@@ -124,7 +127,7 @@ type DraftPreviewData = NonNullable<
 
 type DraftPreservedFields = Pick<
   FormValues,
-  "confirmContact" | "confirmCommunication" | "uploadedFile"
+  "confirmContact" | "confirmCommunication" | "uploadedFile" | "marketingEmailOptIn" | "marketingSmsOptIn"
 >;
 
 /* ------------------------------- constants -------------------------------- */
@@ -335,6 +338,8 @@ const defaultValues: FormValues = {
   email: "",
   phone: "",
   preferredContactMethod: "",
+  marketingEmailOptIn: false,
+  marketingSmsOptIn: false,
 
   preferredSelections: createEmptyWeekSelections(),
   timezone: CLINIC_TIMEZONE,
@@ -351,7 +356,7 @@ const defaultValues: FormValues = {
 };
 
 const WEEKDAY_TIME_SLOTS = generateQuarterHourSlots("08:00", "19:00");
-const SATURDAY_TIME_SLOTS = generateQuarterHourSlots("08:00", "16:00");
+const SATURDAY_TIME_SLOTS = generateQuarterHourSlots("08:00", "17:00");
 
 /* -------------------------------- helpers -------------------------------- */
 
@@ -363,7 +368,7 @@ function generateQuarterHourSlots(start: string, end: string) {
   const startTotal = startHour * 60 + startMinute;
   const endTotal = endHour * 60 + endMinute;
 
-  for (let minutes = startTotal; minutes <= endTotal; minutes += 15) {
+  for (let minutes = startTotal; minutes + 30 <= endTotal; minutes += 15) {
     const hours = Math.floor(minutes / 60);
     const mins = minutes % 60;
 
@@ -508,7 +513,7 @@ function getTimeSlotsForSelection(
 function getClinicHoursLabel(selection: PreferredSelection | null | undefined) {
   const slots = getTimeSlotsForSelection(selection);
   if (slots === SATURDAY_TIME_SLOTS) {
-    return "Saturday hours: 8:00 AM - 4:00 PM";
+    return "Saturday hours: 8:00 AM - 5:00 PM";
   }
 
   return "Weekday hours: 8:00 AM - 7:00 PM";
@@ -591,6 +596,8 @@ function mapDraftToFormValues(
     preferredContactMethod: draft.preferredContactMethod
       ? API_CONTACT_METHOD_TO_FORM[draft.preferredContactMethod]
       : defaultValues.preferredContactMethod,
+    marketingEmailOptIn: draft.marketingEmailOptIn || preserved.marketingEmailOptIn,
+    marketingSmsOptIn: draft.marketingSmsOptIn || preserved.marketingSmsOptIn,
 
     preferredSelections: selections,
     timezone: draft.timezone || defaultValues.timezone,
@@ -762,7 +769,7 @@ export function AppointmentRequestSection({}: AppointmentRequestSectionProps) {
       }
 
       if (!draftCreationPromiseRef.current) {
-        draftCreationPromiseRef.current = createSessionAsync()
+        draftCreationPromiseRef.current = createSessionAsync(getAppointmentAttribution())
           .then((draft) => {
             setSessionToken(draft.sessionToken);
             return draft.sessionToken;
@@ -836,6 +843,8 @@ export function AppointmentRequestSection({}: AppointmentRequestSectionProps) {
         confirmContact: prev.confirmContact,
         confirmCommunication: prev.confirmCommunication,
         uploadedFile: prev.uploadedFile,
+        marketingEmailOptIn: prev.marketingEmailOptIn,
+        marketingSmsOptIn: prev.marketingSmsOptIn,
       }),
     );
 
@@ -1440,6 +1449,8 @@ export function AppointmentRequestSection({}: AppointmentRequestSectionProps) {
           email: values.email.trim(),
           phoneNumber: values.phone.trim(),
           preferredContactMethod,
+          marketingEmailOptIn: values.marketingEmailOptIn,
+          marketingSmsOptIn: values.marketingSmsOptIn,
         },
       });
 
@@ -1853,6 +1864,12 @@ export function AppointmentRequestSection({}: AppointmentRequestSectionProps) {
                         <ErrorText message={errors.preferredContactMethod} />
                       </Field>
 
+                      <div className="mt-6 space-y-3 rounded-[16px] border border-[#DDEBE2] bg-[#F7FBF8] p-4">
+                        <p className="text-sm font-bold text-[#102E24]">Optional Lili Vet updates</p>
+                        <CheckRow checked={values.marketingEmailOptIn} onClick={() => updateField("marketingEmailOptIn", !values.marketingEmailOptIn)} label="Email me occasional Lili Veterinary Hospital news, pet-care tips, and offers. I can unsubscribe at any time." />
+                        <CheckRow checked={values.marketingSmsOptIn} onClick={() => updateField("marketingSmsOptIn", !values.marketingSmsOptIn)} label="Text me occasional Lili Veterinary Hospital news and offers. Message and data rates may apply. Reply STOP to opt out." />
+                      </div>
+
                       <EmergencyNotice className="mt-8" />
 
                       <FooterActions
@@ -2033,7 +2050,7 @@ export function AppointmentRequestSection({}: AppointmentRequestSectionProps) {
                                 <p className="mt-1 font-manrope text-[13px] font-medium leading-5 text-[#727973]">
                                   {!hasSelectedWeek
                                     ? "Select a week from the calendar first."
-                                    : "Weekdays 8:00 AM - 7:00 PM | Sat 8:00 AM - 4:00 PM"}
+                                    : "Weekdays 8:00 AM - 7:00 PM | Sat 8:00 AM - 5:00 PM"}
                                 </p>
 
                                 {hasSelectedWeek ? (
@@ -2089,7 +2106,7 @@ export function AppointmentRequestSection({}: AppointmentRequestSectionProps) {
                               </p>
 
                               <p className="mt-2 font-manrope text-[12px] font-bold uppercase tracking-[0.12em] text-[#416352]">
-                                Weekdays 8:00 AM - 7:00 PM | Sat 8:00 AM - 4:00 PM
+                                Weekdays 8:00 AM - 7:00 PM | Sat 8:00 AM - 5:00 PM
                               </p>
                             </div>
 
@@ -2218,7 +2235,7 @@ export function AppointmentRequestSection({}: AppointmentRequestSectionProps) {
                             </p>
 
                             <p className="font-manrope text-[12px] font-medium text-[#727973]">
-                              Weekdays 8:00 AM - 7:00 PM | Sat 8:00 AM - 4:00 PM
+                              Weekdays 8:00 AM - 7:00 PM | Sat 8:00 AM - 5:00 PM
                             </p>
                           </div>
 

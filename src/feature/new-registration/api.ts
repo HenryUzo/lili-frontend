@@ -25,6 +25,8 @@ export interface CreateNewPatientPayload {
     timezone: string;
     previousVetClinic: string;
     consentToElectronicComms: boolean;
+    marketingEmailOptIn: boolean;
+    marketingSmsOptIn: boolean;
   };
   pet: {
     petName: string;

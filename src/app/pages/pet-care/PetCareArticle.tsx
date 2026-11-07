@@ -1,5 +1,6 @@
 import { useEffect } from "react";
 import { Link, useParams } from "react-router-dom";
+import { sanitizePetCareRichText } from "../../../lib/pet-care-rich-text";
 import { ArrowRight, ChevronDown, Home, ListChecks, ShieldCheck } from "lucide-react";
 import Seo from "../../components/seo/Seo";
 import {
@@ -255,10 +256,12 @@ export function PetCareArticle() {
                       ) : null}
                     </figure>
                   ) : (
-                    section.content.map((paragraph) => (
-                      <p key={paragraph} className="text-lg leading-9 text-[#384A40]">
-                        {paragraph}
-                      </p>
+                    section.content.map((paragraph, paragraphIndex) => (
+                      <div
+                        key={`${section.id}-${paragraphIndex}`}
+                        className="pet-care-rich-text text-lg leading-9 text-[#384A40] [&_a]:font-semibold [&_a]:text-[#087C48] [&_a]:underline [&_li]:mt-2 [&_ol]:my-4 [&_ol]:list-decimal [&_ol]:pl-7 [&_p:first-child]:mt-0 [&_p]:mt-4 [&_ul]:my-4 [&_ul]:list-disc [&_ul]:pl-7"
+                        dangerouslySetInnerHTML={{ __html: sanitizePetCareRichText(paragraph) }}
+                      />
                     ))
                   )}
                   {section.bullets && (

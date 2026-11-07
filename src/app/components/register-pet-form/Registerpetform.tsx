@@ -109,6 +109,8 @@ type FormState = {
     previousVetClinic: string;
     additionalNotes: string;
     consentToElectronicComms: boolean;
+    marketingEmailOptIn: boolean;
+    marketingSmsOptIn: boolean;
   };
   files: File[];
 };
@@ -143,6 +145,8 @@ const getInitialFormState = (): FormState => ({
     previousVetClinic: "",
     additionalNotes: "",
     consentToElectronicComms: false,
+    marketingEmailOptIn: false,
+    marketingSmsOptIn: false,
   },
   files: [],
 });
@@ -472,6 +476,8 @@ export default function RegisterPetForm() {
           timezone: form.visit.timezone || "Africa/Lagos",
           previousVetClinic: form.visit.previousVetClinic.trim(),
           consentToElectronicComms: form.visit.consentToElectronicComms,
+          marketingEmailOptIn: form.visit.marketingEmailOptIn,
+          marketingSmsOptIn: form.visit.marketingSmsOptIn,
         },
 
         pet: {
@@ -770,6 +776,12 @@ export default function RegisterPetForm() {
             I consent to receiving electronic communications from Lili Vet +
             Urgent Care regarding my pet&apos;s care and appointments.
           </p>
+        </div>
+
+        <div className="space-y-3 rounded-2xl border border-[#D8E6D5] bg-[#F6FBF3] p-4">
+          <p className="text-sm font-semibold text-[#3A5C40]">Optional Lili Vet updates</p>
+          <div className="flex items-start gap-3"><CustomCheckbox checked={form.visit.marketingEmailOptIn} onChange={(checked) => updateVisit("marketingEmailOptIn", checked)} /><p className="text-sm manrope text-[#7B8379]">Email me occasional Lili Veterinary Hospital news, pet-care tips, and offers. I can unsubscribe at any time.</p></div>
+          <div className="flex items-start gap-3"><CustomCheckbox checked={form.visit.marketingSmsOptIn} onChange={(checked) => updateVisit("marketingSmsOptIn", checked)} /><p className="text-sm manrope text-[#7B8379]">Text me occasional Lili Veterinary Hospital news and offers. Message and data rates may apply. Reply STOP to opt out.</p></div>
         </div>
 
           <div className="flex flex-col sm:flex-row gap-3 pt-2 pb-1">
