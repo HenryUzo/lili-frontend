@@ -107,6 +107,11 @@
       "permanent": true
     },
     {
+      "source": "/internal-medicine/",
+      "destination": "/book-appointment",
+      "permanent": true
+    },
+    {
       "source": "/oncology",
       "destination": "/book-appointment",
       "permanent": true
