@@ -91,21 +91,23 @@ function SectionHeading({
   eyebrow,
   title,
   description,
+  inverse = false,
 }: {
   eyebrow: string;
   title: string;
   description?: string;
+  inverse?: boolean;
 }) {
   return (
     <div className="mx-auto max-w-[760px] text-center">
       <p className="font-manrope text-xs font-bold uppercase tracking-[0.2em] text-[#55745D] sm:text-sm">
         {eyebrow}
       </p>
-      <h2 className="mt-3 font-founders text-[34px] font-medium leading-[1.08] tracking-[-0.035em] text-[#416352] sm:text-4xl md:text-5xl">
+      <h2 className={`mt-3 font-founders text-[34px] font-medium leading-[1.08] tracking-[-0.035em] sm:text-4xl md:text-5xl ${inverse ? "text-white" : "text-[#416352]"}`}>
         {title}
       </h2>
       {description && (
-        <p className="mx-auto mt-5 max-w-[680px] font-manrope text-base font-light leading-7 text-[#414844] sm:text-lg sm:leading-8">
+        <p className={`mx-auto mt-5 max-w-[680px] font-manrope text-base font-light leading-7 sm:text-lg sm:leading-8 ${inverse ? "text-white/80" : "text-[#414844]"}`}>
           {description}
         </p>
       )}
@@ -217,6 +219,7 @@ export default function Microchipping() {
             <SectionHeading
               eyebrow="What to expect"
               title="A straightforward identification process"
+              inverse
               description="Your veterinary team can explain the process for your pet and answer questions about existing chips, registration, and the next steps."
             />
             <div className="mt-10 grid grid-cols-1 gap-8 sm:mt-14 md:grid-cols-3 md:gap-6 lg:gap-12">
