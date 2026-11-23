@@ -13,7 +13,7 @@ export let petCareArticles = [];
 export const __dirname = path.dirname(fileURLToPath(import.meta.url));
 export const rootDir = path.resolve(__dirname, "..");
 export const distDir = path.join(rootDir, "dist");
-export const SITE_URL = "https://liliveterinaryhospital.com";
+export const SITE_URL = "https://www.liliveterinaryhospital.com";
 export const SITE_NAME = "Lili Veterinary Hospital";
 
 export const baseRoutes = [
@@ -28,6 +28,7 @@ export const baseRoutes = [
   { path: "/services/diagnostic-care", lastmod: "2026-05-11" },
   { path: "/services/dental-care", lastmod: "2026-05-11" },
   { path: "/services/surgery", lastmod: "2026-05-11" },
+  { path: "/microchipping-san-antonio", lastmod: "2026-11-23" },
   { path: "/privacy-policy", lastmod: "2026-07-28" },
 ];
 
