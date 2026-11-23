@@ -1,4 +1,4 @@
-export const SITE_URL = "https://liliveterinaryhospital.com";
+export const SITE_URL = "https://www.liliveterinaryhospital.com";
 export const SITE_NAME = "Lili Veterinary Hospital";
 export const DEFAULT_TITLE =
   "Veterinarian in San Antonio, TX | Lili Veterinary Hospital";
