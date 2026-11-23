@@ -20,7 +20,8 @@ const MAIN_NAV_ITEMS: NavItem[] = [
   { text: "Urgent Care", link: ROUTE.urgentCare },
   { text: "New Patients", link: ROUTE.newPatients },
   { text: "About", link: ROUTE.aboutUs },
-  { text: "Contact", link:ROUTE.contact },
+  { text: "Pet Care Library", link: ROUTE.petCare },
+  { text: "Contact", link: ROUTE.contact },
 ];
 
 const SERVICE_MENU_ITEMS: NavItem[] = [
@@ -29,6 +30,7 @@ const SERVICE_MENU_ITEMS: NavItem[] = [
   { text: "Diagnostics", link:ROUTE.diagnosticCare},
   { text: "Dental Care", link: ROUTE.dentalCare },
   { text: "Surgery", link: ROUTE.surgery },
+  { text: "Microchipping", link: ROUTE.microchipping },
 ];
 
 const NAVBAR_BG_BY_ROUTE: Record<string, string> = {
@@ -40,6 +42,7 @@ const NAVBAR_BG_BY_ROUTE: Record<string, string> = {
   "/services/diagnostic-care": "#F2F7EE",
   "/services/dental-care": "#F2F7EE",
   "/services/surgery": "#F2F7EE",
+  [ROUTE.microchipping]: "#F2F7EE",
   "/new-patients": "#F2F7EE",
   "/about-us": "#F2F7EE",
   "/contact-us": "#F2F7EE",
@@ -49,6 +52,7 @@ const NAVBAR_BG_BY_ROUTE: Record<string, string> = {
 function isServiceRoute(pathname: string) {
   return (
     pathname === "/services" ||
+    pathname === ROUTE.microchipping ||
     pathname === "/wellness-plans" ||
     pathname === "/services/wellness-plans" ||
     pathname.startsWith("/services/")
