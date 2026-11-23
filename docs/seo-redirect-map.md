@@ -15,6 +15,7 @@ This document preserves high-value legacy WordPress URLs during the Lili Vet web
 - `/services/diagnostic-care`
 - `/services/dental-care`
 - `/services/surgery`
+- `/microchipping-san-antonio`
 
 ## Redirect map
 
@@ -42,7 +43,7 @@ This document preserves high-value legacy WordPress URLs during the Lili Vet web
 | `/pet-orthopedic-surgery-san-antonio` | `/services/surgery` | `308` | High | No | Surgery specialty intent |
 | `/helpful-links` | `/contact-us` | `308` | Medium | Yes | No resources page exists yet |
 | `/payment-options` | `/contact-us` | `308` | Medium | Yes | No payment/options page exists yet |
-| `/microchipping-san-antonio` | `/book-appointment` | `308` | Medium | Yes | Dedicated microchipping page is missing |
+| `/microchipping-san-antonio/` | `/microchipping-san-antonio` | `308` | High | No | Canonical microchipping page is live; trailing-slash alias redirects to the route |
 | `/nutrition-counseling` | `/book-appointment` | `308` | Medium | Yes | Dedicated nutrition page is missing |
 | `/internal-medicine` | `/book-appointment` | `308` | Medium | Yes | Dedicated internal medicine page is missing |
 | `/oncology` | `/book-appointment` | `308` | Medium | Yes | Dedicated oncology page is missing |
@@ -70,7 +71,6 @@ These are also configured because they were present in the previous redirect pas
 
 These routes currently use temporary fallbacks and should become dedicated pages if they matter for search demand:
 
-- Microchipping
 - Nutrition counseling
 - Internal medicine
 - Oncology
