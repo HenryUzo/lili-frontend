@@ -877,7 +877,7 @@ const ServicesDentalCare = () => {
     <>
     <Seo
       title="Pet Dental Care in San Antonio | Lili Veterinary Hospital"
-      description="Help protect your pet’s teeth, gums, and overall health with dental care from Lili Veterinary Hospital in San Antonio."
+      description="Learn about pet oral exams, ultrasonic scaling, digital dental radiography and oral surgery at Lili Veterinary Hospital in San Antonio. Request an appointment."
       path={ROUTE.dentalCare}
     />
      <main className="w-full">
