@@ -29,6 +29,7 @@ const ServiceVaccination = lazy(() => import("./pages/ServiceVaccination"));
 const ServiceDiagnosticCare = lazy(() => import("./pages/ServicesDiagnosticCare"));
 const ServicesDentalCare = lazy(() => import("./pages/ServicesDentalCare"));
 const ServicesSurgery = lazy(() => import("./pages/ServicesSurgery"));
+const Microchipping = lazy(() => import("./pages/Microchipping"));
 const Appointment = lazy(() => import("./pages/Appointment"));
 const AppointmentReschedule = lazy(() => import("./pages/AppointmentReschedule"));
 const Contact = lazy(() => import("./pages/Contact"));
@@ -86,6 +87,7 @@ const router = createBrowserRouter(
         element={withSuspense(<ServicesDentalCare />)}
       />
       <Route path={ROUTE.surgery} element={withSuspense(<ServicesSurgery />)} />
+      <Route path={ROUTE.microchipping} element={withSuspense(<Microchipping />)} />
       <Route path={ROUTE.aboutUs} element={withSuspense(<About />)} />
       <Route
         path={ROUTE.bookAppointment}
