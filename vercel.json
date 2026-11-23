@@ -22,6 +22,11 @@
       "permanent": true
     },
     {
+      "source": "/new-client-form-1/",
+      "destination": "/new-patients",
+      "permanent": true
+    },
+    {
       "source": "/request-appointment",
       "destination": "/book-appointment",
       "permanent": true
@@ -112,6 +117,11 @@
       "permanent": true
     },
     {
+      "source": "/cardiology/",
+      "destination": "/book-appointment",
+      "permanent": true
+    },
+    {
       "source": "/ophthalmology",
       "destination": "/book-appointment",
       "permanent": true
@@ -124,6 +134,16 @@
     {
       "source": "/travel-health-certificates",
       "destination": "/book-appointment",
+      "permanent": true
+    },
+    {
+      "source": "/home/dental-promo",
+      "destination": "/services/dental-care",
+      "permanent": true
+    },
+    {
+      "source": "/home/dental-promo/",
+      "destination": "/services/dental-care",
       "permanent": true
     },
     {
