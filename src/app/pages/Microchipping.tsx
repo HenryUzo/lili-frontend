@@ -136,7 +136,7 @@ export default function Microchipping() {
                 A little chip can help your pet find their way home.
               </h1>
               <p className="mt-6 max-w-[650px] font-manrope text-base font-light leading-7 text-[#414844] sm:text-lg sm:leading-8 md:text-xl">
-                A microchip gives your dog or cat a permanent identification number. If your pet is found, a compatible scanner can read that number; a current registry record helps connect it with your contact information.
+                Lili Veterinary Hospital uses ISO-compliant microchips. A microchip gives your dog or cat a permanent identification number. If your pet is found, a compatible scanner can read that number; a current registry record helps connect it with your contact information.
               </p>
               <p className="mt-4 max-w-[620px] font-manrope text-sm leading-6 text-[#55745D] sm:text-base sm:leading-7">
                 A chip is not GPS, and it works best when its registry details stay current and your pet also wears a visible ID tag.
