@@ -7,6 +7,7 @@ export const ROUTE = {
   diagnosticCare: "/services/diagnostic-care",
   dentalCare: "/services/dental-care",
   surgery: "/services/surgery",
+  microchipping: "/microchipping-san-antonio",
   aboutUs: "/about-us",
   contact:"/contact-us",
   urgentCare:"/urgent-care",
