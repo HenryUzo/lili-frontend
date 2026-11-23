@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { ArrowUpRight, Check, MapPin, PawPrint, ShieldCheck } from "lucide-react";
+import { Check, MapPin, PawPrint, ShieldCheck } from "lucide-react";
 import { ROUTE } from "../../router";
 import Seo from "../components/seo/Seo";
 
@@ -141,7 +141,6 @@ export default function Microchipping() {
                 className="mt-7 inline-flex min-h-12 items-center gap-2 rounded-full bg-white px-6 py-3 text-base font-semibold text-[#214A1E] transition hover:bg-[#EAF4E9] focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-[#214A1E]"
               >
                 Ask about an appointment
-                <ArrowUpRight className="h-4 w-4" aria-hidden="true" />
               </Link>
             </div>
             <div className="space-y-4">
