@@ -43,7 +43,7 @@ const steps = [
   {
     number: "02",
     title: "Microchip placement",
-    body: "When microchipping is appropriate, a veterinary professional places the small chip beneath the skin using a needle applicator. Ask our team what to expect for your pet’s visit.",
+    body: "Lili Veterinary Hospital uses ISO-compliant microchips. When microchipping is appropriate, a veterinary professional places the small chip beneath the skin using a needle applicator. Ask our team what to expect for your pet’s visit.",
     icon: ScanLine,
   },
   {
