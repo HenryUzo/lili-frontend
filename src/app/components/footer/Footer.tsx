@@ -90,6 +90,11 @@ const quickActions = [
     to: ROUTE.contact,
   },
   {
+    label: "Pet Care Library",
+    kind: "internal",
+    to: ROUTE.petCare,
+  },
+  {
     label: "Online Pharmacy",
     kind: "external",
     href: ONLINE_PHARMACY_URL,
