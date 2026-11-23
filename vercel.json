@@ -87,16 +87,6 @@
       "permanent": true
     },
     {
-      "source": "/microchipping-san-antonio",
-      "destination": "/book-appointment",
-      "permanent": true
-    },
-    {
-      "source": "/microchipping-san-antonio/",
-      "destination": "/book-appointment",
-      "permanent": true
-    },
-    {
       "source": "/nutrition-counseling",
       "destination": "/book-appointment",
       "permanent": true
