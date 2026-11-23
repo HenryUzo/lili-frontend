@@ -702,7 +702,7 @@ const ServiceDiagnosticCare = () => {
     <>
       <Seo
         title="Pet Diagnostics in San Antonio | Lili Veterinary Hospital"
-        description="Get advanced diagnostic care for your pet at Lili Veterinary Hospital in San Antonio. We use modern technology and experienced clinical judgment to find clear answers quickly."
+        description="Explore pet diagnostic care in San Antonio, including digital X-rays, in-house blood panels, urinalysis, and wellness screening. Request an appointment."
         path={ROUTE.diagnosticCare}
       />
       <main className="w-full">
