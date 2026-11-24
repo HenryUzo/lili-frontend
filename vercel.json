@@ -87,6 +87,11 @@
       "permanent": true
     },
     {
+      "source": "/pet-vaccines-san-antonio/",
+      "destination": "/services/vaccination",
+      "permanent": true
+    },
+    {
       "source": "/pet-wellness-preventive-care-san-antonio",
       "destination": "/services/wellness-plans",
       "permanent": true
