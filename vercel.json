@@ -112,16 +112,6 @@
       "permanent": true
     },
     {
-      "source": "/oncology",
-      "destination": "/book-appointment",
-      "permanent": true
-    },
-    {
-      "source": "/oncology/",
-      "destination": "/book-appointment",
-      "permanent": true
-    },
-    {
       "source": "/cardiology",
       "destination": "/book-appointment",
       "permanent": true
