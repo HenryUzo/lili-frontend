@@ -876,21 +876,19 @@ const ServicesDentalCare = () => {
   return (
     <>
     <Seo
-      title="Pet Dental Care in San Antonio | Lili Veterinary Hospital"
-      description="Learn about pet oral exams, ultrasonic scaling, digital dental radiography and oral surgery at Lili Veterinary Hospital in San Antonio. Request an appointment."
+      title="Dog & Cat Dental Cleaning in San Antonio | Lili Veterinary Hospital"
+      description="Dog and cat dental care in San Antonio, including oral exams, ultrasonic teeth cleaning, digital dental X-rays, and treatment planning. Request an appointment."
       path={ROUTE.dentalCare}
     />
      <main className="w-full">
       <ServicesBanner
         title={
           <>
-            Dental Care That Supports <br className="hidden lg:block" />
-            <span className="text-[#204E1C]  bold">Long-Term Vitality</span>
+            Dog &amp; Cat Dental Cleaning <br className="hidden lg:block" />
+            <span className="text-[#204E1C]  bold">in San Antonio</span>
           </>
         }
-        description="Beyond a bright smile, oral health is a vital window into your
-pet's overall wellbeing. We provide gentle, expert care in our
-San Antonio sanctuary."
+        description="Oral exams, ultrasonic teeth cleaning, digital dental X-rays, and personalized care planning for dogs and cats in San Antonio."
         primaryButtonLabel="Book Appointment"
         secondaryActionLabel="Call Now"
         phoneTrackingLocation="dental_care_page"
