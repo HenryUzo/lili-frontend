@@ -152,6 +152,7 @@ export function formatReadingTime(minutes: number) {
 
 export let petCareArticles: PetCareArticle[] = rawArticles.map(normalizeArticle);
 let petCareContentRequest: Promise<void> | null = null;
+let petCareContentLoaded = false;
 
 type ApiPetCareArticle = Omit<PetCareArticle, "category" | "heroImage" | "image" | "imageAlt" | "author" | "authorName" | "reviewer" | "readingTime" | "relatedServicePath" | "relatedServiceLabel" | "status" | "reviewStatus"> & {
   categorySlug: PetCareCategorySlug;
@@ -201,18 +202,32 @@ function normalizeApiArticle(article: ApiPetCareArticle): PetCareArticle {
 }
 
 export function usePublishedPetCareContent() {
-  const [, setVersion] = useState(0);
+  const [contentLoaded, setContentLoaded] = useState(petCareContentLoaded);
   useEffect(() => {
+    let cancelled = false;
+
     if (!petCareContentRequest) {
       petCareContentRequest = getPublishedPetCareArticles()
         .then((items) => {
           const normalized = (items as ApiPetCareArticle[]).map(normalizeApiArticle);
           if (normalized.length) petCareArticles = normalized;
         })
-        .catch(() => undefined);
+        .catch(() => undefined)
+        .then(() => {
+          petCareContentLoaded = true;
+        });
     }
-    petCareContentRequest.then(() => setVersion((version) => version + 1));
+
+    petCareContentRequest.then(() => {
+      if (!cancelled) setContentLoaded(true);
+    });
+
+    return () => {
+      cancelled = true;
+    };
   }, []);
+
+  return contentLoaded;
 }
 
 export function isPublishedArticle(article: PetCareArticle) {

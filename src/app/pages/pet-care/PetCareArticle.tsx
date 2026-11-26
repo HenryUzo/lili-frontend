@@ -38,7 +38,7 @@ import {
 import images from "../../assests/images";
 
 export function PetCareArticle() {
-  usePublishedPetCareContent();
+  const articleContentLoaded = usePublishedPetCareContent();
   const { articleSlug } = useParams();
   const article = getArticleBySlug(articleSlug);
   const articleAnalyticsContext = {
@@ -57,6 +57,27 @@ export function PetCareArticle() {
       article_reviewer_id: article.reviewerId,
     });
   }, [article]);
+
+  if (!article && !articleContentLoaded) {
+    return (
+      <main
+        className="bg-[#F7FAF2] px-4 py-20 md:px-8 xl:px-12"
+        aria-busy="true"
+      >
+        <Seo
+          title="Pet Care Library | Lili Veterinary Hospital"
+          description="Loading the requested pet care article."
+          path={`/pet-care/${articleSlug ?? ""}`}
+          noIndex
+        />
+        <div className="mx-auto max-w-[960px]">
+          <p role="status" aria-live="polite" className="text-center text-lg text-[#53635A]">
+            Loading article…
+          </p>
+        </div>
+      </main>
+    );
+  }
 
   if (!article) {
     return (
